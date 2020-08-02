@@ -1,0 +1,97 @@
+<template>
+    <div class="navigator primary-font w-100 row">
+        <a class="navigator-item" v-for="item in menuItems" v-bind:href="item.link" @click.prevent="goto(item)" :class="{'active': item.active}">{{item.label}}</a>
+    </div>
+</template>
+
+<script lang="ts">
+
+    import {Component, Vue, Watch} from "vue-property-decorator";
+    import {Route} from "vue-router";
+
+interface IMenuItem {
+    label: string;
+    link: string;
+    active: boolean;
+}
+
+@Component({
+    name: "Navigator"
+})
+export default class Navigator extends Vue {
+
+    private currentItem!: IMenuItem;
+
+    private menuItems: IMenuItem[] = [
+        { label: "Home", link: "/", active: false },
+        { label: "Projects", link: "/projects", active: false },
+        { label: "Tools", link: "/tools", active: false },
+        { label: "Forum", link: "/forum", active: false },
+        { label: "About", link: "/about", active: false },
+        { label: "Contact", link: "/contact", active: false }
+    ]
+
+    private getItem(path: string): IMenuItem {
+        for (const item of this.menuItems) {
+            if (item.link === path) {
+                return item;
+            }
+        }
+
+        throw new Error("Attempted to access link: " + path + " which does not exist");
+    }
+
+    private async mounted() {
+        if (this.currentRoute.name === "Home") {
+            this.currentItem = this.getItem(this.currentRoute.path);
+            this.currentItem.active = true;
+        }
+    }
+
+    @Watch("currentRoute")
+    private routeChange(currentRoute: Route) {
+        if (this.currentItem) {
+            this.currentItem.active = false;
+        }
+        this.currentItem = this.getItem(currentRoute.path);
+        this.currentItem.active = true;
+    }
+
+    private goto(item: IMenuItem) {
+        if (item.link !== this.currentItem.link)
+            this.$router.push({name: item.label});
+    }
+
+    private get currentRoute() {
+        return this.$route;
+    }
+}
+
+</script>
+
+<style lang="scss" scoped>
+
+    @import "@/assets/theme.scss";
+
+    $nav-padding: 10px;
+
+    .navigator {
+        display: inline-flex;
+        justify-content: space-evenly;
+        padding: $nav-padding / 2;
+    }
+
+    .navigator-item {
+        font-size: 20px;
+        margin: $nav-padding / 2;
+    }
+
+    a {
+        color: black !important;
+    }
+
+    .active {
+        color: $primaryColor !important;
+    }
+
+</style>

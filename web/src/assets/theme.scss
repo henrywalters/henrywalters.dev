@@ -1,0 +1,26 @@
+// Definitions
+
+$primaryColor: #007bff;
+
+@font-face {
+  font-family: "Enixe";
+  src: url("~@/assets/fonts/enixe/Enixe.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Unispace";
+  src: url("~@/assets/fonts/unispace it.ttf") format("truetype");
+}
+
+.primary-font {
+  font-family: "Enixe";
+}
+
+.secondary-font {
+  font-family: "helvetica";
+}
+
+p {
+  text-align: justify;
+  font-size: 18px;
+}
