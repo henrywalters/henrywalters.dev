@@ -2,11 +2,10 @@
 
 OUTDIR="/usr/share/nginx/html"
 
-echo "Building HaDev.io"
+echo "Building HaDev.io frontend"
 
-cd web && npm run build
+cd web && npm run build > /dev/null
 
-echo "Success"
 echo "Syncing to outgoing dir: $OUTDIR"
   
 rsync -a dist/ $OUTDIR

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+LOG_FILE=server.log
+ERROR_FILE=error.log
+
+echo "Building HaDev.io Backend"
+
+cd server && npm run build > /dev/null
+
+usage=$(lsof -n -i -P | grep LISTEN | grep :3000 | awk '{print $2}')
+
+if [[ "$usage" != "" ]]; then
+  echo "Killing previous instance pid: $usage"
+  kill -9 $usage
+fi
+
+nohup node dist/main.js > server.log 2>error.log &
