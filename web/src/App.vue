@@ -1,7 +1,8 @@
 <template>
   <div id="app" class="container">
     <div class="header text-center m-3">
-      <h1 class="primary-font">HaDev<span class="accent">.io</span></h1>
+      <h1 class="primary-font mb-0">HaDev<span class="accent">.io</span></h1>
+      <p class="primary-font text-center mt-0"><em>Coding | Math | Innovation</em></p>
       <navigator />
     </div>
     <router-view/>

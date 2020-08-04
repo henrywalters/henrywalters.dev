@@ -1,5 +1,6 @@
 <template>
   <div class="about">
+    <h3 class="primary-font text-center">About Me</h3>
     <p class="secondary-font">
       <a href="/">Hadev.io</a> was developed as a hub for my software engineering projects as well as a forum for technical discussion.
       The focus of the featured projects are primarily game, web and general tooling. Source code for all projects and utilities (including this site)
