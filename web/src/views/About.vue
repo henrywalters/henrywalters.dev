@@ -12,8 +12,10 @@
       It eventually occurred to me that programming was my true passion, with a special focus on computationally difficult problems.
     </p>
     <p class="secondary-font">I continue to work, full-time, as a software engineer at a IT company in Metro Detroit. I am in charge of
-    working with clients across various business domains to update their pre-existing software in addition to building custom applications from the ground-up. I ultimately intend to
-      start my own development shop.
+      working with clients across various business domains, such as <a href="https://bettermade.com/">Bettermade Snackfoods</a> and <a href="http://www.powertran.com/">Powertran Transformers</a>, to update their pre-existing software in addition to building custom applications from the ground-up.
+      Examples of projects include an ERP system, case management software and a hardware-integrated plastic injection monitoring system.
+      In quick response to the Covid-19 Pandemic, I was one of two lead developers for a <a href="https://covid19employeescreen.com/">Covid-19 Employee Screening App</a> to help companies, such as <a href="https://www.metmuseum.org/">The Met</a>, remain complient
+      and keep their employees and customers safe.
     </p>
   </div>
 </template>
