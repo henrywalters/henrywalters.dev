@@ -21,6 +21,7 @@ export class ContactFormController {
             await submission.save();
             await this.mailer.sendMail({
                 to: submission.email,
+                from: '"henry@hadev.io" <Henry>',
                 subject: "Thanks For Reaching Out",
                 html: `
                     <p>Hello ${submission.name}, thanks for reaching out to me! I will respond back as quickly as possible</p>
