@@ -9,7 +9,7 @@ import {ContactFormController} from "./controllers/contactForm.controller";
 @Module({
   imports: [
       ConfigModule.forRoot({
-          envFilePath: ['../.env', '../.env'],
+          envFilePath: ['../.env'],
           isGlobal: true,
       }),
       TypeOrmModule.forRoot(),

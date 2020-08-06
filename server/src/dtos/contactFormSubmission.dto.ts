@@ -1,8 +1,9 @@
-import {IsEmail, IsString} from "class-validator"
+import {IsEmail, IsNotEmpty, IsString} from "class-validator"
 
 export class ContactFormSubmissionDto {
 
     @IsString()
+    @IsNotEmpty()
     public name: string = "";
 
     @IsEmail()
@@ -13,6 +14,4 @@ export class ContactFormSubmissionDto {
 
     @IsString()
     public comments;
-
-    public getName(): string { return this.name; }
 }
