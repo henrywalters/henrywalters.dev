@@ -4,7 +4,10 @@ OUTDIR="/usr/share/nginx/html"
 
 echo "Building HaDev.io frontend"
 
-cd web && npm run build > /dev/null
+cd web
+
+npm install
+npm run build
 
 echo "Syncing to outgoing dir: $OUTDIR"
   

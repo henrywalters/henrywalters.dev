@@ -3,3 +3,5 @@
 SERVER=206.189.186.156
 
 ssh root@$SERVER "cd hadev.io && ./build-back && ./build-front"
+
+notify-send 'Hadev.io CI' 'Application has successfully been deployed' --icon=dialog-information

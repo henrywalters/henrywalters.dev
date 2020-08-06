@@ -6,7 +6,9 @@ ERROR_FILE=error.log
 echo "Building HaDev.io Backend"
 
 cd server
-npm run build > /dev/null
+
+npm install
+npm run build
 
 echo "Running migrations"
 npm run typeorm -- migration:run
