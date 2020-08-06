@@ -1,14 +1,5 @@
 #!/bin/sh
 
-DEPLOY_DIR="/usr/share/nginx/html/hadev.io"
+SERVER=206.189.186.156
 
-
-echo "Building backend"
-
-./build-back
-
-echo "Building frontend"
-
-./build-front
-
-echo "Site is live"
+ssh root@$SERVER "cd hadev.io && ./build-back && ./build-front"

@@ -2,7 +2,10 @@
   <div id="app" class="container">
     <div class="header text-center m-3">
       <h1 class="primary-font mb-0">HaDev<span class="accent">.io</span></h1>
-      <p class="primary-font text-center mt-0"><em>Math | Coding | Innovation</em></p>
+      <p class="primary-font text-center mt-0 mb-0"><em>Math | Coding | Innovation</em></p>
+      <div class="text-center mt-0 mb-2" style="font-size: 14px">
+        Signed Out - <a href="/login" @click.prevent="$router.push({name: 'Login'})">Login</a> | <a href="/register" @click.prevent="$router.push({name: 'Register'})">Register</a>
+      </div>
       <navigator />
     </div>
     <router-view/>

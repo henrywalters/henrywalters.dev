@@ -21,7 +21,7 @@ interface IMenuItem {
 })
 export default class Navigator extends Vue {
 
-    private currentItem!: IMenuItem;
+    private currentItem: IMenuItem | undefined;
     private tracking!: TrackingService;
 
     private menuItems: IMenuItem[] = [
@@ -33,14 +33,14 @@ export default class Navigator extends Vue {
         { label: "Contact", link: "/contact", active: false }
     ]
 
-    private getItem(path: string): IMenuItem {
+    private getItem(path: string): IMenuItem | undefined {
         for (const item of this.menuItems) {
             if (item.link === path) {
                 return item;
             }
         }
 
-        throw new Error("Attempted to access link: " + path + " which does not exist");
+        return void 0;
     }
 
     private async mounted() {
@@ -48,7 +48,7 @@ export default class Navigator extends Vue {
 
         if (this.currentRoute.name === "Home") {
             this.currentItem = this.getItem(this.currentRoute.path);
-            this.currentItem.active = true;
+            if (this.currentItem) this.currentItem.active = true;
             this.tracking.trackPageVisit("Home");
         }
     }
@@ -60,12 +60,14 @@ export default class Navigator extends Vue {
         }
         this.currentItem = this.getItem(currentRoute.path);
         document.title = "Hadev" + (this.currentRoute.name === "Home" ? "" : " - " + currentRoute.name);
-        this.currentItem.active = true;
-        this.tracking.trackPageVisit(this.currentItem.label);
+        if (this.currentItem) {
+            this.currentItem.active = true;
+        }
+        this.tracking.trackPageVisit(currentRoute.name as string);
     }
 
     private goto(item: IMenuItem) {
-        if (item.link !== this.currentItem.link)
+        if (!this.currentItem || item.link !== this.currentItem.link)
             this.$router.push({name: item.label});
     }
 

@@ -80,7 +80,6 @@
             this.clear();
             this.service = new ContactFormService();
             this.initialized = true;
-            console.log(this.submission);
         }
 
         private async submit() {
