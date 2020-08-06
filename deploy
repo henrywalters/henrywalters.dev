@@ -2,4 +2,13 @@
 
 DEPLOY_DIR="/usr/share/nginx/html/hadev.io"
 
+
+echo "Building backend"
+
+./build-back
+
 echo "Building frontend"
+
+./build-front
+
+echo "Site is live"
