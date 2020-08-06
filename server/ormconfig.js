@@ -1,5 +1,5 @@
 // noinspection NpmUsedModulesInstalled -- do not need as its required by NestJS itself
-require("dotenv").config({path: require("path").resolve(__dirname, "../.env.development.local")});
+require("dotenv").config({path: require("path").resolve(__dirname, "../.env")});
 
 const Config = [
     {
