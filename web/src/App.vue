@@ -56,7 +56,6 @@ export default class App extends Vue {
   }
 
   .container {
-    margin: 0;
     min-height: calc(100% - 60px) !important;
   }
 
