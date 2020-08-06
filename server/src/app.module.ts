@@ -5,6 +5,7 @@ import {ConfigModule} from "@nestjs/config";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {getConnection} from "typeorm";
 import {ContactFormController} from "./controllers/contactForm.controller";
+import {TrackingController} from "./controllers/tracking.controller";
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import {ContactFormController} from "./controllers/contactForm.controller";
       }),
       TypeOrmModule.forRoot(),
   ],
-  controllers: [AppController, ContactFormController],
+  controllers: [AppController, ContactFormController, TrackingController],
   providers: [AppService],
 })
 export class AppModule {

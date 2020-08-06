@@ -3,7 +3,7 @@
         <form @submit.prevent="submit">
             <div class="header">
                 <h3 class="primary-font text-center">Contact Me</h3>
-                <div class="header-body secondary-font ">
+                <div class="header-body secondary-font" v-if="!submitted">
                     <p class="text-lg-center">Please reach out to me if you're interested in my work and would like to speak further.</p>
                     <p class="text-lg-center">I look forward to being in touch!</p>
                 </div>

@@ -8,6 +8,7 @@
 
     import {Component, Vue, Watch} from "vue-property-decorator";
     import {Route} from "vue-router";
+    import {TrackingService} from "@/services/tracking.service";
 
 interface IMenuItem {
     label: string;
@@ -21,6 +22,7 @@ interface IMenuItem {
 export default class Navigator extends Vue {
 
     private currentItem!: IMenuItem;
+    private tracking!: TrackingService;
 
     private menuItems: IMenuItem[] = [
         { label: "Home", link: "/", active: false },
@@ -42,9 +44,12 @@ export default class Navigator extends Vue {
     }
 
     private async mounted() {
+        this.tracking = new TrackingService();
+
         if (this.currentRoute.name === "Home") {
             this.currentItem = this.getItem(this.currentRoute.path);
             this.currentItem.active = true;
+            this.tracking.trackPageVisit("Home");
         }
     }
 
@@ -56,6 +61,7 @@ export default class Navigator extends Vue {
         this.currentItem = this.getItem(currentRoute.path);
         document.title = "Hadev" + (this.currentRoute.name === "Home" ? "" : " - " + currentRoute.name);
         this.currentItem.active = true;
+        this.tracking.trackPageVisit(this.currentItem.label);
     }
 
     private goto(item: IMenuItem) {

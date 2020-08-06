@@ -34,6 +34,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
                 body[parts[0]] = errorMsg;
             }
+        } else {
+            body = error.message;
         }
 
         response
