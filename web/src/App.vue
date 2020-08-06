@@ -15,7 +15,7 @@
       <div class="push"></div>
     </div>
     <div class="footer">
-      <a href="/terms.html">Terms of Service</a> | <a href="/privacy.html">Privary</a>
+      <a href="/terms.html">Terms of Service</a> | <a href="/privacy.html">Privary Policy</a>
     </div>
   </div>
 </template>
@@ -63,7 +63,7 @@ export default class App extends Vue {
   .footer {
     color: white;
 
-    padding: 15px 5px 15px 5px;
+    padding: 15px 5px 15px 15px;
 
     a {
       color: white;
