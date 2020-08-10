@@ -1,4 +1,7 @@
 import {BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Privileges} from "../controllers/auth.controller";
+
+export type CleanedUser = Pick<User, "id" | "firstName" | "lastName" | "email" | "privileges">;
 
 @Entity()
 export class User extends BaseEntity {
@@ -23,4 +26,19 @@ export class User extends BaseEntity {
     @Column()
     public password: string;
 
+    @Column({type: "simple-array"})
+    public privileges: string[];
+
+    @Column({type: "bool", default: false})
+    public verified: boolean;
+
+    public cleaned(): CleanedUser {
+        return {
+            id: this.id,
+            firstName: this.firstName,
+            lastName: this.lastName,
+            email: this.email,
+            privileges: this.privileges,
+        }
+    }
 }

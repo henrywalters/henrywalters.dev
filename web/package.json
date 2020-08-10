@@ -12,6 +12,7 @@
     "core-js": "^3.6.5",
     "dotenv": "^8.2.0",
     "jquery": "^3.5.1",
+    "js-cookie": "^2.2.1",
     "popper.js": "^1.16.1",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
@@ -19,6 +20,8 @@
     "vue-router": "^3.2.0"
   },
   "devDependencies": {
+    "@types/js-cookie": "^2.2.6",
+    "@types/luxon": "^1.24.3",
     "@vue/cli-plugin-babel": "~4.4.0",
     "@vue/cli-plugin-router": "~4.4.0",
     "@vue/cli-plugin-typescript": "~4.4.0",

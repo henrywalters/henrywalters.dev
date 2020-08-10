@@ -1,5 +1,6 @@
 import {AxiosInstance} from "axios";
 const axios = require("axios").default;
+import Cookies from "js-cookie";
 
 export type HashMap<V> = { [key: string]: V};
 
@@ -17,6 +18,10 @@ export default class BaseService<T, R, E> {
         this.http = axios.create({
             baseURL: process.env.VUE_APP_API_ROOT,
         });
+
+        if (Cookies.get("jwt")) {
+            this.http.defaults.headers.common["jwt"] = "Bearer " + Cookies.get("jwt");
+        }
     }
 
     private undefinedErrorMessage(method: string): string {

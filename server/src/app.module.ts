@@ -1,12 +1,15 @@
-import {MiddlewareConsumer, Module} from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import {MiddlewareConsumer, Module, RequestMethod} from '@nestjs/common';
+import {AppController} from './app.controller';
+import {AppService} from './app.service';
 import {ConfigModule} from "@nestjs/config";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {getConnection} from "typeorm";
 import {ContactFormController} from "./controllers/contactForm.controller";
 import {TrackingController} from "./controllers/tracking.controller";
 import {MailerModule} from "@nestjs-modules/mailer";
+import {TokenService} from "./services/token.service";
+import {AuthController} from "./controllers/auth.controller";
+import {AuthMiddleware} from "./middleware/auth.middleware";
 
 @Module({
   imports: [
@@ -22,12 +25,14 @@ import {MailerModule} from "@nestjs-modules/mailer";
       }),
       TypeOrmModule.forRoot(),
   ],
-  controllers: [AppController, ContactFormController, TrackingController],
-  providers: [AppService],
+  controllers: [AppController, ContactFormController, TrackingController, AuthController],
+  providers: [AppService, TokenService],
 })
 export class AppModule {
     async configure(consumer: MiddlewareConsumer) {
         await this.setEntityConnections();
+        consumer.apply(AuthMiddleware)
+            .forRoutes({path: "*", method: RequestMethod.ALL});
     }
 
     async setEntityConnections() {

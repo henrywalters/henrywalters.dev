@@ -8,7 +8,7 @@ export class TrackingController {
     public async track(@Headers("x-forwarded-for") ip: string, @Param("page") page: string): Promise<ApiResponse<void, string>> {
         try {
             const pageVisit = new PageVisit();
-            pageVisit.ip = ip;
+            pageVisit.ip = ip ? ip : "localhost";
             pageVisit.page = page;
             await pageVisit.save();
             return ResponseDto.Success(void 0);

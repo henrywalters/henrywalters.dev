@@ -21,7 +21,7 @@ export class ContactFormController {
             await submission.save();
             await this.mailer.sendMail({
                 to: submission.email,
-                from: '"henry@hadev.io" <Henry>',
+                from: '"Henry - Hadev.io" <henry@hadev.io>',
                 subject: "Thanks For Reaching Out",
                 html: `
                     <p>Hello ${submission.name}, thanks for reaching out to me! I will respond back as quickly as possible</p>
@@ -29,7 +29,7 @@ export class ContactFormController {
             })
             return ResponseDto.Success(submission);
         } catch (e) {
-            ResponseDto.Error(e.message);
+            return ResponseDto.Error(e.message);
         }
     }
 }
