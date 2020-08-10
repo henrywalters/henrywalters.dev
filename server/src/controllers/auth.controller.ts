@@ -94,7 +94,7 @@ export class AuthController {
 
         const challenge = await this.createTfaChallenge(user);
 
-        await this.sendVerificationEmail(user, challenge);
+        this.sendVerificationEmail(user, challenge);
 
         return ResponseDto.Success(void 0);
     }
