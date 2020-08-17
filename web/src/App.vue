@@ -13,7 +13,7 @@
           </span>
         </div>
 
-        <navigator />
+        <navigator :user="user"/>
       </div>
       <div class="content">
         <router-view/>

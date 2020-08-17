@@ -10,6 +10,8 @@ import {MailerModule} from "@nestjs-modules/mailer";
 import {TokenService} from "./services/token.service";
 import {AuthController} from "./controllers/auth.controller";
 import {AuthMiddleware} from "./middleware/auth.middleware";
+import {CategoryController} from "./controllers/category.controller";
+import {ForumController} from "./controllers/forum.controller";
 
 @Module({
   imports: [
@@ -25,7 +27,7 @@ import {AuthMiddleware} from "./middleware/auth.middleware";
       }),
       TypeOrmModule.forRoot(),
   ],
-  controllers: [AppController, ContactFormController, TrackingController, AuthController],
+  controllers: [AppController, ContactFormController, TrackingController, AuthController, CategoryController, ForumController],
   providers: [AppService, TokenService],
 })
 export class AppModule {

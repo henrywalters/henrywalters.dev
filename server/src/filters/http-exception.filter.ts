@@ -12,6 +12,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
         const error = exception.getResponse() as any;
 
+        console.log(error);
+
         //const validationErrors = error.message as ValidationError[];
 
         let body = null;
@@ -35,7 +37,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
                 body[parts[0]] = errorMsg;
             }
         } else {
-            body = error.message;
+            body = error.message ? error.message : error ? error : "Unknown error";
         }
 
         response

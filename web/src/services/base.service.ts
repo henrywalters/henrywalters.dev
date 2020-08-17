@@ -12,9 +12,11 @@ export type ApiResponse<S, E> = Success<S> | Error<E>;
 export default class BaseService<T, R, E> {
     protected http: AxiosInstance;
     protected name: string;
+    protected controllerPath: string;
 
-    constructor(name: string) {
+    constructor(name: string, controllerPath: string = "") {
         this.name = name;
+        this.controllerPath = controllerPath;
         this.http = axios.create({
             baseURL: process.env.VUE_APP_API_ROOT,
         });
@@ -29,22 +31,42 @@ export default class BaseService<T, R, E> {
     }
 
     public async get(): Promise<ApiResponse<R[], E>> {
-        throw new Error(this.undefinedErrorMessage("GET"));
+        try {
+            return (await this.http.get(this.controllerPath)).data;
+        } catch (e) {
+            throw new Error(e.message);
+        }
     }
 
     public async getOne(id: string | number): Promise<ApiResponse<R, E>> {
-        throw new Error(this.undefinedErrorMessage("GET ONE"));
+        try {
+            return (await this.http.get(this.controllerPath + '/' + id)).data;
+        } catch (e) {
+            throw new Error(e.message);
+        }
     }
 
     public async post(data: T): Promise<ApiResponse<R, E>> {
-        throw new Error(this.undefinedErrorMessage("POST"));
+        try {
+            return (await this.http.post(this.controllerPath, data)).data;
+        } catch (e) {
+            throw new Error(e.message);
+        }
     }
 
     public async put(id: string | number, data: T): Promise<ApiResponse<R, E>> {
-        throw new Error(this.undefinedErrorMessage("PUT"));
+        try {
+            return (await this.http.put(this.controllerPath + '/' + id, data)).data;
+        } catch (e) {
+            throw new Error(e.message);
+        }
     }
 
     public async delete(id: string | number): Promise<ApiResponse<void, E>> {
-        throw new Error(this.undefinedErrorMessage("DELETE"));
+        try {
+            return (await this.http.delete(this.controllerPath + '/' + id)).data;
+        } catch (e) {
+            throw new Error(e.message);
+        }
     }
 }

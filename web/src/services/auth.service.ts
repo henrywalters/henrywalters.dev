@@ -68,4 +68,11 @@ export class AuthService extends BaseService<void, void, void> {
             throw new Error(e.message);
         }
     }
+
+    public static HasPrivilege(user: User, privilege: string) {
+        for (const priv of user.privileges) {
+            if (priv === privilege) return true;
+        }
+        return false;
+    }
 }

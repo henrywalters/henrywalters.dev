@@ -1,25 +1,30 @@
 <template>
     <div class="navigator primary-font w-100 row">
-        <a class="navigator-item" v-for="item in menuItems" v-bind:href="item.link" @click.prevent="goto(item)" :class="{'active': item.active}">{{item.label}}</a>
+        <a class="navigator-item" v-for="item in menuItems" v-if="canShow(item)" v-bind:href="item.link" @click.prevent="goto(item)" :class="{'active': item.active}">{{item.label}}</a>
     </div>
 </template>
 
 <script lang="ts">
 
-    import {Component, Vue, Watch} from "vue-property-decorator";
+    import {Component, Prop, Vue, Watch} from "vue-property-decorator";
     import {Route} from "vue-router";
     import {TrackingService} from "@/services/tracking.service";
+    import {User} from "@/services/auth.service";
 
 interface IMenuItem {
     label: string;
     link: string;
     active: boolean;
+    privilege?: string;
 }
 
 @Component({
     name: "Navigator"
 })
 export default class Navigator extends Vue {
+
+    @Prop()
+    public user!: User;
 
     private currentItem: IMenuItem | undefined;
     private tracking!: TrackingService;
@@ -30,7 +35,8 @@ export default class Navigator extends Vue {
         { label: "Tools", link: "/tools", active: false },
         { label: "Forum", link: "/forum", active: false },
         { label: "About", link: "/about", active: false },
-        { label: "Contact", link: "/contact", active: false }
+        { label: "Contact", link: "/contact", active: false },
+        { label: "Admin", link: "/admin", active: false, privilege: "ADMIN" },
     ]
 
     private getItem(path: string): IMenuItem | undefined {
@@ -69,6 +75,19 @@ export default class Navigator extends Vue {
     private goto(item: IMenuItem) {
         if (!this.currentItem || item.link !== this.currentItem.link)
             this.$router.push({name: item.label});
+    }
+
+    private canShow(item: IMenuItem) {
+        if (item.privilege) {
+            if (!this.user) return false;
+            for (const privilege of this.user.privileges) {
+                if (privilege === item.privilege) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return true;
     }
 
     private get currentRoute() {
