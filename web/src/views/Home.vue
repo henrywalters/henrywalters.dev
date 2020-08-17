@@ -7,7 +7,9 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import {Display, Color, NetworkFilesystem, ShaderProgram } from "../../../../HaGame3D/dist/index";
+
+    // import {Display, Color, NetworkFilesystem, ShaderProgram } from "../../../../HaGame3D/dist/index";
+    import {Display, Color, NetworkFilesystem, ShaderProgram } from "hagame/dist/index";
 
     @Component({
         name: "Home"
