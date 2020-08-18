@@ -15,7 +15,7 @@
     "bootstrap": "^4.5.0",
     "core-js": "^3.6.5",
     "dotenv": "^8.2.0",
-    "hagame": "^1.0.1",
+    "hagame": "^1.0.2",
     "jquery": "^3.5.1",
     "js-cookie": "^2.2.1",
     "popper.js": "^1.16.1",
