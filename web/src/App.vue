@@ -20,8 +20,17 @@
       </div>
       <div class="push"></div>
     </div>
-    <div class="footer">
-      <a href="/terms.html">Terms of Service</a> | <a href="/privacy.html">Privary Policy</a>
+    <div class="footer row pl-3 pr-3 pt-md-3 pt-2">
+      <div class="col-md-6 float-left">
+        <a href="/terms.html">Terms of Service</a> | <a href="/privacy.html">Privary Policy</a>
+      </div>
+      <div class="col-md-6 ">
+        <span class="float-md-right">
+          <a href="mailto:henry@hadev.io">Henry@hadev.io</a> |
+          <a href="https://github.com/henrywalters"><font-awesome-icon :icon="['fab', 'github']"></font-awesome-icon> Github</a> |
+          <a href="https://www.linkedin.com/in/johnhenrywalters"><font-awesome-icon :icon="['fab', 'linkedin']"></font-awesome-icon> Linkedin</a>
+        </span>
+      </div>
     </div>
   </div>
 </template>
@@ -96,8 +105,6 @@ export default class App extends Vue {
 
   .footer {
     color: white;
-
-    padding: 15px 5px 15px 15px;
 
     a {
       color: white;

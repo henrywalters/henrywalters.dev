@@ -31,3 +31,8 @@ p {
   font-style: italic;
   padding: 5px;
 }
+
+.card-header {
+  background-color: $primaryColor !important;
+  color: white;
+}

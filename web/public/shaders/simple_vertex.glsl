@@ -2,7 +2,8 @@ attribute vec4 aVertexPosition;
 attribute vec3 aVertexNormal;
 //attribute vec2 aTextureCoord;
 
-uniform mat4 uModelViewMatrix;
+uniform mat4 uModelMatrix;
+uniform mat4 uViewMatrix;
 uniform mat4 uProjectionMatrix;
 uniform mat4 uNormalMatrix;
 
@@ -10,7 +11,7 @@ uniform mat4 uNormalMatrix;
 varying highp vec3 vLighting;
 
 void main() {
-    gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+    gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * aVertexPosition;
     // vTextureCoord = aTextureCoord;
 
     highp vec3 ambientLight = vec3(0.3, 0.3, 0.3);
