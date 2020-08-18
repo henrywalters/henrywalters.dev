@@ -104,6 +104,9 @@ export default class App extends Vue {
   }
 
   .footer {
+
+    margin: 0 !important;
+
     color: white;
 
     a {
