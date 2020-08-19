@@ -2,7 +2,7 @@
 
 OUTDIR="/usr/share/nginx/html/henrywalters.dev"
 
-echo "Building HaDev.io frontend"
+echo "Building henrywalters.dev frontend"
 
 cd web
 

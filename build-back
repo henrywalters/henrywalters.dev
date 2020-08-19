@@ -3,7 +3,7 @@
 LOG_FILE=server.log
 ERROR_FILE=error.log
 
-echo "Building HaDev.io Backend"
+echo "Building henrywalters.dev Backend"
 
 cd server
 

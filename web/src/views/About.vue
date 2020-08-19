@@ -2,7 +2,7 @@
   <div class="about">
     <h3 class="primary-font text-center">About Me</h3>
     <p class="secondary-font">
-      <a href="/">Hadev.io</a> was developed as a hub for my software engineering projects as well as a forum for technical discussion.
+      <a href="/">Henrywalters.dev</a> was developed as a hub for my software engineering projects.
       The focus of the featured projects are primarily game, web and general tooling. Source code for all projects and utilities (including <a href="https://github.com/henrywalters/hadev.io">this site</a>)
       can be found on my <a href="https://github.com/henrywalters">Github</a> account.
     </p>

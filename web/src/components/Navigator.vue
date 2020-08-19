@@ -65,7 +65,7 @@ export default class Navigator extends Vue {
             this.currentItem.active = false;
         }
         this.currentItem = this.getItem(currentRoute.path);
-        document.title = "Hadev" + (this.currentRoute.name === "Home" ? "" : " - " + currentRoute.name);
+        document.title = "Henry Walters" + (this.currentRoute.name === "Home" ? "" : " - " + currentRoute.name);
         if (this.currentItem) {
             this.currentItem.active = true;
         }

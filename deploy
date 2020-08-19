@@ -2,6 +2,6 @@
 
 SERVER=206.189.186.156
 
-ssh root@$SERVER "cd hadev.io && git pull && ./build-back && ./build-front"
+ssh root@$SERVER "cd henrywalters.dev && git pull && ./build-back && ./build-front"
 
 notify-send 'Hadev.io CI' 'Application has successfully been deployed' --icon=dialog-information
