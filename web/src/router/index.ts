@@ -36,6 +36,11 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "forum" */ '../views/Forum.vue')
   },
   {
+    path: '/forum/post',
+    name: 'ForumPost',
+    component: () => import(/* webpackChunkName: "forumPost" */ '../views/ForumPost.vue')
+  },
+  {
     path: '/contact',
     name: 'Contact',
     component: () => import(/* webpackChunkName: "contact" */ '../views/Contact.vue')

@@ -2,7 +2,7 @@
   <div id="app">
     <div class="container">
       <div class="header text-center p-3">
-        <h1 class="primary-font mb-0">HaDev<span class="accent">.io</span></h1>
+        <h1 class="primary-font mb-0">Henry <span class="accent">Walters</span></h1>
         <p class="primary-font text-center mt-0 mb-0"><em>Math | Coding | Innovation</em></p>
         <div class="text-center mt-0 mb-2" style="font-size: 14px" v-if="initialized">
           <span v-if="user === null">
@@ -26,7 +26,7 @@
       </div>
       <div class="col-md-6 ">
         <span class="float-md-right">
-          <a href="mailto:henry@hadev.io">Henry@hadev.io</a> |
+          <a href="mailto:me@henrywalters.dev">Me@HenryWalters.dev</a> |
           <a href="https://github.com/henrywalters"><font-awesome-icon :icon="['fab', 'github']"></font-awesome-icon> Github</a> |
           <a href="https://www.linkedin.com/in/johnhenrywalters"><font-awesome-icon :icon="['fab', 'linkedin']"></font-awesome-icon> Linkedin</a>
         </span>

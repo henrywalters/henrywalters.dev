@@ -1,6 +1,6 @@
 #!/bin/sh
 
-OUTDIR="/usr/share/nginx/html"
+OUTDIR="/usr/share/nginx/html/henrywalters.dev"
 
 echo "Building HaDev.io frontend"
 

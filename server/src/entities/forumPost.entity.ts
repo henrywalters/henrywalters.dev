@@ -37,6 +37,6 @@ export class ForumPost extends BaseEntity {
     @Column({type: "simple-array"})
     public tags: string[];
 
-    @ManyToOne(type => User, {eager: true})
+    @ManyToOne(type => User)
     public author: User;
 }

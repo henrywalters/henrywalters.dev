@@ -32,7 +32,7 @@ export default class Navigator extends Vue {
     private menuItems: IMenuItem[] = [
         { label: "Home", link: "/", active: false },
         { label: "Projects", link: "/projects", active: false },
-        { label: "Tools", link: "/tools", active: false },
+        // { label: "Tools", link: "/tools", active: false },
         { label: "Forum", link: "/forum", active: false },
         { label: "About", link: "/about", active: false },
         { label: "Contact", link: "/contact", active: false },

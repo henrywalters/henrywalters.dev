@@ -8,7 +8,7 @@
                 <div class="card-header">
                     <h5 class="primary-font card-title">
                         {{category.category}}
-                        <button v-if="canWrite" class="btn btn-info float-right">New Post</button>
+                        <button v-if="canWrite" class="btn btn-info float-right" @click="$router.push({name: 'ForumPost', query: {c: category.id}})">New Post</button>
                     </h5>
                 </div>
                 <div class="card-body"></div>

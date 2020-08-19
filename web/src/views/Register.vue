@@ -7,6 +7,7 @@
             <div class="col-md-3"></div>
             <div class="col-md-6">
                 <form @submit.prevent="submit" v-if="initialized" autocomplete="off">
+                    <p class="text-center">Sign-up now to post on the forums as well as gain exclusive access to future content!</p>
                     <div class="row" v-if="!registered">
                         <input id="username" style="display:none" type="text" autocomplete="new-password">
                         <input id="password" style="display:none" type="password" autocomplete="new-password">

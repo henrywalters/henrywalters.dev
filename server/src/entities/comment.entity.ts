@@ -7,6 +7,7 @@ import {
     UpdateDateColumn
 } from "typeorm";
 import {User} from "./user.entity";
+import {ForumPost} from "./forumPost.entity";
 
 @Entity()
 export class Comment extends BaseEntity {
@@ -21,6 +22,10 @@ export class Comment extends BaseEntity {
 
     @DeleteDateColumn()
     public deletedAt: Date;
+
+    @ManyToOne(type => ForumPost)
+    @JoinColumn()
+    public forumPost: ForumPost;
 
     @ManyToOne(type => Comment)
     @JoinColumn()
