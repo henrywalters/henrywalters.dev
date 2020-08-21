@@ -31,7 +31,7 @@ export class AuthController {
     private async sendVerificationEmail(user: User, challenge: TfaChallenge): Promise<void> {
         await this.mailer.sendMail({
             to: user.email,
-            from: '"Hadev.io Registration" <registration@hadev.io>',
+            from: '"Henrywalters.dev Registration" <registration@henrywalters.dev>',
             subject: "Hadev.io Sign-Up Verification",
             html: `
                 <p>Hello ${user.firstName} ${user.lastName},</p>

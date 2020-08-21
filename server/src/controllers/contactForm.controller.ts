@@ -19,9 +19,9 @@ export class ContactFormController {
             submission.companyName = dto.companyName;
             submission.comments = dto.comments;
             await submission.save();
-            await this.mailer.sendMail({
+            this.mailer.sendMail({
                 to: submission.email,
-                from: '"Henry - Hadev.io" <henry@hadev.io>',
+                from: '"Henry Walters" <me@henrywalters.dev>',
                 subject: "Thanks For Reaching Out",
                 html: `
                     <p>Hello ${submission.name}, thanks for reaching out to me! I will respond back as quickly as possible</p>

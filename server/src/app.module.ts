@@ -12,6 +12,9 @@ import {AuthController} from "./controllers/auth.controller";
 import {AuthMiddleware} from "./middleware/auth.middleware";
 import {CategoryController} from "./controllers/category.controller";
 import {ForumController} from "./controllers/forum.controller";
+import {ProjectController} from "./controllers/project.controller";
+import {UserFileService} from "./services/file.service";
+import {UserFileController} from "./controllers/userFile.controller";
 
 @Module({
   imports: [
@@ -27,8 +30,8 @@ import {ForumController} from "./controllers/forum.controller";
       }),
       TypeOrmModule.forRoot(),
   ],
-  controllers: [AppController, ContactFormController, TrackingController, AuthController, CategoryController, ForumController],
-  providers: [AppService, TokenService],
+  controllers: [AppController, ContactFormController, TrackingController, AuthController, CategoryController, ForumController, ProjectController, UserFileController],
+  providers: [AppService, TokenService, UserFileService],
 })
 export class AppModule {
     async configure(consumer: MiddlewareConsumer) {

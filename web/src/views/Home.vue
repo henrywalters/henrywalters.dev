@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <canvas width="1000" height="600" id="hagame" />
+        <div style="width: 100%; height: 600px" id="hagame"></div>
     </div>
 
 </template>
@@ -21,8 +21,10 @@
         private fs!: NetworkFilesystem;
         private program!: ShaderProgram;
         private texture!: WebGLTexture;
+        private texture2!: WebGLTexture;
         private model!: any;
         private sphereModel!: any;
+        private floorModel!: any;
 
         private inputManager!: InputManager;
 
@@ -49,20 +51,27 @@
             const frag = await this.fs.readText("shaders/simple_fragment.glsl");
 
             const cube = await this.fs.readText("models/cube.obj");
+            const plane = await this.fs.readText("models/plane.obj");
 
             const sphere = await this.fs.readText("models/sphere.obj");
 
             this.sphereModel = this.display.loadAndInitializeOBJModel(sphere);
 
             this.model = this.display.loadAndInitializeOBJModel(cube);
+            this.floorModel = this.display.loadAndInitializeOBJModel(plane);
+
+            console.log(this.model);
+
             this.texture = this.display.loadTexture(process.env.VUE_APP_WEB_ROOT + "/textures/bricks.jpeg");
+
+            this.texture2 = this.display.loadTexture(process.env.VUE_APP_WEB_ROOT + "/textures/henry.png");
 
             this.display.getWindow().clearColor = Color.Blue();
 
             this.timer = new Timer();
             this.profiler = new Profiler<number>("Render Time", AVERAGE_CALCULATION);
             this.profiler.onProfile((avg: number) => {
-                console.log("FPS: " + (1000 / avg).toFixed(2));
+                // console.log("FPS: " + (1000 / avg).toFixed(2));
             });
 
             const program = this.display.loadShaderProgram(vertex, frag);
@@ -72,7 +81,7 @@
                 attribLocations: {
                     "vertexPosition": this.display.gl.getAttribLocation(program, "aVertexPosition"),
                     //"vertexColor": this.display.gl.getAttribLocation(program, "aVertexColor"),
-                    //"textureCoord": this.display.gl.getAttribLocation(program, "aTextureCoord"),
+                    "textureCoord": this.display.gl.getAttribLocation(program, "aTextureCoord"),
                     "vertexNormal": this.display.gl.getAttribLocation(program, "aVertexNormal"),
                 },
                 uniformLocations: {
@@ -93,7 +102,7 @@
 
             this.display.clear();
 
-            this.rot += 0.05;
+            // this.rot += 0.05;
 
             const blockSize = 3;
 
@@ -141,7 +150,11 @@
 
             this.display.moveCameraPos(movement);
 
-            this.display.prepareMeshBuffers(this.program, this.model);
+            this.display.prepareMeshBuffers(this.program, this.floorModel, this.texture);
+
+            this.display.renderMesh(this.program, this.floorModel, new Float32Array([0.0, -2.0, 10]), 90 * Math.PI / 180, new Float32Array([0, 1, 0]));
+
+            this.display.prepareMeshBuffers(this.program, this.model, this.texture);
 
             for (let i = 0; i < 10; i++) {
                 this.display.renderMesh(this.program, this.model, new Float32Array([-5.0, 0.0, -i * blockSize - 10]), this.rot, new Float32Array([1,0,0]));
@@ -155,7 +168,7 @@
 
             const radius = 3;
 
-            this.display.prepareMeshBuffers(this.program, this.sphereModel);
+            this.display.prepareMeshBuffers(this.program, this.sphereModel, this.texture2);
 
             this.display.renderMesh(this.program, this.sphereModel, new Float32Array([Math.sin(this.t) * radius, Math.cos(this.t) * radius + Math.cos(this.t) * 3, -this.t]), 0, new Float32Array([0, 0, 0]));
 
