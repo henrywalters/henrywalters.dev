@@ -26,6 +26,11 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "projects" */ '../views/Projects.vue')
   },
   {
+    path: '/project',
+    name: 'Project',
+    component: () => import(/* webpackChunkName: "project" */ '../views/Project.vue')
+  },
+  {
     path: '/tools',
     name: 'Tools',
     component: () => import(/* webpackChunkName: "tools" */ '../views/Tools.vue')
@@ -59,6 +64,11 @@ const routes: Array<RouteConfig> = [
     path: '/tfa/:challenge',
     name: 'TFA',
     component: () => import(/* webpackChunkName: "tfa" */ '../views/Tfa.vue')
+  },
+  {
+    path: '/hagame3d',
+    name: 'HaGame3D',
+    component: () => import(/* webpackChunkName: "hagame3d" */ '../views/HaGame3D.vue')
   }
 ]
 

@@ -11,6 +11,7 @@ export class ProjectController {
 
     private async updateProjectFromRequest(project: Project, req: ProjectDto) {
         project.title = req.title;
+        project.status = req.status;
         project.shortDescription = req.shortDescription;
         project.longDescription = req.longDescription;
         project.url = req.url;
@@ -21,7 +22,7 @@ export class ProjectController {
             project.thumbnail = await UserFile.findOneOrFail(req.thumbnailId);
         }
         await project.save();
-        return ResponseDto.Success(project);
+        return project;
     }
 
     @Post()
@@ -44,6 +45,13 @@ export class ProjectController {
         const project = await Project.findOneOrFail(id);
         await project.remove();
         return ResponseDto.Success(void 0);
+    }
+
+    @Get(":id")
+    public async getProject(@Param("id") id: string) {
+        const project = await Project.findOne(id)
+        if (project) return ResponseDto.Success(project);
+        else return ResponseDto.Error("Project does not exist");
     }
 
     @Get()

@@ -36,3 +36,23 @@ p {
   background-color: $primaryColor !important;
   color: white;
 }
+
+.link-black {
+  color: black;
+}
+
+.image-center {
+  width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0.5rem;
+}
+
+.thumbnail-container {
+  width: 175px;
+}
+
+.thumbnail {
+  height: 125px;
+}

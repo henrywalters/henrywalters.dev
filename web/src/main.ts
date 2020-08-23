@@ -7,9 +7,11 @@ import dotenv from 'dotenv';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {faGithub, faLinkedin} from "@fortawesome/free-brands-svg-icons";
+import {faUpload} from "@fortawesome/free-solid-svg-icons";
 
 library.add(faLinkedin);
 library.add(faGithub);
+library.add(faUpload);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

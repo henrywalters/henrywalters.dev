@@ -2,7 +2,6 @@ import BaseService, {HashMap} from "@/services/base.service";
 import {UserFile} from "@/services/userFile.service";
 
 export interface ProjectDto {
-    id: string;
     title: string;
     shortDescription: string;
     longDescription: string;

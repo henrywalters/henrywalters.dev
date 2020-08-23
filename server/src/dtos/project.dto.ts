@@ -1,11 +1,13 @@
-import {IsArray, IsOptional, IsString} from "class-validator";
+import {IsArray, IsNotEmpty, IsOptional, IsString} from "class-validator";
 import {ProjectStatus} from "../entities/project.entity";
 
 export class ProjectDto {
     @IsString()
+    @IsNotEmpty()
     public title: string;
 
     @IsString()
+    @IsNotEmpty()
     public shortDescription: string;
 
     @IsString()
@@ -24,6 +26,7 @@ export class ProjectDto {
     public videoUrl: string;
 
     @IsString()
+    @IsNotEmpty()
     public status: ProjectStatus;
 
     @IsArray()

@@ -36,7 +36,7 @@ export class Project extends BaseEntity {
     @Column({type: "simple-array"})
     public languages: string[];
 
-    @ManyToOne(type => UserFile, {nullable: true})
+    @ManyToOne(type => UserFile, {nullable: true, eager: true})
     @JoinColumn()
     public thumbnail?: UserFile;
 

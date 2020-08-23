@@ -6,11 +6,23 @@
         <div class="body" v-if="initialized">
             <div class="card mb-3" v-for="project in projects">
                 <div class="card-body">
-                    <h4 class="primary-font">
-                        {{project.title}}
-                        <a v-if="project.sourceControlUrl" :href="project.sourceControlUrl"><font-awesome-icon :icon="['fab', 'github']" /></a>
-                    </h4>
-                    <b><em>{{project.shortDescription}}</em> <span v-for="language in project.languages" class="badge" :class="badgeColor(language)">{{language}}</span></b>
+                    <div class="w-100 d-inline-flex">
+                        <div v-if="project.thumbnail" class="thumbnail-container mr-2">
+                            <img :src="project.thumbnail.cdn" class="thumbnail"/>
+                        </div>
+                        <div class="d-block">
+                            <div>
+                                <h4 class="primary-font m-0">
+                                    <a :href="'/projects/' + project.id" @click.prevent="$router.push({name: 'Project', query: {pid: project.id}})" class="project-title">{{project.title}}</a>
+                                    &nbsp;
+                                    <a v-if="project.sourceControlUrl" :href="project.sourceControlUrl"><font-awesome-icon :icon="['fab', 'github']" /></a>
+                                </h4>
+                                <programming-languages class="m-0" :languages="project.languages" />
+                                <p class="m-0"><b><em>{{project.shortDescription}}</em></b></p>
+                                <p v-if="project.url" class="m-0"><b>Demo: </b><a :href="project.url">{{project.url}}</a></p>
+                            </div>
+                        </div>
+                    </div>
                     <p>{{project.longDescription}}</p>
                 </div>
             </div>
@@ -21,8 +33,9 @@
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
     import {Project, ProjectService} from "@/services/project.service";
+    import ProgrammingLanguages from "@/components/ui/programmingLanguages.vue";
 
-    @Component({})
+    @Component({components: {ProgrammingLanguages}})
     export default class Projects extends Vue {
         private initialized = false;
         private projects!: Project[];
@@ -35,13 +48,11 @@
             console.log(this.projects);
             this.initialized = true;
         }
-
-        private badgeColor(language: string): string {
-            switch (language) {
-                case 'Typescript': return 'badge-primary';
-                case 'C++': return 'badge-success';
-                default: return 'badge-dark';
-            }
-        }
     }
 </script>
+
+<style scoped lang="scss">
+    .project-title {
+        color: black;
+    }
+</style>

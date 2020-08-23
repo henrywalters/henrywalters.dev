@@ -54,6 +54,21 @@ export default class BaseService<T, R, E> {
         }
     }
 
+    public async postFormData(data: FormData): Promise<ApiResponse<R, E>> {
+        try {
+            return (await this.http({
+                url: this.controllerPath,
+                method: 'POST',
+                data,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            })).data;
+        } catch (e) {
+            throw new Error(e.message);
+        }
+    }
+
     public async put(id: string | number, data: T): Promise<ApiResponse<R, E>> {
         try {
             return (await this.http.put(this.controllerPath + '/' + id, data)).data;
