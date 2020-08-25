@@ -81,7 +81,7 @@
                         <p class="alert-success p-1 text-center">{{success}}</p>
                     </div>
                     <div class="form-group" v-if="error">
-                        <p class="alert-danger p-1 text-center">{{error}}</p>
+                        <p class="alert-danger p-1 text-center">Failed to save Project</p>
                     </div>
                 </transition>
 
@@ -96,6 +96,7 @@
     import ProgrammingLanguages from "@/components/ui/programmingLanguages.vue";
     import ImageUploader from "@/components/ui/ImageUploader.vue";
     import {UserFile} from "@/services/userFile.service";
+    import {HashMap} from "@/services/base.service";
 
     enum ProjectMode {
         New,
@@ -111,7 +112,8 @@
         private mode!: ProjectMode;
 
         private success: string | null = null;
-        private error: string | null = null;
+        private errors: HashMap<string> = {};
+        private error = false;
 
         private newLanguage: string = "";
 
@@ -185,6 +187,8 @@
             const project = this.project as ProjectDto;
 
             if (this.thumbnail) project.thumbnailId = this.thumbnail.id;
+            this.error = false;
+            this.errors = {};
 
             if (this.mode === ProjectMode.Edit) {
                 const res = await this.projectService.put(this.$route.query.pid as string, project);
@@ -195,7 +199,8 @@
                         this.success = null;
                     }, 2000);
                 } else {
-                    this.error = res.error;
+                    this.errors = res.error;
+                    this.error = true;
                 }
             } else if (this.mode === ProjectMode.New) {
                 const res = await this.projectService.post(project);
