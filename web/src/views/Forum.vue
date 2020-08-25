@@ -4,7 +4,7 @@
             <h3 class="primary-font text-center">Forum</h3>
         </div>
         <div class="body" v-if="initialized">
-            <div class="row card mb-3" v-for="category in categories">
+            <!--<div class="row card mb-3" v-for="category in categories">
                 <div class="card-header">
                     <h5 class="primary-font card-title">
                         {{category.category}}
@@ -13,6 +13,7 @@
                 </div>
                 <div class="card-body"></div>
             </div>
+            -->
         </div>
     </div>
 </template>

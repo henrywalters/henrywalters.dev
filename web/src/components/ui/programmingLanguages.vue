@@ -1,7 +1,7 @@
 <template>
-    <span class="programming-languages">
+    <div class="programming-languages">
         <span v-for="language in languages" class="badge badge-pill mr-2" :class="badgeColor(language)">{{language}}</span>
-    </span>
+    </div>
 </template>
 
 <script lang="ts">

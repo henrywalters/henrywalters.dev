@@ -54,5 +54,8 @@ p {
 }
 
 .thumbnail {
-  height: 125px;
+  max-height: 130px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }

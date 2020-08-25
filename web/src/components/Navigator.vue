@@ -33,7 +33,7 @@ export default class Navigator extends Vue {
         { label: "Home", link: "/", active: false },
         { label: "Projects", link: "/projects", active: false },
         // { label: "Tools", link: "/tools", active: false },
-        { label: "Forum", link: "/forum", active: false },
+        // { label: "Forum", link: "/forum", active: false },
         { label: "About", link: "/about", active: false },
         { label: "Contact", link: "/contact", active: false },
         { label: "Admin", link: "/admin", active: false, privilege: "ADMIN" },

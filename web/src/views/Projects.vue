@@ -6,18 +6,20 @@
         <div class="body" v-if="initialized">
             <div class="card mb-3" v-for="project in projects">
                 <div class="card-body">
-                    <div class="w-100 d-inline-flex">
-                        <div v-if="project.thumbnail" class="thumbnail-container mr-2">
+                    <div class="row">
+                        <div v-if="project.thumbnail" class="thumbnail-container col-12 col-md-4 col-lg-3">
                             <img :src="project.thumbnail.cdn" class="thumbnail"/>
                         </div>
-                        <div class="d-block">
+                        <div class="col-12 col-md-8 col-lg-9">
                             <div>
-                                <h4 class="primary-font m-0">
-                                    <a :href="'/projects/' + project.id" @click.prevent="$router.push({name: 'Project', query: {pid: project.id}})" class="project-title">{{project.title}}</a>
+                                <h4 class="primary-font m-0 text-center text-md-left">
+                                    <a :href="'/projects/' + project.id"
+                                       @click.prevent="$router.push({name: 'Project', query: {pid: project.id}})"
+                                       class="project-title">{{project.title}}</a>
                                     &nbsp;
                                     <a v-if="project.sourceControlUrl" :href="project.sourceControlUrl"><font-awesome-icon :icon="['fab', 'github']" /></a>
                                 </h4>
-                                <programming-languages class="m-0" :languages="project.languages" />
+                                <programming-languages class="m-0 w-100 text-center text-md-left" :languages="project.languages" />
                                 <p class="m-0"><b><em>{{project.shortDescription}}</em></b></p>
                                 <p v-if="project.url" class="m-0"><b>Demo: </b><a :href="project.url">{{project.url}}</a></p>
                             </div>
@@ -34,8 +36,9 @@
     import {Component, Vue} from "vue-property-decorator";
     import {Project, ProjectService} from "@/services/project.service";
     import ProgrammingLanguages from "@/components/ui/programmingLanguages.vue";
+    import Hagame3d from "@/views/HaGame3D.vue";
 
-    @Component({components: {ProgrammingLanguages}})
+    @Component({components: {ProgrammingLanguages, Hagame3d}})
     export default class Projects extends Vue {
         private initialized = false;
         private projects!: Project[];
