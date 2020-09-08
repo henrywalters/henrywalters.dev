@@ -1,8 +1,5 @@
 <template>
     <div class="container">
-        <div class="header">
-            <h3 class="primary-font text-center">Forum</h3>
-        </div>
         <div class="body text-center" v-if="initialized">
             <h4 class="text-center">Thank you for visiting my site!</h4>
             <p class="text-center">More content is coming soon, in the meantime, check out the Projects Page, About Me & Contact form.</p>
