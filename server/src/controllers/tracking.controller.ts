@@ -14,7 +14,7 @@ export class TrackingController {
             pageVisit.page = page;
             pageVisit.ip = ip;
             pageVisit.country = location.country;
-            pageVisit.state = location.state;
+            pageVisit.state = location.region;
             pageVisit.city = location.city;
             await pageVisit.save();
             return ResponseDto.Success(void 0);
