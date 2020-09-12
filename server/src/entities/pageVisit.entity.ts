@@ -13,4 +13,13 @@ export class PageVisit extends BaseEntity {
 
     @Column()
     public page: string;
+
+    @Column()
+    public country: string;
+
+    @Column()
+    public state: string;
+
+    @Column()
+    public city: string;
 }
