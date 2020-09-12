@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" ref="container">
         <div class="header">
             <h3 class="primary-font text-center">Projects</h3>
         </div>
@@ -26,6 +26,9 @@
                         </div>
                     </div>
                     <p>{{project.longDescription}}</p>
+                    <div v-if="project.videoUrl" class="ytplayer_container">
+                        <iframe class="ytplayer" :id="'ytplayer_' + project.id" type="text/html" :src="project.videoUrl" frameborder="0" allowfullscreen :width="playerWidth" :height="playerHeight"></iframe>
+                    </div>
                 </div>
             </div>
         </div>
@@ -43,9 +46,14 @@
         private initialized = false;
         private projects!: Project[];
         private projectService!: ProjectService;
+        private playerWidth = 0;
+        private playerHeight = 0;
 
         private async mounted() {
+            this.playerWidth = Math.max((this.$refs["container"] as any).clientWidth - 0.20 * document.body.clientWidth, 620);
+            this.playerHeight = this.playerWidth * 0.75;
             this.projectService = new ProjectService();
+            console.log(this.playerWidth, this.playerHeight);
             const res = await this.projectService.get();
             if (res.success) this.projects = res.result;
             console.log(this.projects);
@@ -58,4 +66,13 @@
     .project-title {
         color: black;
     }
+
+    .ytplayer_container {
+        text-align: center;
+    }
+
+    .ytplayer {
+
+    }
+
 </style>
