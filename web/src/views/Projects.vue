@@ -50,7 +50,7 @@
         private playerHeight = 0;
 
         private async mounted() {
-            this.playerWidth = Math.max((this.$refs["container"] as any).clientWidth - 0.20 * document.body.clientWidth, 620);
+            this.playerWidth = Math.min((this.$refs["container"] as any).clientWidth - 0.20 * document.body.clientWidth, 620);
             this.playerHeight = this.playerWidth * 0.75;
             this.projectService = new ProjectService();
             console.log(this.playerWidth, this.playerHeight);
