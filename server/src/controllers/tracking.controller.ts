@@ -12,6 +12,7 @@ export class TrackingController {
             const pageVisit = new PageVisit();
             const location = (await axios.get(process.env.LOCATION_API + "?ip=" + ip)).data;
             pageVisit.page = page;
+            pageVisit.ip = ip;
             pageVisit.country = location.country;
             pageVisit.state = location.state;
             pageVisit.city = location.city;
