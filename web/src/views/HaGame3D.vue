@@ -8,8 +8,8 @@
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
 
-    //import {Display, Color, NetworkFilesystem, ShaderProgram, Clock, Timer, Profiler, AVERAGE_CALCULATION, InputManager, KeyboardAndMouseInput, GAMEPAD_FLAG } from "../../../../HaGame3D/dist/index";
-    import {Display, Color, NetworkFilesystem, ShaderProgram, Clock, Timer, Profiler, AVERAGE_CALCULATION, InputManager, KeyboardAndMouseInput, GAMEPAD_FLAG } from "hagame/dist/index";
+    import {Display, Color, NetworkFilesystem, ShaderProgram, Clock, Timer, Profiler, AVERAGE_CALCULATION, InputManager, KeyboardAndMouseInput, GAMEPAD_FLAG } from "../../../../HaGame3D/dist/index";
+    //import {Display, Color, NetworkFilesystem, ShaderProgram, Clock, Timer, Profiler, AVERAGE_CALCULATION, InputManager, KeyboardAndMouseInput, GAMEPAD_FLAG } from "hagame/dist/index";
     import {mat4, vec3, vec2} from "gl-matrix";
 
     @Component({

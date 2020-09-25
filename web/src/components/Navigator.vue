@@ -55,7 +55,7 @@ export default class Navigator extends Vue {
         if (this.currentRoute.name === "Home") {
             this.currentItem = this.getItem(this.currentRoute.path);
             if (this.currentItem) this.currentItem.active = true;
-            this.tracking.trackPageVisit("Home");
+            this.tracking.trackPageVisit("Home", this.$route.query.src ? this.$route.query.src as string : void 0);
         }
     }
 
@@ -69,7 +69,7 @@ export default class Navigator extends Vue {
         if (this.currentItem) {
             this.currentItem.active = true;
         }
-        this.tracking.trackPageVisit(currentRoute.name as string);
+        this.tracking.trackPageVisit(currentRoute.name as string,this.$route.query.src ? this.$route.query.src as string : void 0);
     }
 
     private goto(item: IMenuItem) {

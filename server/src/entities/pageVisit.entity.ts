@@ -11,6 +11,9 @@ export class PageVisit extends BaseEntity {
     @Column()
     public ip: string;
 
+    @Column({nullable: true})
+    public source!: string;
+
     @Column()
     public page: string;
 
