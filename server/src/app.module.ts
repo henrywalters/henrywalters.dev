@@ -15,6 +15,7 @@ import {ForumController} from "./controllers/forum.controller";
 import {ProjectController} from "./controllers/project.controller";
 import {UserFileService} from "./services/file.service";
 import {UserFileController} from "./controllers/userFile.controller";
+import { TestimonialController } from './controllers/testimonial.controller';
 
 @Module({
   imports: [
@@ -30,7 +31,17 @@ import {UserFileController} from "./controllers/userFile.controller";
       }),
       TypeOrmModule.forRoot(),
   ],
-  controllers: [AppController, ContactFormController, TrackingController, AuthController, CategoryController, ForumController, ProjectController, UserFileController],
+  controllers: [
+      AppController, 
+      ContactFormController, 
+      TestimonialController,
+      TrackingController, 
+      AuthController, 
+      CategoryController, 
+      ForumController, 
+      ProjectController, 
+      UserFileController
+    ],
   providers: [AppService, TokenService, UserFileService],
 })
 export class AppModule {

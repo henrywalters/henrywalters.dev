@@ -25,7 +25,6 @@ export class TrackingController {
             await pageVisit.save();
             return ResponseDto.Success(void 0);
         } catch (e) {
-            console.log(e);
             return ResponseDto.Error(e.message);
         }
     }
