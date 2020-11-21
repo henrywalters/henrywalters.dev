@@ -50,6 +50,7 @@ export class TestimonialController {
             const testimonial = await Testimonial.findOneOrFail(id);
             testimonial.rating = dto.rating;
             testimonial.testimonial = dto.testimonial;
+            testimonial.submitted = true;
             await testimonial.save();
             return ResponseDto.Success(testimonial);
         } catch (e) {

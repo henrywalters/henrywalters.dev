@@ -6,6 +6,7 @@ export interface ITestimonial {
     companyName: string;
     rating: number;
     testimonial: string;
+    submitted: boolean;
 }
 
 export interface ITestimonialLinkDTO {
@@ -15,6 +16,9 @@ export interface ITestimonialLinkDTO {
 }
 
 export interface ITestimonialDTO {
+    name: string;
+    email: string;
+    companyName: string;
     rating: number;
     testimonial: string;
 }

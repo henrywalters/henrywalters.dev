@@ -69,6 +69,11 @@ const routes: Array<RouteConfig> = [
     path: '/hagame3d',
     name: 'HaGame3D',
     component: () => import(/* webpackChunkName: "hagame3d" */ '../views/HaGame3D.vue')
+  },
+  {
+    path: '/testimonial/:id',
+    name: 'Testimonial',
+    component: () => import(/* webpackChunkName: "testimonial" */ '../views/Testimonial.vue')
   }
 ]
 
