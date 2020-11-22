@@ -29,14 +29,6 @@ export default class FormGroup extends Vue {
     @Prop()
     public errors!: {[index: string]: string};
 
-    @Watch('errors', {deep: true})
-    public errorsUpdate() {
-        console.log(this.errors);
-        if (this.errors.hasOwnProperty(this.field)) {
-            console.log(this.errors[this.field]);
-        }
-    }
-
     private rating = 1;
 }
 </script>

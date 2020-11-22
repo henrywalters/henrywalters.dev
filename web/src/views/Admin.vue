@@ -1,13 +1,14 @@
 <template>
-    <div class="container">
+    <div class="container-fluid">
         <div class="header">
             <h3 class="primary-font text-center">Administration</h3>
             <div class="row">
-                <div class="col-lg-5">
+                <div class="col-lg-4">
                     <category-manager />
                 </div>
-                <div class="col-lg-7">
+                <div class="col-lg-8">
                     <project-manager />
+                    <testimonial-manager class="mt-3" />
                 </div>
             </div>
         </div>
@@ -19,8 +20,9 @@
     import CategoryService, {CategoryDto, ICategory} from "@/services/category.service";
     import CategoryManager from "@/components/CategoryManager.vue";
     import ProjectManager from "@/components/ProjectManager.vue";
+    import TestimonialManager from "@/components/TestimonialManager.vue";
 
-    @Component({name: "Admin", components: {CategoryManager, ProjectManager}})
+    @Component({name: "Admin", components: {CategoryManager, ProjectManager, TestimonialManager}})
     export default class Admin extends Vue {
 
     }

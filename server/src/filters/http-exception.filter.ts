@@ -22,6 +22,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
             body = {};
 
             for (const message of error.message) {
+                console.log(message);
+
                 const parts = message.split(" ");
                 let errorMsg = parts.slice(1).join(" ");
 

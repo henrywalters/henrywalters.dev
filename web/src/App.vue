@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div class="container">
+      <notifications position="bottom right" />
       <div class="header text-center p-3">
         <h1 class="primary-font mb-0">Henry <span class="accent">Walters</span></h1>
         <p class="primary-font text-center mt-0 mb-0"><em>Math | Coding | Innovation</em></p>

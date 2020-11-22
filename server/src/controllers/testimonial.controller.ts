@@ -1,8 +1,10 @@
-import {Body, Controller, Get, Param, Post, Res} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Query, Res, UseGuards} from "@nestjs/common";
 import {ResponseDto} from "../dtos/response.dto";
 import {MailerService} from "@nestjs-modules/mailer";
 import { TestimonialLinkDto, TestimonialDto } from "src/dtos/testimonial.dto";
 import { Testimonial } from "src/entities/testimonial.entity";
+import { AuthenticateFor } from "./../guards/authenticateFor.guard";
+import {Privileges} from "./auth.controller";
 
 @Controller("v1/testimonial")
 export class TestimonialController {
@@ -12,6 +14,7 @@ export class TestimonialController {
 
     // Create a new testiomonial link to be distrubted to client
     @Post()
+    @UseGuards(new AuthenticateFor(Privileges.ADMIN)) 
     public async newTestimonialLink(@Body() dto: TestimonialLinkDto) {
         try {
             const submission = new Testimonial();
@@ -25,12 +28,24 @@ export class TestimonialController {
         }
     }
 
+    @Delete(":id")
+    @UseGuards(new AuthenticateFor(Privileges.ADMIN))
+    public async deleteTestimonial(@Param("id") id: string) {
+        try {
+            const submission = await Testimonial.findOneOrFail(id);
+            await submission.remove();
+            return ResponseDto.Success(void 0);
+        } catch (e) {
+            return ResponseDto.Error(e.message);
+        }
+    }
+
     @Get()
-    public async getCompletedTestimonials() {
+    public async getCompletedTestimonials(@Query('submittedOnly') submittedOnly: boolean) {
+        let where = {};
+        if (submittedOnly) where['submitted'] = true;
         return ResponseDto.Success(await Testimonial.find({
-            where: {
-                submitted: true,
-            }
+            where,
         }));
     }
 

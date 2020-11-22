@@ -19,6 +19,7 @@
             <div class="form-group col-md-12">
                 <button class="form-control btn btn-primary" @click="submit">Submit</button>
             </div>
+            <loader v-if="loading" />
         </div>
     </form>
 </template>
@@ -55,6 +56,8 @@
         private rating: number = 0;
         private name: string = "";
 
+        private loading: boolean = false;
+
         private clear() {
             this.submission = {
                 companyName: "",
@@ -67,8 +70,7 @@
             this.errors = {};
         }
 
-        private ratingUpdate(i) {
-            console.log(i);
+        private ratingUpdate(i: number) {
             this.submission.rating = i;
         }
 
@@ -82,29 +84,36 @@
                 if (res.success) {
                     this.submission = res.result;
                     if (res.result.submitted) {
-                        alert("Testimonial already submitted! Thank you for your contribution, it is highly appreciated");
-                        this.$router.back();
+                        this.$emit('previously-submitted');
+                    } else {
+                        this.$emit('initialized');
+                        this.initialized = true;
                     }
-                    console.log(this.submission);
                 } else {
-                    alert("Testimonial not found");
-                    this.$router.back();
+                    this.$emit('404');
                 }
             } else {
                 this.clear();
+                this.$emit('initialized');
+                this.initialized = true;
             }
         
-            this.initialized = true;
+            
         }
 
         private async submit() {
+            this.loading = true;
+            this.errors = {};
             this.submission.rating = this.rating;
             const response = await this.service.submit(this.id, this.submission);
-            console.log(response);
-            if (response.success) this.submitted = true;
-            else this.errors = response.error;
-
-            console.log(this.errors);
+            this.loading = false;
+            if (response.success) {
+                this.submitted = true;
+                this.$emit('success');
+            }
+            else {
+                this.errors = response.error;
+            }
         }
     }
 
