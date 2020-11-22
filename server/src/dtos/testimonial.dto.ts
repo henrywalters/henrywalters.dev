@@ -16,15 +16,14 @@ export class TestimonialLinkDto {
 export class TestimonialDto {
 
     @IsString()
-    @IsOptional({ message: "name Please provide a name" })
+    @IsNotEmpty({ message: "name Please provide your name" })
     public name: string;
 
     @IsEmail()
-    @IsOptional()
     public email: string;
 
     @IsString()
-    @IsOptional({ message: "companyName Please provide your company's name" })
+    @IsNotEmpty({ message: "companyName Please provide your company's name" })
     public companyName: string;
 
     @IsInt()

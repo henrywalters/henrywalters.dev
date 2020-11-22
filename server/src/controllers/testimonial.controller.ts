@@ -63,6 +63,9 @@ export class TestimonialController {
     public async submitForm(@Param("id") id: string, @Body() dto: TestimonialDto) {
         try {
             const testimonial = await Testimonial.findOneOrFail(id);
+            testimonial.name = dto.name;
+            testimonial.email = dto.email;
+            testimonial.companyName = dto.companyName;
             testimonial.rating = dto.rating;
             testimonial.testimonial = dto.testimonial;
             testimonial.submitted = true;
