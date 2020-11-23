@@ -1,9 +1,15 @@
-import {BaseEntity, Column, Entity, PrimaryColumn, PrimaryGeneratedColumn} from "typeorm";
+import {BaseEntity, Column, Entity, PrimaryColumn, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from "typeorm";
 
 @Entity()
 export class Testimonial extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     public id: string;
+
+    @CreateDateColumn()
+    public createdAt: Date;
+
+    @UpdateDateColumn()
+    public updatedAt: Date;
 
     @Column()
     public name: string;
@@ -20,6 +26,6 @@ export class Testimonial extends BaseEntity {
     @Column({type: "int", nullable: true})
     public rating: number;
 
-    @Column({nullable: true})
+    @Column({type: 'text', nullable: true})
     public testimonial: string;
 }

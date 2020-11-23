@@ -1,4 +1,5 @@
 import {IsEmail, IsInt, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, Max, Min} from "class-validator"
+import { CreateDateColumn } from "typeorm";
 
 export class TestimonialLinkDto {
     @IsString()
@@ -14,6 +15,9 @@ export class TestimonialLinkDto {
 }
 
 export class TestimonialDto {
+
+    @CreateDateColumn()
+    public createdAt: Date;
 
     @IsString()
     @IsNotEmpty({ message: "name Please provide your name" })
