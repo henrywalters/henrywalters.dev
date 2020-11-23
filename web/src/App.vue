@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="container">
+    <div class="app-container">
       <notifications position="bottom right" />
       <div class="header text-center p-3">
         <h1 class="primary-font mb-0">Henry <span class="accent">Walters</span></h1>
@@ -101,7 +101,7 @@ export default class App extends Mixins(ConfigMixin) {
     height: 100%;
   }
 
-  .container {
+  .app-container {
     min-height: calc(100% - 60px) !important;
   }
 

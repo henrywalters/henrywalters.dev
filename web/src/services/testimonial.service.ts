@@ -28,6 +28,14 @@ export class TestimonialService extends BaseService<ITestimonialLinkDTO, ITestim
         super("Testimonial", "testimonial");
     }
 
+    async getSubmitted() {
+        try {
+            return (await this.http.get(this.controllerPath + "?submittedOnly=true")).data;
+        } catch (e) {
+            throw new Error(e.message);
+        }
+    }
+
     async submit(id: string, data: ITestimonialDTO): Promise<ApiResponse<void, HashMap<string>>> {
         try {
             return (await this.http.post(this.controllerPath + "/" + id, data)).data;

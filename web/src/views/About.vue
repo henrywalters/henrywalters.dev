@@ -1,5 +1,5 @@
 <template>
-  <div class="about">
+  <div class="about container">
     <h3 class="primary-font text-center">About Me</h3>
     <p class="secondary-font">
       <a href="/">Henrywalters.dev</a> was developed as a hub for my software engineering projects.
