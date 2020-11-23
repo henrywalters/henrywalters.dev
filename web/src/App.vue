@@ -27,9 +27,9 @@
       </div>
       <div class="col-md-6 ">
         <span class="float-md-right">
-          <a href="mailto:me@henrywalters.dev">Me@HenryWalters.dev</a> |
-          <a href="https://github.com/henrywalters"><font-awesome-icon :icon="['fab', 'github']"></font-awesome-icon> Github</a> |
-          <a href="https://www.linkedin.com/in/johnhenrywalters"><font-awesome-icon :icon="['fab', 'linkedin']"></font-awesome-icon> Linkedin</a>
+          <a :href="'mailto:' + getConfig('EMAIL')">{{getConfig('EMAIL')}}</a> |
+          <a :href="getConfig('GITHUB')"><font-awesome-icon :icon="['fab', 'github']"></font-awesome-icon> Github</a> |
+          <a :href="getConfig('LINKED_IN')"><font-awesome-icon :icon="['fab', 'linkedin']"></font-awesome-icon> Linkedin</a>
         </span>
       </div>
     </div>
@@ -38,18 +38,19 @@
 
 <script lang="ts">
 
-  import {Component, Vue} from "vue-property-decorator";
+  import {Component, Vue, Mixins} from "vue-property-decorator";
   import Navigator from "@/components/Navigator.vue";
   import {AuthService, User} from "@/services/auth.service";
   import {AuthEventBus, AuthEvents} from "@/events";
+  import ConfigMixin from "@/mixins/ConfigMixin";
 
   @Component({
   name: 'App',
   components: {
-    Navigator
+    Navigator,
   }
 })
-export default class App extends Vue {
+export default class App extends Mixins(ConfigMixin) {
 
   private auth!: AuthService;
 
