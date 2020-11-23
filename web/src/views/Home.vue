@@ -6,7 +6,8 @@
             </div>
         </div>
         <div class="container">
-            <testimonial-output />
+            <services class="mt-4"/>
+            <testimonial-output class="mt-5" />
         </div>
         
     </div>
@@ -16,11 +17,13 @@
     import {Component, Vue, Mixins} from "vue-property-decorator";
     import ConfigMixin from "@/mixins/ConfigMixin";
     import TestimonialOutput from "@/components/TestimonialOutput.vue";
+    import Services from "@/components/Services.vue";
 
     @Component({
         name: "Home",
         components: {
             TestimonialOutput,
+            Services,
         }
     })
     export default class Home extends Mixins(ConfigMixin) {

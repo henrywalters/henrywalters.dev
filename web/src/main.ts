@@ -7,11 +7,15 @@ import dotenv from 'dotenv';
 import { IconDefinition, library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {faGithub, faLinkedin} from "@fortawesome/free-brands-svg-icons";
-import {faCopy, faSpinner, faStar as faStarSolid, faTrash, faUpload, } from "@fortawesome/free-solid-svg-icons";
+import {faAtom, faCogs, faCopy, faDatabase, faSpinner, faStar as faStarSolid, faTools, faTrash, faUpload, } from "@fortawesome/free-solid-svg-icons";
 import {faStar} from "@fortawesome/free-regular-svg-icons/faStar";
 import Notifcations from "vue-notification";
 import Loader from "@/components/ui/Loader.vue";
 
+library.add(faAtom);
+library.add(faCogs);
+library.add(faTools);
+library.add(faDatabase);
 library.add(faSpinner);
 library.add(faCopy);
 library.add(faLinkedin);
