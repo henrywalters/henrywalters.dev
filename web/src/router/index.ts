@@ -74,6 +74,16 @@ const routes: Array<RouteConfig> = [
     path: '/testimonial/:id',
     name: 'Testimonial',
     component: () => import(/* webpackChunkName: "testimonial" */ '../views/Testimonial.vue')
+  },
+  {
+    path: '/:pageType/:id',
+    name: 'Page',
+    component: () => import(/* webpackChunkName: "page" */ '../views/Page.vue')
+  },
+  {
+    path: '*',
+    name: 'PageNotFound',
+    component: () => import(/* webpackChunkName: "pageNotFound" */ '../views/PageNotFound.vue')
   }
 ]
 
