@@ -1,8 +1,7 @@
 <template>
     <div class="container">
-        <div class="body text-center" v-if="initialized">
-            <h4 class="text-center">Thank you for visiting my site!</h4>
-            <p class="text-center">More content is coming soon, in the meantime, check out the Projects Page, About Me & Contact form.</p>
+        <div class="banner text-center">
+            Call us at <a href="#">(734) 123-4567</a> or send an email to <a href="mailto:me@henrywalters.dev">me@henrywalters.dev</a>
         </div>
     </div>
 </template>
@@ -15,3 +14,21 @@
         private initialized = true;
     }
 </script>
+
+<style scoped lang="scss">
+.banner {
+
+    height: 40px;
+    font-size: 22px;
+
+    a {
+        color: white;
+    }
+
+    background-color: #007bff;
+    color: white;
+    position: absolute;
+    left: 0;
+    width: 100%;
+}
+</style>
