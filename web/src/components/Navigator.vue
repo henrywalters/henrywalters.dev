@@ -1,6 +1,30 @@
 <template>
     <div class="navigator primary-font w-100 row">
-        <a class="navigator-item" v-for="item in menuItems" v-if="canShow(item)" v-bind:href="item.link" @click.prevent="goto(item)" :class="{'active': item.active}">{{item.label}}</a>
+        <span v-for="(item, i) in menuItems" :key="i">
+            <a 
+                class="navigator-item" 
+                v-if="canShow(item) && !item.children" 
+                v-bind:href="item.link" 
+                @click.prevent="goto(item)" 
+                :class="{'active': item.active}"
+                
+            >{{item.label}}</a>
+            <span v-if="canShow(item) && item.children" class="dropdown">
+                <a 
+                    class="navigator-item dropdown-trigger dropdown-toggle" 
+                    
+                    :class="{'active': item.active}"
+                    v-bind:href="item.link" 
+                    @click.prevent="goto(item)" 
+                >{{item.label}}</a>
+
+                <div class="dropdown-content">
+                    <span v-for="(child, j) in item.children" :key="i + '-' + j">
+                        <a class="dropdown-link" :class="{'bordered-link': j != 0}" :href="child.link" @click.prevent="goto(child)" v-if="canShow(child)">{{child.label}}</a>
+                    </span>
+                </div>
+            </span>
+        </span>
     </div>
 </template>
 
@@ -16,6 +40,7 @@ interface IMenuItem {
     link: string;
     active: boolean;
     privilege?: string;
+    children?: IMenuItem[];
 }
 
 @Component({
@@ -32,6 +57,7 @@ export default class Navigator extends Vue {
     private menuItems: IMenuItem[] = [
         { label: "Home", link: "/", active: false },
         { label: "Projects", link: "/projects", active: false },
+
         // { label: "Tools", link: "/tools", active: false },
         // { label: "Forum", link: "/forum", active: false },
         { label: "About", link: "/about", active: false },
@@ -120,6 +146,43 @@ export default class Navigator extends Vue {
 
     .active {
         color: $primaryColor !important;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        min-width: 300px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
+        z-index: 1;
+        text-align: left;
+        border: 2px solid black;
+        border-radius: 2px;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-link:hover {
+        background-color: $primaryColor;
+        color: white !important;
+    }
+
+    .bordered-link {
+        border-top: 1px solid black;
     }
 
 </style>
