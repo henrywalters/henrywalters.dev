@@ -15,7 +15,7 @@
                 <label class="custom-control-label primary-font" for="anon">Anonymous Testimonial</label>
                 <br />
                 <em><i v-if="submission.anonymous">
-                    Your name, company and email will not be publically visible and only be used for bookkeeping. This includes the raw network request messages.
+                    Your name, company and email will not be publically visible.
                 </i></em>
             </div>
             <form-group class="col-md-12" label="Rating" field="rating" :errors="errors">
