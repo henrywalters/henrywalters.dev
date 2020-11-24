@@ -34,7 +34,7 @@
 
     import {Vue, Component, Prop, Mixins} from "vue-property-decorator";
     import {mixins} from "vue-class-component"
-    import FormGroup from "@/components/ui/Forms/FormGroup.vue";
+    import FormGroup from "@/components/ui/forms/FormGroup.vue";
     import {ITestimonial, ITestimonialDTO, TestimonialService} from "./../services/testimonial.service";
     import {HashMap} from "./../services/base.service";
     import NotificationMixin from "./../mixins/NotificationMixin";

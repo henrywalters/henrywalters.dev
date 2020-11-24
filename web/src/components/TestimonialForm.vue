@@ -35,7 +35,7 @@
 <script lang="ts">
 
     import {Vue, Component, Prop} from "vue-property-decorator";
-    import FormGroup from "@/components/ui/Forms/FormGroup.vue";
+    import FormGroup from "@/components/ui/forms/FormGroup.vue";
     import {ITestimonial, ITestimonialDTO, TestimonialService} from "./../services/testimonial.service";
     import {HashMap} from "./../services/base.service";
     import StarRating from '@/components/ui/StarRating.vue';
