@@ -33,7 +33,7 @@ export class TestimonialService extends BaseService<ITestimonialLinkDTO, ITestim
 
     async getSubmitted() {
         try {
-            return (await this.http.get(this.controllerPath + "?submittedOnly=true")).data;
+            return (await this.http.get(this.controllerPath + "/submitted")).data;
         } catch (e) {
             throw new Error(e.message);
         }

@@ -21,6 +21,7 @@ export class TestimonialController {
             submission.name = dto.name;
             submission.email = dto.email;
             submission.companyName = dto.companyName;
+            submission.anonymous = dto.anonymous;
             await submission.save();
             return ResponseDto.Success(submission);
         } catch (e) {
@@ -40,22 +41,26 @@ export class TestimonialController {
         }
     }
 
-    @Get()
-    public async getCompletedTestimonials(@Query('submittedOnly') submittedOnly: boolean) {
-        let where = {};
-        if (submittedOnly) where['submitted'] = true;
-        return ResponseDto.Success(await Testimonial.find({
-            where,
-        }));
+    @Get('submitted')
+    public async getTestimonials() {
+        return ResponseDto.Success((await Testimonial.find({
+            where: {
+                submitted: true,
+            }
+        })).map((x) => {
+            return x.anonymous ? x.makeAnonymous() : x.makeCleaned();
+        }))
     }
 
-    @Get(":id")
+    @Get()
+    @UseGuards(new AuthenticateFor(Privileges.ADMIN))
+    public async getAllTestimonials() {
+        return ResponseDto.Success((await Testimonial.find()));
+    }
+
+    @Get(':id')
     public async getTestimonial(@Param("id") id: string) {
-        try {
-            return ResponseDto.Success(await Testimonial.findOneOrFail(id));
-        } catch (e) {
-            return ResponseDto.Error(e.message);
-        }
+        return ResponseDto.Success((await Testimonial.findOneOrFail(id)));
     }
 
     // Submit a testiomonial
@@ -68,6 +73,7 @@ export class TestimonialController {
             testimonial.companyName = dto.companyName;
             testimonial.rating = dto.rating;
             testimonial.testimonial = dto.testimonial;
+            testimonial.anonymous = dto.anonymous;
             testimonial.submitted = true;
             await testimonial.save();
             return ResponseDto.Success(testimonial);

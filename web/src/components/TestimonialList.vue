@@ -5,6 +5,7 @@
                 <th>Company</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Anonymous?</th>
                 <th>Submitted?</th>
                 <th>Rating</th>
                 <th></th>
@@ -14,6 +15,7 @@
                     <td>{{item.companyName}}</td>
                     <td>{{item.name}}</td>
                     <td>{{item.email}}</td>
+                    <td>{{ item.anonymous ? 'Yes' : 'No' }}</td>
                     <td>{{ item.submitted ? 'Yes' : 'No' }}</td>
                     <td>{{ item.rating ? item.rating : 'N/A'}}</td>
                     <td>

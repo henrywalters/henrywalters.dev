@@ -10,6 +10,14 @@
             <form-group class="col-md-12" label="Company Name" field="companyName" v-model="submission.companyName" :errors="errors">
                 <input class="form-control" v-model="submission.companyName" />
             </form-group>
+            <div class="form-group custom-control custom-checkbox col-md-12 pl-4" style="margin-left: 15px">
+                <input type="checkbox" class="custom-control-input" id="anon" v-model="submission.anonymous" @change="$forceUpdate()">
+                <label class="custom-control-label primary-font" for="anon">Anonymous Testimonial</label>
+                <br />
+                <em><i v-if="submission.anonymous">
+                    Your name, company and email will not be publically visible and only be used for bookkeeping. This includes the raw network request messages.
+                </i></em>
+            </div>
             <form-group class="col-md-12" label="Rating" field="rating" :errors="errors">
                 <star-rating v-model="rating" />
             </form-group>
@@ -63,6 +71,7 @@
                 companyName: "",
                 name: "",
                 email: "",
+                anonymous: false,
                 rating: 1,
                 testimonial: "",
             }
