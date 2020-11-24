@@ -2,15 +2,19 @@
     <form @submit.prevent>
         <h5>New Testimonial Link</h5>
         <div class="row" v-if="initialized">
-            <form-group class="col-md-6" label="Name" field="name" v-model="submission.name" :errors="errors">
+            <form-group class="col-md-6" label="Name" field="name" :errors="errors">
                 <input class="form-control" v-model="submission.name" />
             </form-group>
-            <form-group class="col-md-6" label="Email" field="email" v-model="submission.email" :errors="errors">
+            <form-group class="col-md-6" label="Email" field="email" :errors="errors">
                 <input class="form-control" v-model="submission.email" />
             </form-group>
-            <form-group class="col-md-12" label="Company Name" field="companyName" v-model="submission.companyName" :errors="errors">
+            <form-group class="col-md-8" label="Company Name" field="companyName" :errors="errors">
                 <input class="form-control" v-model="submission.companyName" />
             </form-group>
+            <div class="custom-control custom-checkbox" style="margin-top: 38px">
+                <input type="checkbox" class="custom-control-input" id="anon" v-model="submission.anonymous">
+                <label class="custom-control-label secondary-font" for="anon">Anonymous Testimonial</label>
+            </div>
             <div class="form-group col-md-12">
                 <button class="form-control btn btn-primary" @click="submit">Submit</button>
             </div>
@@ -51,6 +55,7 @@
                 companyName: "",
                 name: "",
                 email: "",
+                anonymous: false,
             }
             this.rating = 0;
             this.errors = {};

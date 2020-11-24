@@ -1,4 +1,4 @@
-import {IsEmail, IsInt, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, Max, Min} from "class-validator"
+import {IsBoolean, IsEmail, IsInt, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, Max, Min} from "class-validator"
 import { CreateDateColumn } from "typeorm";
 
 export class TestimonialLinkDto {
@@ -12,13 +12,12 @@ export class TestimonialLinkDto {
     @IsString()
     @IsNotEmpty({ message: "companyName Please provide a company name" })
     public companyName: string;
+
+    @IsBoolean()
+    public anonymous: boolean;
 }
 
 export class TestimonialDto {
-
-    @CreateDateColumn()
-    public createdAt: Date;
-
     @IsString()
     @IsNotEmpty({ message: "name Please provide your name" })
     public name: string;
@@ -29,6 +28,9 @@ export class TestimonialDto {
     @IsString()
     @IsNotEmpty({ message: "companyName Please provide your company's name" })
     public companyName: string;
+
+    @IsBoolean()
+    public anonymous: boolean;
 
     @IsInt()
     @Min(1, { message: 'rating Please provide a rating'})

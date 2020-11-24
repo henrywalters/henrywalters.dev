@@ -4,6 +4,7 @@ export interface ITestimonial {
     name: string;
     email: string;
     companyName: string;
+    anonymous: boolean;
     rating: number;
     testimonial: string;
     submitted: boolean;
@@ -13,12 +14,14 @@ export interface ITestimonialLinkDTO {
     name: string;
     email: string;
     companyName: string;
+    anonymous: boolean;
 }
 
 export interface ITestimonialDTO {
     name: string;
     email: string;
     companyName: string;
+    anonymous: boolean;
     rating: number;
     testimonial: string;
 }
