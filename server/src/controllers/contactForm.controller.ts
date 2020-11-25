@@ -1,8 +1,10 @@
-import {Body, Controller, Post} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Query, Res, UseGuards} from "@nestjs/common";
 import {ContactFormSubmissionDto} from "../dtos/contactFormSubmission.dto";
 import {ContactFormSubmission} from "../entities/contactFormSubmission.entity";
 import {ResponseDto} from "../dtos/response.dto";
 import {MailerService} from "@nestjs-modules/mailer";
+import { AuthenticateFor } from "./../guards/authenticateFor.guard";
+import {Privileges} from "../constants/privileges.constants";
 
 @Controller("v1/contact-form")
 export class ContactFormController {
@@ -29,6 +31,24 @@ export class ContactFormController {
             })
             return ResponseDto.Success(submission);
         } catch (e) {
+            return ResponseDto.Error(e.message);
+        }
+    }
+
+    @Get()
+    @UseGuards(new AuthenticateFor(Privileges.ADMIN))
+    public async getSubmissions() {
+        return ResponseDto.Success(await ContactFormSubmission.find());
+    }
+
+    @Delete(":id")
+    @UseGuards(new AuthenticateFor(Privileges.ADMIN))
+    public async deleteSubmission(@Param("id") id: string) {
+        try {
+            const sub = await ContactFormSubmission.findOneOrFail(id);
+            sub.remove();
+            return ResponseDto.Success(void 0);
+        } catch(e) {
             return ResponseDto.Error(e.message);
         }
     }

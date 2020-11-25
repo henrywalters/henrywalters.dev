@@ -2,11 +2,13 @@
     <div class="container-fluid">
         <div class="header">
             <h3 class="primary-font text-center">Administration</h3>
-            <div class="row">
-                <div class="col-lg-4">
+            <site-metrics />
+            <div class="row mt-3">
+                <div class="col-lg-5">
                     <category-manager />
+                    <contact-form-manager class="mt-3" />
                 </div>
-                <div class="col-lg-8">
+                <div class="col-lg-7">
                     <project-manager />
                     <testimonial-manager class="mt-3" />
                 </div>
@@ -21,8 +23,18 @@
     import CategoryManager from "@/components/CategoryManager.vue";
     import ProjectManager from "@/components/ProjectManager.vue";
     import TestimonialManager from "@/components/TestimonialManager.vue";
+    import ContactFormManager from "@/components/ContactFormManager.vue";
+    import SiteMetrics from "../components/SiteMetrics.vue";
 
-    @Component({name: "Admin", components: {CategoryManager, ProjectManager, TestimonialManager}})
+    @Component({
+        name: "Admin", 
+        components: {
+            CategoryManager, 
+            ProjectManager, 
+            TestimonialManager, 
+            ContactFormManager,
+            SiteMetrics,
+    }})
     export default class Admin extends Vue {
 
     }

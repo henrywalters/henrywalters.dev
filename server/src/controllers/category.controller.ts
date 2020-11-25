@@ -1,7 +1,7 @@
 import {Body, Controller, Delete, Get, HttpException, Param, Post, Put, UseGuards} from "@nestjs/common";
 import {ResponseDto} from "../dtos/response.dto";
 import {AuthenticateFor} from "../guards/authenticateFor.guard";
-import {Privileges} from "./auth.controller";
+import {Privileges} from "../constants/privileges.constants";
 import {Category} from "../entities/category.entity";
 import {CategoryDto} from "../dtos/category.dto";
 

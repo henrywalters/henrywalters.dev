@@ -8,12 +8,7 @@ import {TfaChallenge} from "../entities/tfaChallenge.entity";
 import {DateTime} from "luxon";
 import {MailerService} from "@nestjs-modules/mailer";
 import {AuthenticateFor} from "../guards/authenticateFor.guard";
-
-export enum Privileges {
-    FORUM_READ = "FORUM_READ",
-    FORUM_WRITE = "FORUM_WRITE",
-    ADMIN = "ADMIN",
-}
+import {Privileges} from "../constants/privileges.constants";
 
 @Controller("v1/auth")
 export class AuthController {

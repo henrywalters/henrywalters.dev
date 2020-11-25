@@ -4,7 +4,7 @@ import {MailerService} from "@nestjs-modules/mailer";
 import { TestimonialLinkDto, TestimonialDto } from "src/dtos/testimonial.dto";
 import { Testimonial } from "src/entities/testimonial.entity";
 import { AuthenticateFor } from "./../guards/authenticateFor.guard";
-import {Privileges} from "./auth.controller";
+import {Privileges} from "../constants/privileges.constants";
 
 @Controller("v1/testimonial")
 export class TestimonialController {

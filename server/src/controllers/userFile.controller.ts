@@ -12,7 +12,7 @@ import {
 } from "@nestjs/common";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {AuthenticateFor} from "../guards/authenticateFor.guard";
-import {Privileges} from "./auth.controller";
+import {Privileges} from "../constants/privileges.constants";
 import {User} from "../entities/user.entity";
 import {UserFileDto} from "../dtos/userFile.dto";
 import {UserFileService} from "../services/file.service";

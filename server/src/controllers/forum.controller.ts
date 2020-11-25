@@ -1,6 +1,6 @@
 import {Body, Controller, Delete, Get, Headers, Param, Post, Put, Query, UseGuards} from "@nestjs/common";
 import {AuthenticateFor} from "../guards/authenticateFor.guard";
-import {Privileges} from "./auth.controller";
+import {Privileges} from "../constants/privileges.constants";
 import {PostDto} from "../dtos/post.dto";
 import {CleanedUser, User} from "../entities/user.entity";
 import {ForumPost} from "../entities/forumPost.entity";

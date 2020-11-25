@@ -1,6 +1,6 @@
 <template>
     <div class="navigator primary-font w-100 row">
-        <span v-for="(item, i) in menuItems" :key="i">
+        <span v-for="(item, i) in menuItems" :key="i" v-if="canShow(item)">
             <a 
                 class="navigator-item" 
                 v-if="canShow(item) && !item.children" 

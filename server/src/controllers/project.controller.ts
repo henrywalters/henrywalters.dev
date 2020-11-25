@@ -1,6 +1,6 @@
 import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards} from "@nestjs/common";
 import {AuthenticateFor} from "../guards/authenticateFor.guard";
-import {Privileges} from "./auth.controller";
+import {Privileges} from "../constants/privileges.constants";
 import {ProjectDto} from "../dtos/project.dto";
 import {Project} from "../entities/project.entity";
 import {UserFile} from "../entities/userFile.entity";

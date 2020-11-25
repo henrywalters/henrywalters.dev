@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import {Privileges} from "../controllers/auth.controller";
+import {Privileges} from "../constants/privileges.constants";
 
 @Injectable()
 export class AuthenticateFor implements CanActivate {
@@ -19,8 +19,6 @@ export class AuthenticateFor implements CanActivate {
         if (!request.headers.user) return false;
 
         const permissionTable = {};
-
-        console.log(request.headers.user);
 
         for (const permission of request.headers.user.privileges) {
             permissionTable[permission] = true;

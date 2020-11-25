@@ -1,5 +1,5 @@
 import {BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn} from "typeorm";
-import {Privileges} from "../controllers/auth.controller";
+import {Privileges} from "../constants/privileges.constants";
 
 export type CleanedUser = Pick<User, "id" | "firstName" | "lastName" | "email" | "privileges">;
 
