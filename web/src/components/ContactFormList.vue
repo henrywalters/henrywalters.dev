@@ -5,7 +5,7 @@
                 <th>Company</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Comments</th>
+                <th style="width: 300px;">Comments</th>
                 <th></th>
             </thead>
             <tbody>
@@ -13,7 +13,7 @@
                     <td>{{item.companyName}}</td>
                     <td>{{item.name}}</td>
                     <td><a :href="'mailto:' + item.email">{{item.email}}</a></td>
-                    <td>{{item.comments}}</td>
+                    <td style="min-width: 300px;">{{item.comments}}</td>
                     <td>
                         <div class="btn-group" role="group">
                             <button class='btn btn-sm btn-danger' @click='deleteSubmission(item.id)' title="Delete Submission"><font-awesome-icon icon="trash" /></button>

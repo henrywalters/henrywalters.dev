@@ -14,6 +14,6 @@ export class ContactFormSubmission extends BaseEntity {
     @Column()
     public companyName: string;
 
-    @Column()
+    @Column({type: 'text'})
     public comments: string;
 }
