@@ -31,6 +31,7 @@
     "vue-star-rating": "^2.1.0"
   },
   "devDependencies": {
+    "@types/highcharts": "^7.0.0",
     "@types/js-cookie": "^2.2.6",
     "@types/luxon": "^1.24.3",
     "@vue/cli-plugin-babel": "~4.4.0",

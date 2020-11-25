@@ -15,7 +15,8 @@
 <script lang="ts">
 import {Component, Vue, Mixins} from "vue-property-decorator";
 import { PageVisitSumary, TrackingService } from "../services/tracking.service";
-import {Chart} from 'highcharts-vue';
+import {Chart,} from 'highcharts-vue';
+import {ChartOptions} from 'highcharts';
 
 @Component({
     components: {
@@ -30,7 +31,7 @@ export default class SiteMetrics extends Vue {
     private totalPageVisits: number = 0;
     private uniqueVisitors: number = 0;
 
-    private chartOptions = {
+    private chartOptions: any = {
         title: {
             text: 'Daily Summary'
         },
@@ -44,9 +45,6 @@ export default class SiteMetrics extends Vue {
             enabled: true,
         },
         series: [],
-        style: {
-            width: '100%'
-        },
     }
 
     private async created() {
@@ -59,14 +57,16 @@ export default class SiteMetrics extends Vue {
             this.chartOptions.series.push({
                 name: 'Daily Visitors',
                 data: this.summary.timeseries.map(x => {
-                    return [new Date(x.date), x.pageVisits];
+                    return [new Date(x.date).getTime() , x.pageVisits];
                 })
             })
+
+            console.log(new Date(this.summary.timeseries[0].date).getTime());
 
             this.chartOptions.series.push({
                 name: 'Unique Daily Visitors',
                 data: this.summary.timeseries.map(x => {
-                    return [new Date(x.date), x.distinctVisitors];
+                    return [new Date(x.date).getTime(), x.distinctVisitors];
                 })
             })
         }
