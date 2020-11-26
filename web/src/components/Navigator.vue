@@ -1,30 +1,32 @@
 <template>
-    <div class="navigator primary-font w-100 row">
-        <span v-for="(item, i) in menuItems" :key="i" v-if="canShow(item)">
-            <a 
-                class="navigator-item" 
-                v-if="canShow(item) && !item.children" 
-                v-bind:href="item.link" 
-                @click.prevent="goto(item)" 
-                :class="{'active': item.active}"
-                
-            >{{item.label}}</a>
-            <span v-if="canShow(item) && item.children" class="dropdown">
+    <div class="container">
+        <div class="navigator primary-font w-100 row">
+            <span v-for="(item, i) in menuItems" :key="i" v-if="canShow(item)">
                 <a 
-                    class="navigator-item dropdown-trigger dropdown-toggle" 
-                    
-                    :class="{'active': item.active}"
+                    class="navigator-item" 
+                    v-if="canShow(item) && !item.children" 
                     v-bind:href="item.link" 
                     @click.prevent="goto(item)" 
+                    :class="{'active': item.active}"
+                    
                 >{{item.label}}</a>
+                <span v-if="canShow(item) && item.children" class="dropdown">
+                    <a 
+                        class="navigator-item dropdown-trigger dropdown-toggle" 
+                        
+                        :class="{'active': item.active}"
+                        v-bind:href="item.link" 
+                        @click.prevent="goto(item)" 
+                    >{{item.label}}</a>
 
-                <div class="dropdown-content">
-                    <span v-for="(child, j) in item.children" :key="i + '-' + j">
-                        <a class="dropdown-link" :class="{'bordered-link': j != 0}" :href="child.link" @click.prevent="goto(child)" v-if="canShow(child)">{{child.label}}</a>
-                    </span>
-                </div>
+                    <div class="dropdown-content">
+                        <span v-for="(child, j) in item.children" :key="i + '-' + j">
+                            <a class="dropdown-link" :class="{'bordered-link': j != 0}" :href="child.link" @click.prevent="goto(child)" v-if="canShow(child)">{{child.label}}</a>
+                        </span>
+                    </div>
+                </span>
             </span>
-        </span>
+        </div>
     </div>
 </template>
 
