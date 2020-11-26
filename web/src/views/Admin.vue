@@ -5,11 +5,12 @@
             <site-metrics />
             <div class="row mt-3">
                 <div class="col-lg-5">
-                    <category-manager />
+                    <category-manager class="mt-3" />
                     <contact-form-manager class="mt-3" />
                 </div>
                 <div class="col-lg-7">
-                    <project-manager />
+                    <service-manager class="mt-3"/>
+                    <project-manager class="mt-3"/>
                     <testimonial-manager class="mt-3" />
                 </div>
             </div>
@@ -25,6 +26,7 @@
     import TestimonialManager from "@/components/TestimonialManager.vue";
     import ContactFormManager from "@/components/ContactFormManager.vue";
     import SiteMetrics from "../components/SiteMetrics.vue";
+    import ServiceManager from "@/components/ServiceManager.vue";
 
     @Component({
         name: "Admin", 
@@ -34,7 +36,9 @@
             TestimonialManager, 
             ContactFormManager,
             SiteMetrics,
-    }})
+            ServiceManager,
+        }
+    })
     export default class Admin extends Vue {
 
     }
