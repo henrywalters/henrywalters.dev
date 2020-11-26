@@ -23,7 +23,9 @@
                     return 'badge-success';
                 case 'CSS':
                     return 'badge-warning';
-                case 'C++': return 'badge-success';
+                case 'C++':
+                case 'c++': return 'badge-success';
+                case 'Vue': return 'badge-warning';
 
                 default: return 'badge-dark';
             }

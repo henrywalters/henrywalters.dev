@@ -4,6 +4,7 @@
             <h4 class="card-title primary-font">Services</h4>
         </div>
         <div class="card-body">
+            <service-list />
         </div>
     </div>
 </template>
@@ -12,8 +13,13 @@
 import {Vue, Component, Prop} from "vue-property-decorator";
 import FormGroup from "@/components/ui/forms/FormGroup.vue";
 import {HashMap} from "./../services/base.service";
+import ServiceList from "@/components/ServiceList.vue";
 
-@Component
+@Component({
+    components: {
+        ServiceList,
+    }
+})
 export default class ServiceManager extends Vue {
     private async submit() {
         

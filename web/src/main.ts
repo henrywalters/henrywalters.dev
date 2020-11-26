@@ -8,10 +8,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Notifcations from "vue-notification";
 import Loader from "@/components/ui/Loader.vue";
 import Icons from "./services/icons.service";
-
 Icons.Initialize();
 
-Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('loader', Loader);
 
 dotenv.config();

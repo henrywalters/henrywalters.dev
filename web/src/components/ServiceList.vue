@@ -1,10 +1,19 @@
 <template>
     <ul class="list-group">
         <li class="list-group-item" v-for="(item, i) in list" :key="i">
-            <font-awesome-icon :icon="item.icon" />
-            <b>{{item.name}}</b>
-            <div class="btn-group pull-right" role="group">
-                <button class='btn btn-sm btn-danger' @click='deleteService(item.id)' title="Delete Service"><font-awesome-icon icon="trash" /></button>
+            <div class="row">
+                <div class="col-1"><font-awesome-icon class="fa-2x" :icon="item.icon" /></div>
+                <div class="col-9">
+                    <router-link class="link-black" :to="{name: 'Service', params: {id: item.id}}"><b>{{item.name}}</b></router-link> - {{item.description}}
+                </div>
+                <div class="col-2 float-right">
+                    <div class="btn-group" role="group">
+                        <button class='btn btn-sm btn-primary' @click="$router.push({name: 'Service', params: {id: item.id}, query: {mode: 'edit'}})">
+                            <font-awesome-icon icon="edit" />
+                        </button>
+                        <button class='btn btn-sm btn-danger' @click='deleteService(item.id)' title="Delete Service"><font-awesome-icon icon="trash" /></button>
+                    </div>
+                </div>
             </div>
         </li>
     </ul>
