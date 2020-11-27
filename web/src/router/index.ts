@@ -61,6 +61,11 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "register" */ '../views/Register.vue')
   },
   {
+    path: '/change-password',
+    name: 'ChangePassword',
+    component: () => import(/* webpackChunkName: "change-password" */ '../views/ChangePassword.vue')
+  },
+  {
     path: '/tfa/:challenge',
     name: 'TFA',
     component: () => import(/* webpackChunkName: "tfa" */ '../views/Tfa.vue')

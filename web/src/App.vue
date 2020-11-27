@@ -12,7 +12,7 @@
             Signed Out - <a href="/login" @click.prevent="$router.push({name: 'Login'})">Login</a> | <a href="/register" @click.prevent="$router.push({name: 'Register'})">Register</a>
           </span>
           <span v-else>
-            Signed in as {{user.firstName}} {{user.lastName}} - <a href="/logout" @click.prevent="logout">Logout</a>
+            Signed in as {{user.firstName}} {{user.lastName}} - <router-link :to="{name: 'ChangePassword'}">Change Password</router-link> | <a href="/logout" @click.prevent="logout">Logout</a>
           </span>
         </div>
 

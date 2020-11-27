@@ -1,6 +1,6 @@
 <template>
     <div class="w-100 text-center">
-        <font-awesome-icon class="fa-3x" icon="spinner" spin v-show="showLoading" />
+        <font-awesome-icon :class="'fa-' + size + 'x'" icon="spinner" spin v-show="showLoading" />
     </div>
 </template>
 
@@ -15,6 +15,9 @@ export default class Loader extends Vue {
 
     @Prop({type: Boolean, default: true})
     public loading!: boolean;
+
+    @Prop({type: Number, default: 3})
+    public size!: number;
 
     private pastDelay: boolean = false;
 
