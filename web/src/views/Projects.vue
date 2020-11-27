@@ -12,13 +12,13 @@
                         </div>
                         <div class="col-12 col-md-8 col-lg-9">
                             <div>
-                                <h4 class="primary-font m-0 text-center text-md-left">
+                                <h3 class="primary-font m-0 text-center text-md-left">
                                     <a :href="'/projects/' + project.id"
                                        @click.prevent="$router.push({name: 'Project', query: {pid: project.id}})"
                                        class="project-title">{{project.title}}</a>
                                     &nbsp;
                                     <a v-if="project.sourceControlUrl" :href="project.sourceControlUrl"><font-awesome-icon :icon="['fab', 'github']" /></a>
-                                </h4>
+                                </h3>
                                 <programming-languages class="m-0 w-100 text-center text-md-left" :languages="project.languages" />
                                 <p class="m-0"><b><em>{{project.shortDescription}}</em></b></p>
                                 <p v-if="project.url" class="m-0"><b>Demo: </b><a :href="project.url">{{project.url}}</a></p>
