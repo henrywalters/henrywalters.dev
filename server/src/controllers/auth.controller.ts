@@ -36,6 +36,8 @@ export class AuthController {
         })
     }
 
+    private async 
+
     @Get("self")
     @UseGuards(new AuthenticateFor())
     public async getSelf(@Headers("user") user: CleanedUser): Promise<ApiResponse<CleanedUser, string>> {

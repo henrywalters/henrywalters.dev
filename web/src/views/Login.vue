@@ -51,9 +51,13 @@
             }
         }
 
-        private mounted() {
+        private async created() {
             this.clear();
             this.auth = new AuthService();
+            const res = await this.auth.self();
+            if (res.success) {
+                this.$router.back();
+            }
             this.initialized = true;
             console.log(document.referrer);
         }
@@ -66,7 +70,7 @@
 
             if (response.success) {
                 this.success = true;
-                this.$router.go(-1);
+                location.reload();
             } else {
                 this.error = response.error;
             }
