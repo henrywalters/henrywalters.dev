@@ -8,7 +8,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div v-if="project.thumbnail" class="thumbnail-container col-12 col-md-4 col-lg-3">
-                            <img :src="project.thumbnail.cdn" class="thumbnail"/>
+                            <img :src="project.thumbnail.cdn" :alt="project.thumbnail.alt" class="thumbnail"/>
                         </div>
                         <div class="col-12 col-md-8 col-lg-9">
                             <div>
