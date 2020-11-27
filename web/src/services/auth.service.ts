@@ -14,6 +14,10 @@ export interface ILoginRequest {
     password: string;
 }
 
+export interface IChangePasswordRequest {
+    password: string;
+}
+
 export interface User {
     id: string;
     firstName: string;
@@ -64,6 +68,14 @@ export class AuthService extends BaseService<void, void, void> {
     public async self(): Promise<ApiResponse<User, string>> {
         try {
             return (await this.http.get("/auth/self")).data;
+        } catch (e) {
+            throw new Error(e.message);
+        }
+    }
+
+    public async changePassword(data: IChangePasswordRequest): Promise<ApiResponse<void, HashMap<string>>> {
+        try {
+            return (await this.http.post('/auth/change-password', data)).data;
         } catch (e) {
             throw new Error(e.message);
         }

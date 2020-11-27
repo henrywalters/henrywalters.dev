@@ -1,5 +1,5 @@
 import {Body, Controller, Get, Headers, Param, Post, UseGuards} from "@nestjs/common";
-import {LoginDto, UserDto} from "../dtos/user.dto";
+import {ChangePasswordDto, LoginDto, UserDto} from "../dtos/user.dto";
 import {CleanedUser, User} from "../entities/user.entity";
 import {ApiResponse, ResponseDto} from "../dtos/response.dto";
 import * as bcrypt from "bcrypt";
@@ -9,6 +9,7 @@ import {DateTime} from "luxon";
 import {MailerService} from "@nestjs-modules/mailer";
 import {AuthenticateFor} from "../guards/authenticateFor.guard";
 import {Privileges} from "../constants/privileges.constants";
+import { raw } from "express";
 
 @Controller("v1/auth")
 export class AuthController {
@@ -60,6 +61,11 @@ export class AuthController {
         return ResponseDto.Success(void 0);
     }
 
+    private isValidPassword(password: string): boolean {
+        const re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+        return re.test(password);
+    }
+
     @Post("register")
     public async register(@Body() req: UserDto) {
         const errors = {};
@@ -68,11 +74,8 @@ export class AuthController {
             errors["email"] = "Email is already registered";
         }
 
-        if (req.password.length < 6 ||
-            ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'].indexOf(req.password) !== -1 ||
-            ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')'].indexOf(req.password) !== -1
-        ) {
-            errors["password"] = "Password must be 6 characters long and contain a number and special character";
+        if (!this.isValidPassword(req.password)) {
+            errors["password"] = "Password must be 8 characters long and contain a number and special character";
         }
 
         if (Object.keys(errors).length > 0) {
@@ -107,5 +110,22 @@ export class AuthController {
         }
 
         return ResponseDto.Success(await this.tokens.generateToken(user.cleaned()));
+    }
+
+    @Post("change-password")
+    @UseGuards(new AuthenticateFor())
+    public async changePassword(@Headers("user") user: CleanedUser, @Body() req: ChangePasswordDto) {
+        try {
+            if (!this.isValidPassword(req.password)) {
+                return ResponseDto.Error({password: "Password must be 8 characters long and contain a number and special character"});
+            }
+            const rawUser = await User.findOneOrFail(user.id);
+            rawUser.password = bcrypt.hashSync(req.password, 10);
+            await rawUser.save();
+
+            return ResponseDto.Success(void 0);
+        } catch (e) {
+            return ResponseDto.Error("Unknown error occured");
+        }
     }
 }

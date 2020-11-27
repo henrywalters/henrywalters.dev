@@ -1,7 +1,9 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid" v-if="authorized">
         <div class="header">
             <h3 class="primary-font text-center">Administration</h3>
+        </div>
+        <div class="body">
             <site-metrics />
             <div class="row mt-3">
                 <div class="col-lg-5">
@@ -19,7 +21,7 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from "vue-property-decorator";
+    import {Component, Mixins, Vue} from "vue-property-decorator";
     import CategoryService, {CategoryDto, ICategory} from "@/services/category.service";
     import CategoryManager from "@/components/CategoryManager.vue";
     import ProjectManager from "@/components/ProjectManager.vue";
@@ -27,6 +29,7 @@
     import ContactFormManager from "@/components/ContactFormManager.vue";
     import SiteMetrics from "../components/SiteMetrics.vue";
     import ServiceManager from "@/components/ServiceManager.vue";
+    import AuthMixin from "../mixins/AuthMixin";
 
     @Component({
         name: "Admin", 
@@ -36,11 +39,12 @@
             TestimonialManager, 
             ContactFormManager,
             SiteMetrics,
-            ServiceManager,
         }
     })
-    export default class Admin extends Vue {
-
+    export default class Admin extends Mixins(AuthMixin) {
+        private async created() {
+            await this.authorizeFor('ADMIN');
+        }
     }
 </script>
 
