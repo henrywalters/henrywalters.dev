@@ -42,6 +42,7 @@ export class TrackingController {
     }
 
     @Get("page-visit/report")
+    @UseGuards(new AuthenticateFor(Privileges.ADMIN))
     public async getPageVisitReport() {
         const tsQuery = await PageVisit.createQueryBuilder()
             .select([

@@ -81,6 +81,11 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "page" */ '../views/Page.vue')
   },
   {
+    path: 'unauthorized',
+    name: 'Unauthorized',
+    component: () => import(/* webpackChunkName: "unauthorized" */ '../views/Unauthorized.vue')
+  },
+  {
     path: '*',
     name: 'PageNotFound',
     component: () => import(/* webpackChunkName: "pageNotFound" */ '../views/PageNotFound.vue')
