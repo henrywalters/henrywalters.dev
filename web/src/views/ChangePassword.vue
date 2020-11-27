@@ -1,25 +1,19 @@
 <template>
     <div class="container">
         <div class="header">
-            <h3 class="primary-font text-center">Login</h3>
+            <h3 class="primary-font text-center">Change Password</h3>
         </div>
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
                 <form @submit.prevent="submit" v-if="initialized">
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="text" class="form-control" v-model="request.email" />
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
+                    <form-group label="Password" field="password" :errors="errors">
                         <input type="password" class="form-control" v-model="request.password" />
-                    </div>
-                    <p v-if="loading">Communicating with server...</p>
-                    <p v-if="error" style="color: red">{{error}}</p>
+                    </form-group>
                     <div class="form-group">
                         <button class="btn btn-primary form-control">Submit</button>
                     </div>
+                    <loader :size="2" class="m-3" v-if="loading" />
                 </form>
             </div>
         </div>
@@ -29,24 +23,27 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import {AuthService, ILoginRequest} from "../services/auth.service";
+    import {AuthService, IChangePasswordRequest} from "../services/auth.service";
     import {HashMap} from "../services/base.service";
+    import FormGroup from "@/components/ui/forms/FormGroup.vue"
 
     @Component({
-        name: "Login"
+        name: "Login",
+        components: {
+            FormGroup,
+        }
     })
     export default class Login extends Vue {
         private auth!: AuthService;
-        private request!: ILoginRequest;
+        private request!: IChangePasswordRequest
         private loading = false;
         private initialized = false;
 
         private success = false;
-        private error: string | null = null;
+        private errors: HashMap<string> = {};
 
         private clear() {
             this.request = {
-                email: "",
                 password: "",
             }
         }
@@ -55,7 +52,7 @@
             this.clear();
             this.auth = new AuthService();
             const res = await this.auth.self();
-            if (res.success) {
+            if (!res.success) {
                 this.$router.back();
             }
             this.initialized = true;
@@ -64,15 +61,15 @@
 
         private async submit() {
             this.loading = true;
-            this.error = null;
+            this.errors = {};
 
-            const response = await this.auth.login(this.request);
+            const response = await this.auth.changePassword(this.request);
 
             if (response.success) {
                 this.success = true;
-                location.reload();
+                this.$router.back();
             } else {
-                this.error = response.error;
+                this.errors = response.error;
             }
 
             this.loading = false;
