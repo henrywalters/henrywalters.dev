@@ -1,12 +1,12 @@
 <template>
     <div class="container mt-4" v-if="initialized">
-        <service-form v-if="state === States.CREATING || state === States.EDITING" :service="item"/>
+        <service-form v-if="state === States.CREATING || state === States.EDITING" :service="item" />
         <service-display :service="item" v-else />
     </div>
 </template>
 
 <script lang="ts">
-import {Vue, Component, Prop, Mixins} from "vue-property-decorator";
+import {Vue, Component, Prop, Mixins, Watch} from "vue-property-decorator";
 import ServiceService, {IService} from "./../services/service.service";
 import ServiceDisplay from "@/components/ServiceDisplay.vue";
 import ServiceForm from "@/components/ServiceForm.vue";
@@ -36,7 +36,16 @@ export default class Service extends Mixins(AuthMixin) {
         return State;
     }
 
+    @Watch("$route.params")
+    private async routeChanged() {
+        this.init();
+    }
+
     private async created() {
+        this.init();
+    }
+
+    private async init() {
         this.service = new ServiceService();
 
         if (!this.$route.params.id) {
@@ -44,6 +53,7 @@ export default class Service extends Mixins(AuthMixin) {
             this.state = State.CREATING;
         } else {
             const res = await this.service.getOne(this.$route.params.id);
+            console.log(res);
             if (res.success) {
                 this.item = res.result;
 
@@ -57,6 +67,7 @@ export default class Service extends Mixins(AuthMixin) {
         }
 
         this.initialized = true;
+        this.$forceUpdate();
 
         console.log(this.state);
     }

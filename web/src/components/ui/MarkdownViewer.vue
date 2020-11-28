@@ -1,19 +1,28 @@
 <template>
-    <viewer :initial-value="value" />
+    <vue-markdown ref="editor" :source="value"></vue-markdown>
 </template>
 
 <script lang="ts">
-import {Vue, Component, Prop} from "vue-property-decorator";
+import {Vue, Component, Prop, Watch} from "vue-property-decorator";
 import { Viewer } from '@toast-ui/vue-editor';
+import VueMarkdown from "vue-markdown";
 
 @Component({
     components: {
         Viewer,
+        VueMarkdown,
     }
 })
 export default class MarkdownViewer extends Vue {
     @Prop()
     public value!: string;
+
+    @Watch('value')
+    private valueChange() {
+        console.log(this.value);
+        this.$forceUpdate();
+        console.log(this.$refs.editor);
+    }
 }
 </script>
 

@@ -13,15 +13,22 @@
                 <span v-if="canShow(item) && item.children" class="dropdown">
                     <a 
                         class="navigator-item dropdown-trigger dropdown-toggle" 
-                        
+                        href="#"
+                        @mouseover="toggleItem(item)"
+                        @click.prevent="toggleItem(item)"
                         :class="{'active': item.active}"
-                        v-bind:href="item.link" 
-                        @click.prevent="goto(item)" 
                     >{{item.label}}</a>
 
-                    <div class="dropdown-content">
+                    <div class="dropdown-content" :class="{visible: item.toggled}">
                         <span v-for="(child, j) in item.children" :key="i + '-' + j">
-                            <a class="dropdown-link" :class="{'bordered-link': j != 0}" :href="child.link" @click.prevent="goto(child)" v-if="canShow(child)">{{child.label}}</a>
+                            <a
+                                class="dropdown-link" 
+                                
+                                :class="{'bordered-link': j != 0, 'selected': child.active}" 
+                                v-if="canShow(child)"
+                                :href="child.link"
+                                @click.prevent="goto(child)"
+                            >{{child.label}}</a>
                         </span>
                     </div>
                 </span>
@@ -36,13 +43,16 @@
     import {Route} from "vue-router";
     import {TrackingService} from "@/services/tracking.service";
     import {User} from "@/services/auth.service";
+import ServiceService from "../services/service.service";
 
 interface IMenuItem {
     label: string;
     link: string;
     active: boolean;
     privilege?: string;
-    children?: IMenuItem[];
+    toggled?: boolean;
+    parent?: IMenuItem;
+    children?: IMenuItem[] | (() => Promise<IMenuItem[]>);
 }
 
 @Component({
@@ -56,12 +66,27 @@ export default class Navigator extends Vue {
     private currentItem: IMenuItem | undefined;
     private tracking!: TrackingService;
 
+    private toggledItem: IMenuItem | undefined;
+
     private menuItems: IMenuItem[] = [
         { label: "Home", link: "/", active: false },
         { label: "Projects", link: "/projects", active: false },
-
-        // { label: "Tools", link: "/tools", active: false },
-        // { label: "Forum", link: "/forum", active: false },
+        { label: "Services", link: "/service", active: false, children: async () => {
+            const services = new ServiceService();
+            const res = await services.get();
+            if (res.success) {
+                return res.result.map(service => {
+                    return {
+                        label: service.name,
+                        link: '/service/' + service.slug,
+                        active: false,
+                    }
+                }) 
+            } else {
+                return [];
+            }
+        }},
+        
         { label: "About", link: "/about", active: false },
         { label: "Contact", link: "/contact", active: false },
         { label: "Admin", link: "/admin", active: false, privilege: "ADMIN" },
@@ -72,13 +97,45 @@ export default class Navigator extends Vue {
             if (item.link === path) {
                 return item;
             }
+
+            if (item.children && typeof(item.children) !== 'function') {
+                for (const child of item.children) {
+                    if (child.link === path) {
+                        item.active = true;
+                        return child;
+                    }
+                }
+            }
         }
 
         return void 0;
     }
 
-    private async mounted() {
+    private async created() {
         this.tracking = new TrackingService();
+
+        document.addEventListener('mousemove', (e) => {
+            console.log(e.target.classList.value);
+            if (e.target.classList.value.indexOf('dropdown') === -1 ) {
+                if (this.toggledItem) {
+                    this.toggledItem.toggled = false;
+                    this.toggledItem = void 0;
+                    this.$forceUpdate();
+                }
+            }
+        })
+
+        for (let i = 0; i < this.menuItems.length; i++) {
+            this.menuItems[i].toggled = false;
+            if (this.menuItems[i].children) {
+                if (typeof(this.menuItems[i].children) === 'function') {
+                    this.menuItems[i].children = await this.menuItems[i].children();
+                }
+                for (let j = 0; j < this.menuItems[i].children.length; j++) {
+                    this.menuItems[i].children[j].parent = this.menuItems[i];
+                }
+            }
+        }
 
         if (this.currentRoute.name === "Home") {
             this.currentItem = this.getItem(this.currentRoute.path);
@@ -91,18 +148,39 @@ export default class Navigator extends Vue {
     private routeChange(currentRoute: Route) {
         if (this.currentItem) {
             this.currentItem.active = false;
+            if (this.currentItem.parent) {
+                this.currentItem.parent.active = false;
+            }
         }
         this.currentItem = this.getItem(currentRoute.path);
         document.title = "Henry Walters" + (this.currentRoute.name === "Home" ? "" : " - " + currentRoute.name);
         if (this.currentItem) {
             this.currentItem.active = true;
+            console.log(this.currentItem.link);
         }
+        
         this.tracking.trackPageVisit(currentRoute.name as string,this.$route.query.src ? this.$route.query.src as string : void 0);
     }
 
+    private toggleItem(item: IMenuItem) {
+        this.toggledItem = item;
+        item.toggled = true;
+        this.$forceUpdate();
+    }
+
     private goto(item: IMenuItem) {
-        if (!this.currentItem || item.link !== this.currentItem.link)
-            this.$router.push({name: item.label});
+        console.log(this.currentItem, item.link);
+
+        if (item.parent) {
+            item.parent.toggled = false;
+            this.$forceUpdate();
+        }
+        
+        if (!this.currentItem || item.link !== this.currentItem.link) {
+            this.$router.push({path: item.link});
+        }
+
+        
     }
 
     private canShow(item: IMenuItem) {
@@ -151,12 +229,12 @@ export default class Navigator extends Vue {
     }
 
     .dropdown {
-        position: relative;
+        //position: relative;
         display: inline-block;
     }
 
-    .dropdown:hover .dropdown-content {
-        display: block;
+    .visible {
+        display: block !important;
     }
 
     .dropdown-content {
@@ -164,7 +242,8 @@ export default class Navigator extends Vue {
         position: absolute;
         background-color: white;
         min-width: 300px;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
+        
+        // box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
         z-index: 1;
         text-align: left;
         border: 2px solid black;
@@ -173,12 +252,18 @@ export default class Navigator extends Vue {
 
     .dropdown-content a {
         color: black;
+        overflow: none;
         padding: 12px 16px;
         text-decoration: none;
         display: block;
     }
 
     .dropdown-link:hover {
+        background-color: $secondaryColor;
+        color: black !important;
+    }
+
+    .selected {
         background-color: $primaryColor;
         color: white !important;
     }
