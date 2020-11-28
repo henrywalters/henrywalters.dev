@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class="header">
-            <h3 class="primary-font text-center">
+            <h3 class="primary-font text-center mb-4">
                 <font-awesome-icon class="icon" :icon="service.icon" />
                 {{service.name}}
             </h3>
-            <markdown-viewer v-model="service.longDescription" />
+            <markdown-viewer v-model="service.longDescription"/>
         </div>
     </div>
 </template>
@@ -33,11 +33,12 @@ export default class ServiceDisplay extends Vue {
 </script>
 
 <style scoped lang="scss">
-
+@import "@/assets/theme.scss";
 .icon {
     font-size: 50px;
     vertical-align: middle;
     margin-right: 10px;
+    color: $primaryColor;
 }
 
 </style>

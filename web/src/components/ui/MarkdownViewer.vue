@@ -17,11 +17,14 @@ export default class MarkdownViewer extends Vue {
 }
 </script>
 
-<style>
+<style lang="scss">
+
 
     img {
-        max-width: 500px !important;
-        height: auto;
+        max-height: 500px !important;
+        width: auto;
+        display: block;
+        margin: 0 auto !important;
     }
 
     ul {

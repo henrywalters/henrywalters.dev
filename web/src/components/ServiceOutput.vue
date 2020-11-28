@@ -44,6 +44,13 @@ export default class ServiceList extends Vue {
 </script>
 
 <style scoped lang="scss">
+
+@import "@/assets/theme.scss";
+
+.icon {
+    color: $primaryColor;
+}
+
 .card:hover {
     background-color: darken(white, 2%)
 }
