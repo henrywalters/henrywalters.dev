@@ -1,6 +1,7 @@
 import BaseService, { HashMap } from './base.service';
 
 export interface IService {
+    id?: string;
     slug: string;
     icon: string;
     name: string;

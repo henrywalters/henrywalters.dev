@@ -15,7 +15,7 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 })
 export default class MarkdownEditor extends Vue {
     @Prop()
-    public value: string;
+    public value!: string;
 
     private internal!: string;
 
@@ -23,7 +23,7 @@ export default class MarkdownEditor extends Vue {
         this.internal = this.value ? this.value : "";
     }
 
-    private update(e) {
+    private update() {
         // @ts-ignore
         this.$emit('input', this.$refs.editor.invoke('getMarkdown'));
     }

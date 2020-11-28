@@ -75,7 +75,7 @@ export default class UserFileManager extends Mixins(NotificationMixin) {
     private editing: UserFileRequest | null = null;
     private editingId: string | null = null;
     private editingError: string | null = null;
-    private editingPreview: string;
+    private editingPreview: string | null = null;
 
     private async getList() {
         const res = await this.service.get();
@@ -96,20 +96,20 @@ export default class UserFileManager extends Mixins(NotificationMixin) {
 
     private saved() {
         this.notifySuccess("File added");
-        this.$refs.uploader.clearRequest();
         this.getList();
     }
 
     private async fileUpload(e: any) {
-        this.editingError = null;
-        if (e.target.files.length === 0) {
-            this.editing.file = null;
-        }
+        if (this.editing) {
+            this.editingError = null;
+            if (e.target.files.length === 0) {
+                this.editing.file = null;
+            }
 
-        this.editing.file = e.target.files[0];
-        this.editingPreview = URL.createObjectURL(this.editing.file);
-        this.editing.name = this.editing.file.name;
-        console.log(this.editing);
+            this.editing.file = e.target.files[0];
+            this.editingPreview = URL.createObjectURL(this.editing.file);
+            this.editing.name = this.editing.file.name;
+        }
     }
 
     private copyToClipboard(text: string) {
@@ -131,7 +131,7 @@ export default class UserFileManager extends Mixins(NotificationMixin) {
     }
 
     private async update() {
-        if (this.editingId) {
+        if (this.editing && this.editingId) {
             const data = new FormData();
             data.append('name', this.editing.name);
             data.append('alt', this.editing.alt);

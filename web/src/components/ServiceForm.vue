@@ -86,21 +86,17 @@ export default class ServiceForm extends Vue {
         }
     }
 
-    private updateLongDesc(e) {
-        console.log(e);
-    }
-
     private async submit() {
         this.loading = true;
 
-        const res = this.editing ? await this.api.put(this.service.id, this.request) : await this.api.post(this.request);
+        const res = this.editing ? await this.api.put(this.service.id as string, this.request) : await this.api.post(this.request);
 
         this.success = null;
         this.error = null;
 
         if (res.success) {
             this.success = "Service saved successfully";
-            this.$router.push({name: 'Service', params: {id: res.result.id}});
+            this.$router.push({name: 'Service', params: {id: res.result.id as string}});
         } else {
             this.errors = res.error;
             this.error = "Failed to save service";
