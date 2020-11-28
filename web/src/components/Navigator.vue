@@ -115,7 +115,7 @@ export default class Navigator extends Vue {
         this.tracking = new TrackingService();
 
         document.addEventListener('mousemove', (e) => {
-            console.log(e.target.classList.value);
+            // @ts-ignore
             if (e.target.classList.value.indexOf('dropdown') === -1 ) {
                 if (this.toggledItem) {
                     this.toggledItem.toggled = false;
@@ -129,9 +129,12 @@ export default class Navigator extends Vue {
             this.menuItems[i].toggled = false;
             if (this.menuItems[i].children) {
                 if (typeof(this.menuItems[i].children) === 'function') {
+                    // @ts-ignore
                     this.menuItems[i].children = await this.menuItems[i].children();
                 }
+                // @ts-ignore
                 for (let j = 0; j < this.menuItems[i].children.length; j++) {
+                    // @ts-ignore
                     this.menuItems[i].children[j].parent = this.menuItems[i];
                 }
             }
