@@ -4,7 +4,8 @@
             <h4 class="card-title primary-font">Services</h4>
         </div>
         <div class="card-body">
-            <service-list />
+            <button class="form-control btn btn-primary" @click.prevent="$router.push({name: 'Service'})">New Service</button>
+            <service-list class="mt-3" />
         </div>
     </div>
 </template>

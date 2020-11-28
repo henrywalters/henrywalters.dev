@@ -77,6 +77,21 @@ export default class BaseService<T, R, E> {
         }
     }
 
+    public async putFormData(id: string | number, data: FormData): Promise<ApiResponse<R, E>> {
+        try {
+            return (await this.http({
+                url: this.controllerPath + '/' + id,
+                method: 'PUT',
+                data,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            })).data;
+        } catch (e) {
+            throw new Error(e.message);
+        }
+    }
+
     public async delete(id: string | number): Promise<ApiResponse<void, E>> {
         try {
             return (await this.http.delete(this.controllerPath + '/' + id)).data;

@@ -76,6 +76,7 @@
                 alt: "",
                 file: null,
             }
+            this.imagePreview = null;
         }
 
         private async fileUpload(e: any) {
@@ -86,6 +87,7 @@
 
             this.file = e.target.files[0];
             this.imagePreview = URL.createObjectURL(this.file);
+            console.log(this.imagePreview);
             this.clearRequest();
             this.request.name = this.file.name;
         }
@@ -99,7 +101,11 @@
 
             const res = await this.service.postFormData(data);
 
-            if (res.success) this.$emit("input", res.result);
+            if (res.success) {
+                this.$emit("input", res.result);
+                this.clearRequest(); 
+                this.$forceUpdate();
+            }
         }
     }
 </script>

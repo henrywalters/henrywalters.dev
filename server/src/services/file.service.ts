@@ -12,6 +12,7 @@ export interface IStorageLocation {
 interface IStorage {
     // Returns the path to access stored image
     store(file: Express.Multer.File): Promise<IStorageLocation>;
+    replace(id: string, file: Express.Multer.File): Promise<IStorageLocation>;
     retrieve(path: string): Promise<Express.Multer.File>;
     remove(id: string): Promise<void>;
 }
@@ -43,13 +44,29 @@ class FileSystemStorage implements IStorage {
         };
     }
 
+    public async replace(id: string, file: Express.Multer.File): Promise<IStorageLocation> {
+        await this.remove(id);
+        const storagePath = this.storageDirectory + "/" + id;
+        const accessPath = this.basePath + "/" + id;
+        fsPromise.writeFile(storagePath, file.buffer);
+
+        return {
+            id: id,
+            path: accessPath,
+        };
+    }
+
     public async retrieve(path: string): Promise<Express.Multer.File> {
         return await fsPromise.readFile(this.storageDirectory + "/" + path);
     }
 
     public async remove(id: string): Promise<void> {
-        const storagePath = this.storageDirectory + "/" + id;
-        await fsPromise.unlink(storagePath);
+        try {
+            const storagePath = this.storageDirectory + "/" + id;
+            await fsPromise.unlink(storagePath);
+        } catch (e) {
+            console.warn(e);
+        }
     }
 }
 
@@ -91,15 +108,13 @@ export class UserFileService {
         await UserFile.remove(file);
     }
 
-    public async update(userFile: UserFile, file: Express.Multer.File | undefined, altTag?: string): Promise<UserFile> {
+    public async update(userFile: UserFile, file: Express.Multer.File | undefined, name: string, altTag?: string): Promise<UserFile> {
         if (file) {
-            await this.storage.remove(userFile.cdnId);
-            const storageItem = await this.storage.store(file);
-            userFile.name = file.originalname;
+            const storageItem = await this.storage.replace(userFile.cdnId, file);
             userFile.cdn = storageItem.path;
             userFile.cdnId = storageItem.id;
         }
-
+        userFile.name = name;
         userFile.alt = altTag;
 
         await userFile.save();

@@ -1,6 +1,6 @@
 import { IconDefinition, IconLookup, library, IconPrefix, IconName } from '@fortawesome/fontawesome-svg-core'
 import {faGithub, faLinkedin} from "@fortawesome/free-brands-svg-icons";
-import {faAtom, faCogs, faCopy, faDatabase, faEdit, faSpinner, faStar as faStarSolid, faTools, faTrash, faUpload, } from "@fortawesome/free-solid-svg-icons";
+import {faAtom, faCogs, faCopy, faDatabase, faEdit, faSpinner, faStar as faStarSolid, faTools, faTrash, faUpload, faBan, faSave} from "@fortawesome/free-solid-svg-icons";
 import {faStar} from "@fortawesome/free-regular-svg-icons/faStar";
 
 function initializeLibrary() {
@@ -17,7 +17,9 @@ function initializeLibrary() {
         faUpload,
         faStarSolid,
         faStar as IconDefinition,
-        faTrash
+        faTrash,
+        faBan,
+        faSave,
     )
 }
 
@@ -39,6 +41,10 @@ function getIcons(): IconLookup[] {
     return icons;
 }
 
+function getStandardIcons(): IconLookup[] {
+    return getIcons().filter(icon => icon.prefix === 'fas');
+}
+
 export default class Icons {
     public static Initialize() {
         initializeLibrary();
@@ -46,5 +52,9 @@ export default class Icons {
 
     public static GetIcons() {
         return getIcons();
+    }
+
+    public static GetStandardIcons() {
+        return getStandardIcons();
     }
 }

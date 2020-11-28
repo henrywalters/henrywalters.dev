@@ -9,6 +9,7 @@
                 <div class="col-lg-5">
                     <category-manager class="mt-3" />
                     <contact-form-manager class="mt-3" />
+                    <user-file-manager class="mt-3" />
                 </div>
                 <div class="col-lg-7">
                     <service-manager class="mt-3"/>
@@ -29,6 +30,7 @@
     import ContactFormManager from "@/components/ContactFormManager.vue";
     import SiteMetrics from "../components/SiteMetrics.vue";
     import ServiceManager from "@/components/ServiceManager.vue";
+    import UserFileManager from "@/components/UserFileManager.vue";
     import AuthMixin from "../mixins/AuthMixin";
 
     @Component({
@@ -39,6 +41,8 @@
             TestimonialManager, 
             ContactFormManager,
             SiteMetrics,
+            ServiceManager,
+            UserFileManager,
         }
     })
     export default class Admin extends Mixins(AuthMixin) {

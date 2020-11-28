@@ -5,7 +5,7 @@
                 <font-awesome-icon class="icon" :icon="service.icon" />
                 {{service.name}}
             </h3>
-            <vue-markdown :source="service.longDescription" />
+            <markdown-viewer v-model="service.longDescription" />
         </div>
     </div>
 </template>
@@ -13,17 +13,21 @@
 <script lang="ts">
 import {Vue, Component, Prop} from "vue-property-decorator";
 import ServiceService, {IService} from "./../services/service.service";
-import VueMarkdown from "vue-markdown";
+import MarkdownViewer from "@/components/ui/MarkdownViewer.vue";
 
 @Component({
     components: {
-        VueMarkdown,
+        MarkdownViewer,
     }
 })
 export default class ServiceDisplay extends Vue {
 
     @Prop()
-    public service: IService;
+    public service!: IService;
+
+    private created() {
+        console.log(this.service);
+    }
 }
 
 </script>

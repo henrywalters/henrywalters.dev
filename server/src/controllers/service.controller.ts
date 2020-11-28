@@ -27,7 +27,7 @@ export class ServiceController {
     public async createService(@Body() body: ServiceDTO) {
         try {
             const service = new Service();
-            return ResponseDto.Success(await service.updateFromDTO(body));
+            return await service.updateFromDTO(body);
         } catch (e) {
             return ResponseDto.Error(e.message);
         }
@@ -38,7 +38,7 @@ export class ServiceController {
     public async updateService(@Param("id") id: string, @Body() body: ServiceDTO) {
         try {
             const service = await Service.findByIdOrSlug(id);
-            return ResponseDto.Success(await service.updateFromDTO(body));
+            return await service.updateFromDTO(body);
         } catch (e) {
             return ResponseDto.Error(e.message);
         }

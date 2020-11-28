@@ -1,4 +1,5 @@
 import { ServiceDTO } from "src/dtos/service.dto";
+import {ResponseDto} from "src/dtos/response.dto";
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 export type MinimalService = Pick<Service, 'id' | 'slug' | 'icon' | 'name' | 'description'>;
@@ -23,10 +24,10 @@ export class Service extends BaseEntity {
     @Column({type: "mediumtext"})
     public longDescription: string;
 
-    public async updateFromDTO(dto: ServiceDTO): Promise<Service> {
+    public async updateFromDTO(dto: ServiceDTO) {
         const existingService = await Service.findBySlug(dto.slug);
         if (existingService && existingService.id != this.id) {
-            throw new Error("Slug already taken");
+            return ResponseDto.Error({'slug': 'Slug already exists'});
         }
         this.slug = dto.slug;
         this.icon = dto.icon;
@@ -34,7 +35,7 @@ export class Service extends BaseEntity {
         this.description = dto.description;
         this.longDescription = dto.longDescription;
         await this.save();
-        return this;
+        return ResponseDto.Success(this);
     }
 
     public cleaned(): MinimalService {
