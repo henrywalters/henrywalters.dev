@@ -2,14 +2,14 @@
     <div class="row">
         <h2 class='primary-font text-center col-12'>Services Offered</h2>
         <div class="col-md-6" v-for="(service, i) in list" :key="i">
-            <div class="card mt-3">
+            <div class="card mt-3" @click="$router.push({name: 'Service', params: {id: service.slug}})">
                 <div class="card-body">
                     <div class="card-title text-center">
                         <font-awesome-icon class="fa-2x icon" :icon="service.icon" />
                         <h4 class="primary-font mt-2"> {{service.name}}</h4>
                     </div>
                     <p class="card-text">{{service.description}}</p>
-                    <router-link class="stretched-link" :to="{name: 'Service', params: {id: service.slug}}"></router-link>
+                    <p class="text-center call-to-action"><router-link :to="{name: 'Service', params: {id: service.slug}}">Learn More</router-link></p>
                 </div>
             </div>
         </div>
@@ -51,7 +51,16 @@ export default class ServiceList extends Vue {
     color: $primaryColor;
 }
 
-.card:hover {
-    background-color: darken(white, 2%)
+.card {
+    cursor: pointer;
 }
+
+.card:hover {
+    background-color: rgb(247, 245, 245);
+}
+
+.call-to-action {
+    font-size: 22px;
+}
+
 </style>
