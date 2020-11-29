@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Notifcations from "vue-notification";
 import Loader from "@/components/ui/Loader.vue";
 import Icons from "./services/icons.service";
+import CodeHighlight from "./directives/codeHighlight.directive";
+
 Icons.Initialize();
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
@@ -18,6 +20,7 @@ dotenv.config();
 Vue.config.productionTip = false
 
 Vue.use(Notifcations);
+Vue.use(CodeHighlight);
 
 new Vue({
   router,
