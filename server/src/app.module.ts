@@ -48,15 +48,7 @@ import { ServiceController } from './controllers/service.controller';
 })
 export class AppModule {
     async configure(consumer: MiddlewareConsumer) {
-        await this.setEntityConnections();
         consumer.apply(AuthMiddleware)
             .forRoutes({path: "*", method: RequestMethod.ALL});
-    }
-
-    async setEntityConnections() {
-        const connection = await getConnection();
-        connection.entityMetadatas.forEach(entity => {
-            (entity.target as any).useConnection(connection);
-        })
     }
 }
