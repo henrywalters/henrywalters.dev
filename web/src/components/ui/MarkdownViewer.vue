@@ -1,5 +1,5 @@
 <template>
-    <vue-markdown ref="editor" :source="value"></vue-markdown>
+    <vue-markdown ref="editor" :source="value" class="markdown"></vue-markdown>
 </template>
 
 <script lang="ts">
@@ -26,21 +26,23 @@ export default class MarkdownViewer extends Vue {
 
 <style lang="scss">
 
+    .markdown {
+        img {
+            max-width: 90%;
+            height: auto;
+            width: auto\9; /* ie8 */
+            display: block;
+            margin: 0 auto !important;
+        }
 
-    img {
-        max-height: 500px !important;
-        width: auto;
-        display: block;
-        margin: 0 auto !important;
-    }
+        ul {
+            font-size: 16px;
+        }
 
-    ul {
-        font-size: 16px;
-    }
-
-    p {
-        font-size: 20px;
-        font-family: Helvetica, Arial, sans-serif;
+        p {
+            font-size: 20px;
+            font-family: Helvetica, Arial, sans-serif;
+        }
     }
 
 </style>

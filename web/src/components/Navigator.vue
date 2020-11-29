@@ -1,12 +1,13 @@
 <template>
     <div class="container">
-        <div class="navigator primary-font w-100 row">
+        <div class="navigator primary-font w-100 row" @mouseleave="cleanup">
             <span v-for="(item, i) in menuItems" :key="i" v-if="canShow(item)">
                 <a 
                     class="navigator-item" 
                     v-if="canShow(item) && !item.children" 
                     v-bind:href="item.link" 
-                    @click.prevent="goto(item)" 
+                    @click.prevent="goto(item)"
+                    @mouseenter="cleanup"
                     :class="{'active': item.active}"
                     
                 >{{item.label}}</a>
@@ -96,6 +97,7 @@ export default class Navigator extends Vue {
     private cleanup(e: any) {
         if (this.toggledItem) {
             if (e.toElement.classList.value.indexOf('dropdown') === -1) {
+                console.log("Clean up");
                 this.toggledItem.toggled = false;
                 this.toggledItem = void 0;
                 this.$forceUpdate();
