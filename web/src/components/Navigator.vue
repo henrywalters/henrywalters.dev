@@ -16,10 +16,11 @@
                         href="#"
                         @mouseover="toggleItem(item)"
                         @click.prevent="toggleItem(item)"
+                        @mouseleave="cleanup"
                         :class="{'active': item.active}"
                     >{{item.label}}</a>
 
-                    <div class="dropdown-content" :class="{visible: item.toggled}">
+                    <div class="dropdown-content" :class="{visible: item.toggled}" @mouseleave="cleanup">
                         <span v-for="(child, j) in item.children" :key="i + '-' + j">
                             <a
                                 class="dropdown-link" 
@@ -92,6 +93,16 @@ export default class Navigator extends Vue {
         { label: "Admin", link: "/admin", active: false, privilege: "ADMIN" },
     ]
 
+    private cleanup(e: any) {
+        if (this.toggledItem) {
+            if (e.toElement.classList.value.indexOf('dropdown') === -1) {
+                this.toggledItem.toggled = false;
+                this.toggledItem = void 0;
+                this.$forceUpdate();
+            }
+        }
+    }
+
     private getItem(path: string): IMenuItem | undefined {
         for (const item of this.menuItems) {
             if (item.link === path) {
@@ -113,17 +124,6 @@ export default class Navigator extends Vue {
 
     private async created() {
         this.tracking = new TrackingService();
-
-        document.addEventListener('mousemove', (e) => {
-            // @ts-ignore
-            if (e.target.classList.value.indexOf('dropdown') === -1 ) {
-                if (this.toggledItem) {
-                    this.toggledItem.toggled = false;
-                    this.toggledItem = void 0;
-                    this.$forceUpdate();
-                }
-            }
-        })
 
         for (let i = 0; i < this.menuItems.length; i++) {
             this.menuItems[i].toggled = false;
@@ -159,7 +159,6 @@ export default class Navigator extends Vue {
         document.title = "Henry Walters" + (this.currentRoute.name === "Home" ? "" : " - " + currentRoute.name);
         if (this.currentItem) {
             this.currentItem.active = true;
-            console.log(this.currentItem.link);
         }
         
         this.tracking.trackPageVisit(currentRoute.name as string,this.$route.query.src ? this.$route.query.src as string : void 0);
@@ -172,7 +171,6 @@ export default class Navigator extends Vue {
     }
 
     private goto(item: IMenuItem) {
-        console.log(this.currentItem, item.link);
 
         if (item.parent) {
             item.parent.toggled = false;
@@ -247,7 +245,7 @@ export default class Navigator extends Vue {
         min-width: 300px;
         
         // box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
-        z-index: 1;
+        z-index: 1000;
         text-align: left;
         border: 2px solid black;
         border-radius: 2px;
@@ -259,6 +257,7 @@ export default class Navigator extends Vue {
         padding: 12px 16px;
         text-decoration: none;
         display: block;
+        z-index: 1000;
     }
 
     .dropdown-link:hover {

@@ -87,7 +87,6 @@
 
             this.file = e.target.files[0];
             this.imagePreview = URL.createObjectURL(this.file);
-            console.log(this.imagePreview);
             this.clearRequest();
             this.request.name = this.file.name;
         }

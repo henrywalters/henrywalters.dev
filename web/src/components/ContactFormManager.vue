@@ -28,7 +28,6 @@
 
         private async getList() {
             const res = await this.service.get();
-            console.log(res);
             if (res.success) this.list = res.result;
         }
 

@@ -81,7 +81,6 @@ export default class UserFileManager extends Mixins(NotificationMixin) {
         const res = await this.service.get();
         if (res.success) {
             this.list = res.result;
-            console.log(this.list);
         }
     }
 

@@ -24,10 +24,6 @@ export default class ServiceDisplay extends Vue {
 
     @Prop()
     public service!: IService;
-
-    private created() {
-        console.log(this.service);
-    }
 }
 
 </script>

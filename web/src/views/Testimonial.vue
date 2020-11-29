@@ -53,10 +53,5 @@
             this.state = this.States.INITIALIZED;
             this.$forceUpdate();
         }
-
-        @Watch('state')
-        public stateChange() {
-            console.log(this.state);
-        }
     }
 </script>

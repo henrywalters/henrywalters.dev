@@ -61,8 +61,6 @@ export default class SiteMetrics extends Vue {
                 })
             })
 
-            console.log(new Date(this.summary.timeseries[0].date).getTime());
-
             this.chartOptions.series.push({
                 name: 'Unique Daily Visitors',
                 data: this.summary.timeseries.map(x => {
@@ -70,8 +68,6 @@ export default class SiteMetrics extends Vue {
                 })
             })
         }
-
-        console.log(this.summary);
     }
 }
 

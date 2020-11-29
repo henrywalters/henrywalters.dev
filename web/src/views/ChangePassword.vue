@@ -56,7 +56,6 @@
                 this.$router.back();
             }
             this.initialized = true;
-            console.log(document.referrer);
         }
 
         private async submit() {

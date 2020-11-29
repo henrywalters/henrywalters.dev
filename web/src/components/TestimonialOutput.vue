@@ -36,7 +36,6 @@
         private async getList() {
             const res = await this.service.getSubmitted();
             if (res.success) this.list = res.result;
-            console.log(this.list);
         }
 
         private async created() {

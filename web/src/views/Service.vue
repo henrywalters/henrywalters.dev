@@ -1,7 +1,10 @@
 <template>
-    <div class="container mt-4" v-if="initialized">
-        <service-form v-if="state === States.CREATING || state === States.EDITING" :service="item" />
-        <service-display :service="item" v-else />
+    <div class="container mt-4">
+        <loader v-if="loading" />
+        <div v-if="initialized">
+            <service-form v-if="state === States.CREATING || state === States.EDITING" :service="item" />
+            <service-display :service="item" v-else />
+        </div>
     </div>
 </template>
 
@@ -29,6 +32,7 @@ export default class Service extends Mixins(AuthMixin) {
     private item!: IService;
     private service!: ServiceService;
     private initialized: boolean = false;
+    private loading: boolean = false;
 
     private state: State = State.VIEWING;
 
@@ -47,13 +51,14 @@ export default class Service extends Mixins(AuthMixin) {
 
     private async init() {
         this.service = new ServiceService();
+        this.loading = true;
+        this.initialized = false;
 
         if (!this.$route.params.id) {
             await this.authorizeFor('ADMIN');
             this.state = State.CREATING;
         } else {
             const res = await this.service.getOne(this.$route.params.id);
-            console.log(res);
             if (res.success) {
                 this.item = res.result;
 
@@ -65,11 +70,9 @@ export default class Service extends Mixins(AuthMixin) {
                 this.$router.replace({name: 'PageNotFound'})
             }
         }
-
+        this.loading = false;
         this.initialized = true;
         this.$forceUpdate();
-
-        console.log(this.state);
     }
 }
 

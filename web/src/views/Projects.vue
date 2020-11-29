@@ -53,10 +53,8 @@
             this.playerWidth = Math.min((this.$refs["container"] as any).clientWidth - 0.20 * document.body.clientWidth, 620);
             this.playerHeight = this.playerWidth * 0.75;
             this.projectService = new ProjectService();
-            console.log(this.playerWidth, this.playerHeight);
             const res = await this.projectService.get();
             if (res.success) this.projects = res.result;
-            console.log(this.projects);
             this.initialized = true;
         }
     }

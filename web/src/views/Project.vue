@@ -159,7 +159,6 @@
                     thumbnailId: "",
                 }
             }
-            console.log(this.project);
             this.initialized = true;
         }
 
@@ -177,7 +176,6 @@
         }
 
         private removeLanguage(lang: string) {
-            console.log(lang, this.project.languages.indexOf(lang));
             this.project.languages.splice(this.project.languages.indexOf(lang), 1);
             this.$forceUpdate();
         }

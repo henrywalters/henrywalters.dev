@@ -19,9 +19,7 @@ export default class MarkdownViewer extends Vue {
 
     @Watch('value')
     private valueChange() {
-        console.log(this.value);
         this.$forceUpdate();
-        console.log(this.$refs.editor);
     }
 }
 </script>
