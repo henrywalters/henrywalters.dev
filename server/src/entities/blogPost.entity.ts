@@ -1,7 +1,11 @@
+import { Res } from "@nestjs/common";
+import { CreateBlogPostDto, UpdateBlogPostDto } from "src/dtos/blogPost.dto";
+import { ResponseDto } from "src/dtos/response.dto";
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { runInThisContext } from "vm";
 import { Category } from "./category.entity";
 import { CleanedUser, User } from "./user.entity";
+import { UserFile } from "./userFile.entity";
 
 export interface ImagePreview {
     src: string;
@@ -19,20 +23,43 @@ export interface BlogPostReadOnly {
     slug: string;
     title: string;
     content: string;
-    author: CleanedUser;
+    authorName: string;
     publishedOn: Date;
     lastUpdate: Date;
     categories: Category[];
 }
 
+const MD_IMG_RE = /!\[(.*?)\]\((.*?)\)/g;
+const MD_IMG_ALT_RE = /!\[(.*?)\]/;
+const MD_IMG_URL_RE = /\((.*?)\)/;
+
+const MD_HEADER_RE = /#.*\r/g;
+const MD_NEW_LINE_RE = /[\r\n]/g;
+
+const MD_PREVIEW_REMOVALS = [
+    MD_IMG_RE,
+    MD_HEADER_RE,
+    MD_NEW_LINE_RE,
+    "<br>",
+]
+
+const PREVIEW_LENGTH = 120;
+
+function extractPreview(content: string): string {
+    for (const removal of MD_PREVIEW_REMOVALS) {
+        content = content.replace(removal, "");
+    }
+    return content.slice(0, PREVIEW_LENGTH);
+}
+
 function extractImagePreviews(content: string): ImagePreview[] {
-    const re = /!\[(.*?)\]\((.*?)\)/;
-    return content.match(re).map(x => {
+    const matches = content.match(MD_IMG_RE);
+    return !matches ? [] : matches.map(image => {
         return {
-        src: x[2],
-        alt: x[1]
+            src: image.match(MD_IMG_URL_RE)[1],
+            alt: image.match(MD_IMG_ALT_RE)[1],
         }
-    });
+    })
 }
 
 @Entity()
@@ -52,16 +79,19 @@ export class BlogPost extends BaseEntity {
     @Column({type: "bool", default: false})
     public live: boolean;
 
-    @ManyToOne(() => User)
+    @Column({type: "datetime", nullable: true})
+    public publishedAt: Date;
+
+    @ManyToOne(() => User, {eager: true})
     public author: User;
 
-    @ManyToMany(() => User)
+    @ManyToMany(() => User, {eager: true})
     @JoinTable({
         name: "blog_post_users_allowed_to_edit",
     })
     public allowedToEdit: User[];
 
-    @ManyToMany(() => Category)
+    @ManyToMany(() => Category, {eager: true})
     @JoinTable({
         name: "blog_post_categories"
     })
@@ -82,7 +112,7 @@ export class BlogPost extends BaseEntity {
         return {
             slug: this.slug,
             title: this.title,
-            preview: this.content.slice(0, 120),
+            preview: extractPreview(this.content),
             imagePreview: this.imagePreview,
         }
     }
@@ -92,10 +122,64 @@ export class BlogPost extends BaseEntity {
             slug: this.slug,
             title: this.title,
             content: this.content,
-            author: this.author.cleaned(),
+            authorName: this.author.fullName,
             publishedOn: this.createdAt,
             lastUpdate: this.updatedAt,
             categories: this.categories,
         }
+    }
+
+    public static async createFromRequest(author: User, req: CreateBlogPostDto) {
+        if (await this.findBySlug(req.slug)) {
+            return ResponseDto.Error({slug: 'Blog post with this slug already exists'})
+        }
+
+        const post = new BlogPost();
+        post.author = author;
+        post.slug = req.slug;
+        post.title = req.title;
+        post.content = "";
+        post.categories = [];
+        post.allowedToEdit = [];
+        await post.save();
+
+        return ResponseDto.Success(post.readOnly());
+    }
+
+    public async updateFromRequest(req: UpdateBlogPostDto) {
+        const otherPost = await BlogPost.findBySlug(req.slug);
+        if (otherPost && otherPost.id !== this.id) {
+            return ResponseDto.Error({slug: 'Blog post with this slug already exists'})
+        }
+
+        this.slug = req.slug;
+        this.title = req.title;
+        this.content = req.content;
+        this.allowedToEdit = await User.findByIds(req.usersAllowedToEditIds);
+        this.categories = await Category.findByIds(req.categoryIds);
+        await this.save();
+
+        return ResponseDto.Success(this.readOnly());
+    }
+
+    public async canEdit(user: User | CleanedUser): Promise<boolean> {
+        return this.author.id === user.id || this.allowedToEdit.filter(x => x.id === user.id).length > 0;
+    }
+
+    public static async findBySlug(slug: string): Promise<BlogPost> {
+        return await BlogPost.findOne({
+            where: {
+                slug,
+            }
+        })
+    }
+
+    public static async findByIdOrSlug(idOrSlug: string): Promise<BlogPost> {
+        return await BlogPost.findOneOrFail({
+            where: [
+                { id: idOrSlug },
+                { slug: idOrSlug },
+            ]
+        });
     }
 }
