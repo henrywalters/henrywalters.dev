@@ -3,7 +3,7 @@
         <loader v-if="loading" />
         <div v-if="initialized">
             <service-form v-if="state === States.CREATING || state === States.EDITING" :service="item" />
-            <service-display :service="item" v-else />
+            <service-display :service="item" class="article" v-else />
         </div>
     </div>
 </template>

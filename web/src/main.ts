@@ -9,6 +9,8 @@ import Notifcations from "vue-notification";
 import Loader from "@/components/ui/Loader.vue";
 import Icons from "./services/icons.service";
 import CodeHighlight from "./directives/codeHighlight.directive";
+// @ts-ignore
+import VueLuxon from "vue-luxon";
 
 Icons.Initialize();
 
@@ -21,6 +23,7 @@ Vue.config.productionTip = false
 
 Vue.use(Notifcations);
 Vue.use(CodeHighlight);
+Vue.use(VueLuxon);
 
 new Vue({
   router,

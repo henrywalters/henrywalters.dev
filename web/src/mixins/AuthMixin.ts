@@ -9,6 +9,7 @@ export default class AuthMixin extends Vue {
 
     public get PRIVILEGES(): Record<string, string> {
         return {
+            BLOG_WRITE: "BLOG_WRITE",
             FORUM_READ: "FORUM_READ",
             FORUM_WRITE: "FORUM_WRITE",
             ADMIN: "ADMIN",
@@ -17,6 +18,25 @@ export default class AuthMixin extends Vue {
 
     public unauthorized() {
         this.$router.replace({name: 'Unauthorized'});
+    }
+
+    public async getSelf() {
+        const service = new AuthService();
+        const res = await service.self();
+        if (res.success) {
+            return res.result;
+        }
+        return void 0;
+    }
+
+    public async hasPrivilege(privilege: string) {
+        const service = new AuthService();
+        const res = await service.self();
+        if (!res.success) {
+            return false;
+        }
+
+        return res.result.privileges.indexOf(privilege) !== -1;
     }
 
     public async authorizeFor(privilege: string) {

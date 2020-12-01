@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container-lg">
         <div class="navigator primary-font w-100 row" @mouseleave="cleanup">
             <span v-for="(item, i) in menuItems" :key="i" v-if="canShow(item)">
                 <a 
@@ -88,7 +88,7 @@ export default class Navigator extends Vue {
                 return [];
             }
         }},
-        
+        { label: "Blog", link: "/blog", active: false },
         { label: "About", link: "/about", active: false },
         { label: "Contact", link: "/contact", active: false },
         { label: "Admin", link: "/admin", active: false, privilege: "ADMIN" },
@@ -210,16 +210,17 @@ export default class Navigator extends Vue {
 
     @import "@/assets/theme.scss";
 
-    $nav-padding: 10px;
+    $nav-padding: 15px;
 
     .navigator {
         display: inline-flex;
-        justify-content: space-evenly;
+        justify-content: space-between;
         padding: $nav-padding / 2;
     }
 
     .navigator-item {
-        font-size: 20px;
+        min-width: 200px;
+        font-size: 22px;
         margin: $nav-padding / 2;
     }
 

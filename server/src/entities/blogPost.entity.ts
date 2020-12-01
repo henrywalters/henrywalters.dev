@@ -13,6 +13,7 @@ export interface ImagePreview {
 }
 
 export interface BlogPostListing {
+    live: boolean;
     slug: string;
     title: string;
     preview: string;
@@ -20,20 +21,33 @@ export interface BlogPostListing {
 }
 
 export interface BlogPostReadOnly {
+    live: boolean;
     slug: string;
     title: string;
     content: string;
     authorName: string;
-    publishedOn: Date;
+    publishedAt: Date;
     lastUpdate: Date;
     categories: Category[];
+}
+
+export interface BlogPostFull {
+    id: string;
+    slug: string;
+    title: string;
+    content: string;
+    author: CleanedUser;
+    publishedAt: Date;
+    lastUpdate: Date;
+    categories: Category[];
+    allowedToEdit: CleanedUser[];
 }
 
 const MD_IMG_RE = /!\[(.*?)\]\((.*?)\)/g;
 const MD_IMG_ALT_RE = /!\[(.*?)\]/;
 const MD_IMG_URL_RE = /\((.*?)\)/;
 
-const MD_HEADER_RE = /#.*\r/g;
+const MD_HEADER_RE = /#.*[\r|\n]/g;
 const MD_NEW_LINE_RE = /[\r\n]/g;
 
 const MD_PREVIEW_REMOVALS = [
@@ -110,6 +124,7 @@ export class BlogPost extends BaseEntity {
 
     public cleaned(): BlogPostListing {
         return {
+            live: this.live,
             slug: this.slug,
             title: this.title,
             preview: extractPreview(this.content),
@@ -119,11 +134,12 @@ export class BlogPost extends BaseEntity {
 
     public readOnly(): BlogPostReadOnly {
         return {
+            live: this.live,
             slug: this.slug,
             title: this.title,
             content: this.content,
             authorName: this.author.fullName,
-            publishedOn: this.createdAt,
+            publishedAt: this.publishedAt,
             lastUpdate: this.updatedAt,
             categories: this.categories,
         }

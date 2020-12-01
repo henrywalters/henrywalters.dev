@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" class="article">
             <div class="header">
                 <h3 class="primary-font text-center">Contact Me</h3>
                 <div class="header-body secondary-font" v-if="!submitted">
