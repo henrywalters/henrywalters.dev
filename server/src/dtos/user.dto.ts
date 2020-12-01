@@ -1,4 +1,4 @@
-import {Contains, IsEmail, IsNotEmpty, IsString, MinLength} from "class-validator";
+import {Contains, IsArray, IsBoolean, IsEmail, IsNotEmpty, IsString, MinLength} from "class-validator";
 
 export class UserDto {
     @IsString()
@@ -30,4 +30,12 @@ export class LoginDto {
 export class ChangePasswordDto {
     @IsString()
     public password: string;
+}
+
+export class UpdateUserDto {
+    @IsBoolean()
+    public active: boolean;
+
+    @IsArray()
+    public privileges: string[];
 }

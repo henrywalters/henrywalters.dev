@@ -1,6 +1,7 @@
 import { User } from './auth.service';
 import BaseService, { HashMap } from './base.service';
 import { ICategory } from './category.service';
+import { MinimalUser } from './user.service';
 
 
 export interface ImagePreview {
@@ -34,7 +35,7 @@ export interface BlogPostFull {
     publishedAt: Date;
     lastUpdate: Date;
     categories: ICategory[];
-    allowedToEdit: User[];
+    allowedToEdit: MinimalUser[];
 }
 
 export interface CreateBlogPostRequest {

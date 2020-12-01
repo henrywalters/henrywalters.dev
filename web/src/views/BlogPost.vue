@@ -32,16 +32,42 @@
                 </div>
                 <div class="col-md-4">
                     <h3 class="primary-font text-center">Categories</h3>
-                    <ul class="list-group">
+                    <div class="row">
+                        <div class="col-8">
+                            <label>Select Category</label>
+                            <select class="form-control" v-model="selectedCategory">
+                                <option :value="void 0"></option>
+                                <option v-for="(cat, i) in categories" :key="i" :value="cat">{{cat.category}}</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <button class="form-control btn btn-primary " style="margin-top: 31px" @click="addCategory">Add</button>
+                        </div>
+                    </div>
+                    <ul class="list-group mt-3">
                         <li class="list-group-item" v-for="(category, i) in request.categories" :key="i">
                             {{category.category}}
+                            <button class="btn btn-danger float-right" @click="removeCategory(category)">X</button>
                         </li>
                     </ul>
 
                     <h3 class="primary-font text-center mt-5">Allowed to Edit</h3>
-                    <ul class="list-group">
+                    <div class="row">
+                        <div class="col-8">
+                            <label>Select User</label>
+                            <select class="form-control" v-model="selectedUser">
+                                <option :value="void 0"></option>
+                                <option v-for="(user, i) in users" :key="i" :value="user">{{user.firstName}} {{user.lastName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <button class="form-control btn btn-primary " style="margin-top: 31px" @click="addUser">Add</button>
+                        </div>
+                    </div>
+                    <ul class="list-group mt-3">
                         <li class="list-group-item" v-for="(user, i) in request.usersAllowedToEdit" :key="i">
                             {{user.firstName}} {{user.lastName}}
+                            <button class="btn btn-danger float-right" @click="removeUser(user)">X</button>
                         </li>
                     </ul>
                 </div>
@@ -61,8 +87,10 @@
     import FormGroup from "@/components/ui/forms/FormGroup.vue";
     import {slugify} from "../services/slug.service";
     import { HashMap } from "../services/base.service";
-import { ICategory } from "../services/category.service";
-import NotificationMixin from "../mixins/NotificationMixin";
+    import CategoryService, { ICategory } from "../services/category.service";
+    import NotificationMixin from "../mixins/NotificationMixin";
+    import {UserService, MinimalUser} from "../services/user.service";
+    import Set from "../structures/set.structure";
 
     interface BlogPostRequest {
     title: string;
@@ -94,6 +122,12 @@ import NotificationMixin from "../mixins/NotificationMixin";
 
         private loading: boolean = false;
 
+        private users: MinimalUser[] = [];
+        private categories: ICategory[] = [];
+
+        private selectedUser: MinimalUser | null = null;
+        private selectedCategory: ICategory | null = null;
+
         private canEdit() {
             if (!this.user) return false;
             if (!("author" in this.post)) return false;
@@ -104,6 +138,50 @@ import NotificationMixin from "../mixins/NotificationMixin";
 
         private updateSlug() {
             this.request.slug = slugify(this.request.title);
+            this.$forceUpdate();
+        }
+
+        private async loadUsers() {
+            const userService = new UserService();
+            const res = await userService.get();
+            if (res.success) this.users = res.result;
+            console.log(this.users);
+        }
+
+        private async loadCategories() {
+            const categoryService = new CategoryService();
+            const res = await categoryService.get();
+            if (res.success) this.categories = res.result;
+            console.log(this.categories);
+        }
+
+        private addCategory() {
+            const catSet = new Set<ICategory>((cat) => cat.id, this.request.categories);
+            catSet.push(this.selectedCategory);
+            this.selectedCategory = null;
+            this.request.categories = catSet.self;
+            this.$forceUpdate();
+        }
+
+        private removeCategory(category: ICategory) {
+            const catSet = new Set<ICategory>((cat) => cat.id, this.request.categories);
+            catSet.remove(category);
+            this.request.categories = catSet.self;
+            this.$forceUpdate();
+        }
+
+        private addUser() {
+            const userSet = new Set<MinimalUser>((user) => user.id, this.request.usersAllowedToEdit);
+            userSet.push(this.selectedUser);
+            this.selectedUser = null;
+            this.request.usersAllowedToEdit = userSet.self;
+            this.$forceUpdate();
+        }
+
+        private removeUser(user: MinimalUser) {
+            const userSet = new Set<MinimalUser>((user) => user.id, this.request.usersAllowedToEdit);
+            userSet.remove(user);
+            this.request.usersAllowedToEdit = userSet.self;
             this.$forceUpdate();
         }
 
@@ -135,6 +213,8 @@ import NotificationMixin from "../mixins/NotificationMixin";
                         this.$router.replace({name: 'Unauthorized'});
                     }
                     this.initRequest();
+                    this.loadUsers();
+                    this.loadCategories();
                 }
 
             } else {

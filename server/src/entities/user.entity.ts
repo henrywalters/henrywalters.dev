@@ -2,6 +2,7 @@ import {BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn} fr
 import {Privileges} from "../constants/privileges.constants";
 
 export type CleanedUser = Pick<User, "id" | "firstName" | "lastName" | "email" | "privileges">;
+export type MinimalUser = Pick<User, "id" | "firstName" | "lastName">;
 
 @Entity()
 export class User extends BaseEntity {
@@ -36,13 +37,30 @@ export class User extends BaseEntity {
         return this.firstName + " " + this.lastName;
     }
 
+    public hasPrivilege(privilege: Privileges): boolean {
+        return this.privileges.indexOf(privilege) !== -1;
+    }
+
+    public static async getActive() {
+        return await User.find({where: {active: true}});
+    }
+
     public static async findOneByEmail(email: string) {
         return await this.getRepository()
             .createQueryBuilder('user')
             .addSelect('user.password')
             .addSelect('user.verified')
             .where('email = :email', {email})
+            .andWhere('active = true')
             .getOne();
+    }
+
+    public minimal(): MinimalUser {
+        return {
+            id: this.id,
+            firstName: this.firstName,
+            lastName: this.lastName,
+        };
     }
 
     public cleaned(): CleanedUser {

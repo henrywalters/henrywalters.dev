@@ -18,6 +18,7 @@ import {UserFileController} from "./controllers/userFile.controller";
 import { TestimonialController } from './controllers/testimonial.controller';
 import { ServiceController } from './controllers/service.controller';
 import { BlogController } from './controllers/blog.controller';
+import { UserController } from './controllers/user.controller';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { BlogController } from './controllers/blog.controller';
       UserFileController,
       ServiceController,
       BlogController,
+      UserController,
     ],
   providers: [AppService, TokenService, UserFileService],
 })
