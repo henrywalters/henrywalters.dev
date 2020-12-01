@@ -96,7 +96,7 @@
     title: string;
     slug: string;
     content: string;
-    usersAllowedToEdit: User[];
+    usersAllowedToEdit: MinimalUser[];
     categories: ICategory[];
 }
 
@@ -156,11 +156,13 @@
         }
 
         private addCategory() {
-            const catSet = new Set<ICategory>((cat) => cat.id, this.request.categories);
-            catSet.push(this.selectedCategory);
-            this.selectedCategory = null;
-            this.request.categories = catSet.self;
-            this.$forceUpdate();
+            if (this.selectedCategory) {
+                const catSet = new Set<ICategory>((cat) => cat.id, this.request.categories);
+                catSet.push(this.selectedCategory);
+                this.selectedCategory = null;
+                this.request.categories = catSet.self;
+                this.$forceUpdate();
+            }
         }
 
         private removeCategory(category: ICategory) {
@@ -171,11 +173,13 @@
         }
 
         private addUser() {
-            const userSet = new Set<MinimalUser>((user) => user.id, this.request.usersAllowedToEdit);
-            userSet.push(this.selectedUser);
-            this.selectedUser = null;
-            this.request.usersAllowedToEdit = userSet.self;
-            this.$forceUpdate();
+            if (this.selectedUser) {
+                const userSet = new Set<MinimalUser>((user) => user.id, this.request.usersAllowedToEdit);
+                userSet.push(this.selectedUser);
+                this.selectedUser = null;
+                this.request.usersAllowedToEdit = userSet.self;
+                this.$forceUpdate();
+            }
         }
 
         private removeUser(user: MinimalUser) {
