@@ -1,13 +1,16 @@
 <template> 
   <div>
       <div class="card mb-3" v-for="(item, i) in list" :key="i">
-          <div class="card-body row">
-            <div class="col-3" v-if="item.imagePreview">
+          <div class="row no-gutters">
+            <div class="col-12 col-sm-4  mt-sm-4 pl-sm-3 mb-sm-4" v-if="item.imagePreview">
                 <img :src="item.imagePreview.src" :alt="item.imagePreview.alt" />
             </div>
-            <div class="col-9">
-                <h4><router-link class="link-black" :to="{name: 'BlogPost', params: {id: item.slug}}">{{item.title}}</router-link></h4>
-                <p>{{item.preview}}... <router-link :to="{name: 'BlogPost', params: {id: item.slug}}">Read More</router-link></p>
+            <div class="col-12 col-sm-8">
+                <div class="card-body">
+                    <h4><router-link class="link-black" :to="{name: 'BlogPost', params: {id: item.slug}}">{{item.title}}</router-link></h4>
+                    <p class='author'>{{item.authorName}} | <i>{{item.publishedAt | luxon}}</i></p>
+                    <p>{{item.preview}}... <router-link :to="{name: 'BlogPost', params: {id: item.slug}}">Read More</router-link></p>
+                </div>
             </div>
           </div>
       </div>

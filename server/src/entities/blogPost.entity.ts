@@ -13,6 +13,8 @@ export interface ImagePreview {
 }
 
 export interface BlogPostListing {
+    publishedAt: Date;
+    authorName: string;
     live: boolean;
     slug: string;
     title: string;
@@ -57,7 +59,7 @@ const MD_PREVIEW_REMOVALS = [
     "<br>",
 ]
 
-const PREVIEW_LENGTH = 120;
+const PREVIEW_LENGTH = 160;
 
 function extractPreview(content: string): string {
     for (const removal of MD_PREVIEW_REMOVALS) {
@@ -124,6 +126,8 @@ export class BlogPost extends BaseEntity {
 
     public cleaned(): BlogPostListing {
         return {
+            publishedAt: this.publishedAt,
+            authorName: this.author.fullName,
             live: this.live,
             slug: this.slug,
             title: this.title,
