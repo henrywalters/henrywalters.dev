@@ -10,7 +10,7 @@ export class ServiceController {
     
     @Get()
     public async getServices() {
-        return ResponseDto.Success(await Service.find());
+        return ResponseDto.Success((await Service.find()).map(s => s.cleaned()));
     }
 
     @Get(":id")

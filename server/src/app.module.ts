@@ -17,6 +17,7 @@ import {UserFileService} from "./services/file.service";
 import {UserFileController} from "./controllers/userFile.controller";
 import { TestimonialController } from './controllers/testimonial.controller';
 import { ServiceController } from './controllers/service.controller';
+import { BlogController } from './controllers/blog.controller';
 
 @Module({
   imports: [
@@ -43,20 +44,13 @@ import { ServiceController } from './controllers/service.controller';
       ProjectController, 
       UserFileController,
       ServiceController,
+      BlogController,
     ],
   providers: [AppService, TokenService, UserFileService],
 })
 export class AppModule {
     async configure(consumer: MiddlewareConsumer) {
-        await this.setEntityConnections();
         consumer.apply(AuthMiddleware)
             .forRoutes({path: "*", method: RequestMethod.ALL});
-    }
-
-    async setEntityConnections() {
-        const connection = await getConnection();
-        connection.entityMetadatas.forEach(entity => {
-            (entity.target as any).useConnection(connection);
-        })
     }
 }

@@ -31,24 +31,35 @@ export default class MarkdownViewer extends Vue {
             border-bottom: 0px !important;
         }
 
+        $h1: 40px;
+        $h2: 35px;
+        $h3: 30px;
+        $h4: 25px;
+        $h5: 20px;
+
         h1 {
-            font-size: 40px !important;
+            font-size: $h1 !important;
+            line-height: $h1 !important;
         }
 
         h2 {
-            font-size: 35px !important;
+            font-size: $h2 !important;
+            line-height: $h2 !important;
         }
 
         h3 {
-            font-size: 30px !important;
+            font-size: $h3 !important;
+            line-height: $h3 !important;
         }
 
         h4 {
-            font-size: 25px !important;
+            font-size: $h4 !important;
+            line-height: $h4 !important;
         }
 
         h5 {
-            font-size: 20px !important;
+            font-size: $h5 !important;
+            line-height: $h5 !important;
         }
 
         img {

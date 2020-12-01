@@ -99,7 +99,9 @@ export class AuthController {
 
     @Post("login")
     public async login(@Body() req: LoginDto) {
-        const user = await User.findOne({ where: { email: req.email }});
+        const user = await User.findOneByEmail(req.email);
+
+        console.log(user);
 
         if (!user || !bcrypt.compareSync(req.password, user.password)) {
             return ResponseDto.Error("Invalid Email / Password");

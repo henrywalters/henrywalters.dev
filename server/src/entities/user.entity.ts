@@ -23,14 +23,27 @@ export class User extends BaseEntity {
     @Column()
     public email: string;
 
-    @Column()
+    @Column({select: false})
     public password: string;
 
     @Column({type: "simple-array"})
     public privileges: string[];
 
-    @Column({type: "bool", default: false})
+    @Column({type: "bool", default: false, select: false})
     public verified: boolean;
+
+    public get fullName(): string {
+        return this.firstName + " " + this.lastName;
+    }
+
+    public static async findOneByEmail(email: string) {
+        return await this.getRepository()
+            .createQueryBuilder('user')
+            .addSelect('user.password')
+            .addSelect('user.verified')
+            .where('email = :email', {email})
+            .getOne();
+    }
 
     public cleaned(): CleanedUser {
         return {

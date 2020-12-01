@@ -21,6 +21,16 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
+    path: '/blog',
+    name: 'Blog',
+    component: () => import(/* webpackChunkName: "blog" */ '../views/Blog.vue')
+  },
+  {
+    path: '/blog/:id',
+    name: 'BlogPost',
+    component: () => import(/* webpackChunkName: "blogPost" */ '../views/BlogPost.vue')
+  },
+  {
     path: '/projects',
     name: 'Projects',
     component: () => import(/* webpackChunkName: "projects" */ '../views/Projects.vue')
@@ -34,16 +44,6 @@ const routes: Array<RouteConfig> = [
     path: '/tools',
     name: 'Tools',
     component: () => import(/* webpackChunkName: "tools" */ '../views/Tools.vue')
-  },
-  {
-    path: '/forum',
-    name: 'Forum',
-    component: () => import(/* webpackChunkName: "forum" */ '../views/Forum.vue')
-  },
-  {
-    path: '/forum/post',
-    name: 'ForumPost',
-    component: () => import(/* webpackChunkName: "forumPost" */ '../views/ForumPost.vue')
   },
   {
     path: '/contact',
