@@ -84,7 +84,11 @@ export default class MarkdownViewer extends Vue {
         }
 
         code {
-            font-size: 18px;
+            font-size: 16px;
+        } 
+
+        pre code {
+            word-wrap: normal !important;
         }
 
         ol > li::before {
