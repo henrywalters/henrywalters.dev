@@ -1,5 +1,6 @@
 import {Body, Controller, Header, Headers, Ip, Param, Post, Get, UseGuards} from "@nestjs/common";
 import { Privileges } from "src/constants/privileges.constants";
+import { TrackedLink } from "src/entities/trackedLink.entity";
 import { AuthenticateFor } from "src/guards/authenticateFor.guard";
 import { Db } from "typeorm";
 import {ApiResponse, ResponseDto} from "../dtos/response.dto";
@@ -9,6 +10,7 @@ const axios = require('axios').default;
 
 interface PageVisitRequest {
     page: string;
+    link: string;
     source?: string;
 }
 
@@ -35,6 +37,14 @@ export class TrackingController {
             }
            
             await pageVisit.save();
+
+            const trackedLink = await TrackedLink.findOneByLinkAndSource(req.link, req.source);
+            if (trackedLink) {
+                trackedLink.views++;
+                trackedLink.viewed = true;
+                await trackedLink.save();
+            }
+
             return ResponseDto.Success(void 0);
         } catch (e) {
             return ResponseDto.Error(e.message);

@@ -21,11 +21,12 @@ export class TrackingService extends BaseService<void, void, void> {
         super("Tracking Service");
     }
 
-    public async trackPageVisit(page: string, source?: string): Promise<void> {
+    public async trackPageVisit(page: string, link: string, source?: string): Promise<void> {
         try {
             await this.http.post("tracking/page-visit", {
                 page,
                 source,
+                link,
             });
             return void 0;
         } catch (e) {

@@ -14,6 +14,7 @@
                 <div class="col-lg-7">
                     <service-manager class="mt-3"/>
                     <project-manager class="mt-3"/>
+                    <tracked-link-manager class="mt-3" />
                     <testimonial-manager class="mt-3" />
                 </div>
             </div>
@@ -31,6 +32,7 @@
     import SiteMetrics from "../components/SiteMetrics.vue";
     import ServiceManager from "@/components/ServiceManager.vue";
     import UserFileManager from "@/components/UserFileManager.vue";
+    import TrackedLinkManager from "@/components/TrackedLinkManager.vue";
     import AuthMixin from "../mixins/AuthMixin";
 
     @Component({
@@ -43,6 +45,7 @@
             SiteMetrics,
             ServiceManager,
             UserFileManager,
+            TrackedLinkManager,
         }
     })
     export default class Admin extends Mixins(AuthMixin) {

@@ -41,11 +41,12 @@
 
 <script lang="ts">
 
-    import {Component, Prop, Vue, Watch} from "vue-property-decorator";
+    import {Component, Mixins, Prop, Vue, Watch} from "vue-property-decorator";
     import {Route} from "vue-router";
     import {TrackingService} from "@/services/tracking.service";
     import {User} from "@/services/auth.service";
 import ServiceService from "../services/service.service";
+import ConfigMixin from "../mixins/ConfigMixin";
 
 interface IMenuItem {
     label: string;
@@ -60,7 +61,7 @@ interface IMenuItem {
 @Component({
     name: "Navigator"
 })
-export default class Navigator extends Vue {
+export default class Navigator extends Mixins(ConfigMixin) {
 
     @Prop()
     public user!: User;
@@ -145,7 +146,7 @@ export default class Navigator extends Vue {
         if (this.currentRoute.name === "Home") {
             this.currentItem = this.getItem(this.currentRoute.path);
             if (this.currentItem) this.currentItem.active = true;
-            this.tracking.trackPageVisit("Home", this.$route.query.src ? this.$route.query.src as string : void 0);
+            this.tracking.trackPageVisit("Home", this.getConfig("WEB_ROOT") + this.$route.path, this.$route.query.src ? this.$route.query.src as string : void 0);
         }
     }
 
@@ -162,8 +163,12 @@ export default class Navigator extends Vue {
         if (this.currentItem) {
             this.currentItem.active = true;
         }
-        
-        this.tracking.trackPageVisit(currentRoute.name as string,this.$route.query.src ? this.$route.query.src as string : void 0);
+        console.log("Tracked");
+        console.log(this.$route);
+        this.tracking.trackPageVisit(currentRoute.name as string,
+            this.getConfig("WEB_ROOT") + this.$route.path, 
+            this.$route.query.src ? this.$route.query.src as string : void 0
+        );
     }
 
     private toggleItem(item: IMenuItem) {

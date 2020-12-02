@@ -19,6 +19,7 @@ import { TestimonialController } from './controllers/testimonial.controller';
 import { ServiceController } from './controllers/service.controller';
 import { BlogController } from './controllers/blog.controller';
 import { UserController } from './controllers/user.controller';
+import { TrackedLinkController } from './controllers/trackedLink.controller';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { UserController } from './controllers/user.controller';
       ServiceController,
       BlogController,
       UserController,
+      TrackedLinkController,
     ],
   providers: [AppService, TokenService, UserFileService],
 })
