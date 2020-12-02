@@ -28,14 +28,17 @@ export default class Card extends Vue {
     private opened: boolean = false;
     
     public open() {
+        // @ts-ignore
         $(this.$refs.body).collapse('show');
     }
 
     public close() {
+        // @ts-ignore
         $(this.$refs.body).collapse('hide');
     }
 
     public toggle() {
+        // @ts-ignore
         $(this.$refs.body).collapse('toggle');
         this.opened = !this.opened;
         if (this.opened) this.open();

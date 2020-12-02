@@ -5,12 +5,10 @@
 <script lang="ts">
 import {Vue, Component, Prop, Watch} from "vue-property-decorator";
 import { Viewer } from '@toast-ui/vue-editor';
-import VueMarkdown from "vue-markdown";
 
 @Component({
     components: {
         Viewer,
-        VueMarkdown,
     }
 })
 export default class MarkdownViewer extends Vue {
