@@ -86,7 +86,7 @@ export default class MarkdownViewer extends Vue {
         } 
 
         pre code {
-            word-wrap: normal !important;
+            word-wrap: unset !important;
         }
 
         ol > li::before {
