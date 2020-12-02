@@ -1,12 +1,9 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title primary-font">Contact Forms</h4>
-        </div>
+    <card-collapsible title="Contact Forms">
         <div class="card-body">
             <contact-form-list :list="list"  @delete="deleteSubmission($event)"/>
         </div>
-    </div>
+    </card-collapsible>
 </template>
 
 <script lang="ts">
@@ -15,11 +12,13 @@
     import NotificationMixin from "./../mixins/NotificationMixin";
     import ContactFormList from "@/components/ContactFormList.vue";
     import ContactFormService, { ISubmissionForm } from "../services/contactForm.service";
+    import CardCollapsible from "@/components/ui/CardCollapsible.vue";
 
 
     @Component({
         components: {
             ContactFormList,
+            CardCollapsible
         }
     })
     export default class ContactFormManager extends Mixins(NotificationMixin) {

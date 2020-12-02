@@ -1,6 +1,24 @@
 import { IconDefinition, IconLookup, library, IconPrefix, IconName } from '@fortawesome/fontawesome-svg-core'
 import {faGithub, faLinkedin} from "@fortawesome/free-brands-svg-icons";
-import {faAtom, faCogs, faCopy, faDatabase, faEdit, faSpinner, faStar as faStarSolid, faTools, faTrash, faUpload, faBan, faSave, faUsers, faPlus, faPlusCircle} from "@fortawesome/free-solid-svg-icons";
+import {
+    faAtom, 
+    faCogs, 
+    faCopy, 
+    faDatabase, 
+    faEdit, 
+    faSpinner, 
+    faStar as faStarSolid, 
+    faTools, 
+    faTrash, 
+    faUpload, 
+    faBan, 
+    faSave, 
+    faUsers, 
+    faPlus, 
+    faPlusCircle,
+    faArrowUp,
+    faArrowDown,
+} from "@fortawesome/free-solid-svg-icons";
 import {faStar} from "@fortawesome/free-regular-svg-icons/faStar";
 
 function initializeLibrary() {
@@ -23,6 +41,8 @@ function initializeLibrary() {
         faUsers,
         faPlus,
         faPlusCircle,
+        faArrowUp,
+        faArrowDown,
     )
 }
 

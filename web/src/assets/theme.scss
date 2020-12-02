@@ -1,6 +1,7 @@
 // Definitions
 
 $primaryColor: #007bff;
+$primaryHoverColor: #0063cc;
 $secondaryColor: #d1d1d1;
 
 $hoverDarken: 0.15;
@@ -38,6 +39,10 @@ p {
 .card-header {
   background-color: $primaryColor !important;
   color: white;
+}
+
+.card-title {
+  margin: 0;
 }
 
 .link-black {

@@ -1,59 +1,54 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title primary-font">Files</h4>
+    <card-collapsible title="Files">
+        <image-uploader @input="saved" ref="uploader" />
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <th>Preview</th>
+                    <th>File Name</th>
+                    <th>Alt Tag</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, i) in list" :key="i">
+                        <td>
+                            <input id="file-upload" type="file" @change="fileUpload" v-if="editing && editingId === item.id"/>
+                            <img :src="item.cdn" style="width: 100px; height: auto" v-else />
+                        </td>
+                        <td>
+                            <input class="form-control" style="width: 200px" type="text" v-model="editing.name" v-if="editing && editingId === item.id" />
+                            <span v-else>{{item.name}}</span>
+                        </td>
+                        <td>
+                            <textarea class="form-control" style="width: 300px" v-model="editing.alt" v-if="editing && editingId === item.id"></textarea>
+                            <span v-else>{{item.alt}}</span>
+                        </td>
+                        <td>
+                            <div class="btn-group" v-if="editing && editingId === item.id">
+                                <button class='btn btn-sm btn-primary' @click='update' title='Save changes'>
+                                    <font-awesome-icon icon="save" />
+                                </button>
+                                <button class='btn btn-sm btn-warning' @click='editing = null; editingId = null' title='Cancel editing'>
+                                    <font-awesome-icon icon="ban" />
+                                </button>
+                            </div>
+                            <div class="btn-group" v-else>
+                                <button class='btn btn-sm btn-primary' @click='copyToClipboard(item.cdn)' title="copy to clipboard">
+                                    <font-awesome-icon icon="copy"/>
+                                </button>
+                                <button class='btn btn-sm btn-warning' @click="edit(item)">
+                                    <font-awesome-icon icon="edit" />
+                                </button>
+                                <button class='btn btn-sm btn-danger' @click='deleteFile(item.id)' title="Delete File">
+                                    <font-awesome-icon icon="trash" />
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="card-body">
-            <image-uploader @input="saved" ref="uploader" />
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <th>Preview</th>
-                        <th>File Name</th>
-                        <th>Alt Tag</th>
-                        <th></th>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(item, i) in list" :key="i">
-                            <td>
-                                <input id="file-upload" type="file" @change="fileUpload" v-if="editing && editingId === item.id"/>
-                                <img :src="item.cdn" style="width: 100px; height: auto" v-else />
-                            </td>
-                            <td>
-                                <input class="form-control" style="width: 200px" type="text" v-model="editing.name" v-if="editing && editingId === item.id" />
-                                <span v-else>{{item.name}}</span>
-                            </td>
-                            <td>
-                                <textarea class="form-control" style="width: 300px" v-model="editing.alt" v-if="editing && editingId === item.id"></textarea>
-                                <span v-else>{{item.alt}}</span>
-                            </td>
-                            <td>
-                                <div class="btn-group" v-if="editing && editingId === item.id">
-                                    <button class='btn btn-sm btn-primary' @click='update' title='Save changes'>
-                                        <font-awesome-icon icon="save" />
-                                    </button>
-                                    <button class='btn btn-sm btn-warning' @click='editing = null; editingId = null' title='Cancel editing'>
-                                        <font-awesome-icon icon="ban" />
-                                    </button>
-                                </div>
-                                <div class="btn-group" v-else>
-                                    <button class='btn btn-sm btn-primary' @click='copyToClipboard(item.cdn)' title="copy to clipboard">
-                                        <font-awesome-icon icon="copy"/>
-                                    </button>
-                                    <button class='btn btn-sm btn-warning' @click="edit(item)">
-                                        <font-awesome-icon icon="edit" />
-                                    </button>
-                                    <button class='btn btn-sm btn-danger' @click='deleteFile(item.id)' title="Delete File">
-                                        <font-awesome-icon icon="trash" />
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    </card-collapsible>
 </template>
 
 <script lang="ts">
@@ -61,10 +56,12 @@ import {Vue, Component, Prop, Mixins} from "vue-property-decorator";
 import ImageUploader from "@/components/ui/ImageUploader.vue";
 import { UserFileService, UserFile, UserFileRequest} from "../services/userFile.service";
 import NotificationMixin from "../mixins/NotificationMixin";
+import CardCollapsible from "@/components/ui/CardCollapsible.vue";
 
 @Component({
     components: {
-        ImageUploader
+        ImageUploader,
+        CardCollapsible,
     }
 })
 export default class UserFileManager extends Mixins(NotificationMixin) {

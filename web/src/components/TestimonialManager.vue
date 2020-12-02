@@ -1,13 +1,10 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title primary-font">Testimonials</h4>
-        </div>
+    <card-collapsible title="Testimonials">
         <div class="card-body">
             <testimonial-link-form @create="getList" />
             <testimonial-list :list="list" @delete="deleteTestimonial($event)" />
         </div>
-    </div>
+    </card-collapsible>
 </template>
 
 <script lang="ts">
@@ -17,6 +14,7 @@
     import TestimonialLinkForm from "@/components/TestimonialLinkForm.vue";
     import {ITestimonial, ITestimonialDTO, TestimonialService} from "./../services/testimonial.service";
     import NotificationMixin from "./../mixins/NotificationMixin";
+    import CardCollapsible from "@/components/ui/CardCollapsible.vue";
 
 
     @Component({
@@ -24,6 +22,7 @@
         components: {
             TestimonialList,
             TestimonialLinkForm,
+            CardCollapsible
         }
     })
     export default class TestimonialManager extends Mixins(NotificationMixin) {
