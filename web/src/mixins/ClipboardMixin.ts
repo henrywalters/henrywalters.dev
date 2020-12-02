@@ -3,7 +3,7 @@ import NotificationMixin from './NotificationMixin';
 
 @Component
 export default class ClipboardMixin extends Mixins(NotificationMixin) {
-    private copyToClipboard(text: string) {
+    public copyToClipboard(text: string) {
         navigator.clipboard.writeText(text).then(() => {
             this.notifySuccess("Copied to clipboard");
         }).catch(() => {
