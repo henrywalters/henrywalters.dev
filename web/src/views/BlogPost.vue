@@ -7,6 +7,7 @@
                     <h1 class="primary-font">{{post.title}}</h1>
                     <p>{{post.authorName ? post.authorName : post.author.firstName + ' ' + post.author.lastName}}</p>
                     <p class="text-muted">{{ post.publishedAt | luxon }}</p>
+                    <p class="text-muted" v-if="post.updatedAt !== post.publishedAt">updated on {{post.updatedAt | luxon}}</p>
                 </div>
                 <markdown-viewer :value="post.content" :table-of-contents="true" :bookmarks="true" class="mt-5" />
             </div>
