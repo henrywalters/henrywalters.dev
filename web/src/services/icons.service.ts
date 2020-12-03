@@ -18,6 +18,7 @@ import {
     faPlusCircle,
     faArrowUp,
     faArrowDown,
+    faLink,
 } from "@fortawesome/free-solid-svg-icons";
 import {faStar} from "@fortawesome/free-regular-svg-icons/faStar";
 
@@ -43,6 +44,7 @@ function initializeLibrary() {
         faPlusCircle,
         faArrowUp,
         faArrowDown,
+        faLink,
     )
 }
 

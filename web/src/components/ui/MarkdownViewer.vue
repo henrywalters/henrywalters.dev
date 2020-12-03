@@ -1,22 +1,49 @@
 <template>
-    <viewer ref="editor" :initial-value="value" class="markdown" v-code-highlight v-if="value" />
+    <viewer ref="viewer" :initial-value="value" class="markdown" v-code-highlight v-if="value" />
 </template>
 
 <script lang="ts">
-import {Vue, Component, Prop, Watch} from "vue-property-decorator";
+import {Vue, Component, Prop, Watch, Mixins} from "vue-property-decorator";
 import { Viewer } from '@toast-ui/vue-editor';
+import { dom } from '@fortawesome/fontawesome-svg-core'
+import ClipboardMixin from "../../mixins/ClipboardMixin";
 
 @Component({
     components: {
         Viewer,
     }
 })
-export default class MarkdownViewer extends Vue {
+export default class MarkdownViewer extends Mixins(ClipboardMixin) {
     @Prop()
     public value!: string;
 
     @Watch('value')
     private valueChange() {
+        this.$forceUpdate();
+    }
+
+    private hashHeader(header: string) {
+        return header.toLowerCase().replaceAll(" ", "_").replace(/[^\w\s]/gi, '');
+    }
+
+    private mounted() {
+
+        dom.watch();
+
+        const headers = document.querySelectorAll('.markdown h1');
+        // @ts-ignore
+        console.log(this.$route);
+        for (const header of headers) {
+            const hash = this.hashHeader(header.innerHTML)
+            header.innerHTML = `<a href='${this.$route.path}#${hash}'><i class="link-black fa fa-link fa-1x" @click.prevent="copyToClipboard('${this.$route.path}#${hash}')"></i></a> ` + header.innerHTML;
+            header.id = hash;
+        }
+
+        if (this.$route.hash) {
+            const el = document.querySelector(this.$route.hash);
+            el && el.scrollIntoView();
+        }
+
         this.$forceUpdate();
     }
 }
