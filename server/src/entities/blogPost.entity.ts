@@ -29,7 +29,7 @@ export interface BlogPostReadOnly {
     content: string;
     authorName: string;
     publishedAt: Date;
-    lastUpdate: Date;
+    updatedAt: Date;
     categories: Category[];
 }
 
@@ -40,7 +40,7 @@ export interface BlogPostFull {
     content: string;
     author: CleanedUser;
     publishedAt: Date;
-    lastUpdate: Date;
+    updatedAt: Date;
     categories: Category[];
     allowedToEdit: CleanedUser[];
 }
@@ -144,7 +144,7 @@ export class BlogPost extends BaseEntity {
             content: this.content,
             authorName: this.author.fullName,
             publishedAt: this.publishedAt,
-            lastUpdate: this.updatedAt,
+            updatedAt: this.updatedAt,
             categories: this.categories,
         }
     }

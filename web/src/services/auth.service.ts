@@ -45,7 +45,7 @@ export class AuthService extends BaseService<void, void, void> {
     }
 
     public async logout() {
-        Cookies.remove("jwt", {path: ""});
+        Cookies.remove("jwt");
         AuthEventBus.trigger(AuthEvents.Logout);
     }
 

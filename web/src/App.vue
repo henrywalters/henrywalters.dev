@@ -102,6 +102,7 @@ export default class App extends Mixins(ConfigMixin) {
 
   private async logout() {
     await this.auth.logout();
+    window.location.reload();
   }
 }
 
