@@ -6,8 +6,8 @@
                 <font-awesome-icon class="float-right" :icon="opened ? 'arrow-up' : 'arrow-down'" />
             </h3>
         </div>
-        <div class="card-body">
-            <div :class="{collapse: !openOnInit}" ref="body">
+        <div :class="{collapse: !openOnInit}" ref="body">
+            <div class="card-body">
                 <slot></slot>
             </div>
         </div>

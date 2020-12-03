@@ -6,16 +6,16 @@
         <div class="body">
             <site-metrics />
             <div class="row mt-3">
-                <div class="col-lg-5">
-                    <category-manager class="mt-3" />
-                    <contact-form-manager class="mt-3" />
-                    <user-file-manager class="mt-3" />
-                </div>
                 <div class="col-lg-7">
                     <service-manager class="mt-3"/>
                     <project-manager class="mt-3"/>
                     <tracked-link-manager class="mt-3" />
                     <testimonial-manager class="mt-3" />
+                </div>
+                <div class="col-lg-5">
+                    <category-manager class="mt-3" />
+                    <contact-form-manager class="mt-3" />
+                    <user-file-manager class="mt-3" />
                 </div>
             </div>
         </div>

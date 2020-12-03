@@ -3,11 +3,6 @@
     <h3 class="primary-font text-center">Blog</h3>
     <div :class="{'article': !canCreate}">
         <div class="row" >
-            <div :class="{'col-md-8': canCreate, 'col-12': !canCreate}">
-                <h4>Recent Posts</h4>
-                <blog-list :list="recentPosts" v-if="!loadingPosts" />
-                <loader v-else />
-            </div>
             <div class="col-md-4" v-if="canCreate">
                 <h4>My Blog</h4>
                 <div class="card">
@@ -16,6 +11,11 @@
                         <blog-table :list="myPosts" @edit="editPost" @delete="deletePost" @toggle-published="togglePublished" />
                     </div>
                 </div>
+            </div>
+            <div class="mt-3" :class="{'col-md-8': canCreate, 'col-12': !canCreate}">
+                <h4>Recent Posts</h4>
+                <blog-list :list="recentPosts" v-if="!loadingPosts" />
+                <loader v-else />
             </div>
         </div>
     </div>
