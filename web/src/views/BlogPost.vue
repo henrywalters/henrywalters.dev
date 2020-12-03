@@ -4,7 +4,7 @@
             <loader v-if="!initialized" />
             <div class="blog-post article" v-else-if="initialized && !editing">
                 <div class="blog-post-title mt-3">
-                    <h1 class="primary-font">{{post.title}}</h1>
+                    <h1 class="primary-font"><a href="#" class="link-black"><font-awesome-icon icon="link" class="fa 1x" /></a> {{post.title}}</h1>
                     <p>{{post.authorName ? post.authorName : post.author.firstName + ' ' + post.author.lastName}}</p>
                     <p class="text-muted">{{ post.publishedAt | luxon }}</p>
                     <p class="text-muted" v-if="post.updatedAt !== post.publishedAt">updated on {{post.updatedAt | luxon}}</p>
@@ -260,4 +260,8 @@
     }
 
     .blog-post {}
+
+    a {
+        font-size: 20px;
+    }
 </style>
