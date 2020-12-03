@@ -163,8 +163,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
         if (this.currentItem) {
             this.currentItem.active = true;
         }
-        console.log("Tracked");
-        console.log(this.$route);
+
         this.tracking.trackPageVisit(currentRoute.name as string,
             this.getConfig("WEB_ROOT") + this.$route.path, 
             this.$route.query.src ? this.$route.query.src as string : void 0

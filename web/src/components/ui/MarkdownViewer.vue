@@ -1,5 +1,15 @@
 <template>
-    <viewer ref="viewer" :initial-value="value" class="markdown" v-code-highlight v-if="value" />
+    <div class='markdown-viewer'>
+        <div v-if='tableOfContents' class='table-of-contents mb-5'>
+            <h3>Table of Contents</h3>
+            <ol>
+                <li v-for="(header, i) in headers" :key="i">
+                    <a :href="'#' + header.hash" class="link-black">{{header.title}}</a>
+                </li>
+            </ol>
+        </div>
+        <viewer ref="viewer" :initial-value="value" class="markdown" v-code-highlight v-if="value" />
+    </div>
 </template>
 
 <script lang="ts">
@@ -7,6 +17,12 @@ import {Vue, Component, Prop, Watch, Mixins} from "vue-property-decorator";
 import { Viewer } from '@toast-ui/vue-editor';
 import { dom } from '@fortawesome/fontawesome-svg-core'
 import ClipboardMixin from "../../mixins/ClipboardMixin";
+
+
+interface Bookmark {
+    title: string;
+    hash: string;
+}
 
 @Component({
     components: {
@@ -17,34 +33,53 @@ export default class MarkdownViewer extends Mixins(ClipboardMixin) {
     @Prop()
     public value!: string;
 
+    @Prop({type: Boolean, default: false})
+    public tableOfContents!: boolean;
+
+    @Prop({type: Boolean, default: false})
+    public bookmarks!: boolean;
+
+    private headers: Bookmark[] = [];
+
     @Watch('value')
     private valueChange() {
         this.$forceUpdate();
     }
 
     private hashHeader(header: string) {
+        // @ts-ignore
         return header.toLowerCase().replaceAll(" ", "_").replace(/[^\w\s]/gi, '');
     }
 
     private mounted() {
 
-        dom.watch();
+        if (this.bookmarks) {
 
-        const headers = document.querySelectorAll('.markdown h1');
-        // @ts-ignore
-        console.log(this.$route);
-        for (const header of headers) {
-            const hash = this.hashHeader(header.innerHTML)
-            header.innerHTML = `<a href='${this.$route.path}#${hash}'><i class="link-black fa fa-link fa-1x" @click.prevent="copyToClipboard('${this.$route.path}#${hash}')"></i></a> ` + header.innerHTML;
-            header.id = hash;
+            dom.watch();
+
+            const headers = document.querySelectorAll('.markdown h1');
+            // @ts-ignore
+            for (const header of headers) {
+                const html = header.innerHTML;
+                const hash = this.hashHeader(html)
+                header.innerHTML = `<a href='#${hash}' @click.prevent="copy('${hash}')"><i class="link-black fa fa-link fa-1x"></i></a> ` + header.innerHTML;
+                header.id = hash;
+
+                this.headers.push({
+                    hash: hash,
+                    title: html,
+                })
+            }
+
+            console.log(this.headers);
+
+            if (this.$route.hash) {
+                const el = document.querySelector(this.$route.hash);
+                el && el.scrollIntoView();
+            }
+
+            this.$forceUpdate();
         }
-
-        if (this.$route.hash) {
-            const el = document.querySelector(this.$route.hash);
-            el && el.scrollIntoView();
-        }
-
-        this.$forceUpdate();
     }
 }
 </script>
@@ -95,11 +130,11 @@ export default class MarkdownViewer extends Mixins(ClipboardMixin) {
             margin: 0 auto !important;
         }
 
-        ul {
-            font-size: 16px;
+        ol, ul {
+            font-size: 20px;
         }
 
-        p, li, th, td {
+        p, li, th, td, a {
             font-size: 20px;
             font-family: Helvetica, Arial, sans-serif;
         }

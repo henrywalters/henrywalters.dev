@@ -4,11 +4,11 @@
             <loader v-if="!initialized" />
             <div class="blog-post article" v-else-if="initialized && !editing">
                 <div class="blog-post-title mt-3">
-                    <h3 class="primary-font">{{post.title}}</h3>
+                    <h1 class="primary-font">{{post.title}}</h1>
                     <p>{{post.authorName ? post.authorName : post.author.firstName + ' ' + post.author.lastName}}</p>
                     <p class="text-muted">{{ post.publishedAt | luxon }}</p>
                 </div>
-                <markdown-viewer :value="post.content" class="mt-5" />
+                <markdown-viewer :value="post.content" :table-of-contents="true" :bookmarks="true" class="mt-5" />
             </div>
             <div class="row" v-else>
                 <div class="col-md-8">
