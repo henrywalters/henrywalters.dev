@@ -259,6 +259,7 @@
             this.editing = this.$route.query.mode && this.$route.query.mode === 'edit';
             const res = await this.service.getOne(this.$route.params.id);
 
+            // @ts-ignore
             this.user = await this.getSelf();
 
             if (res.success) {
