@@ -6,7 +6,15 @@
         <button class="mt-3 btn btn-sm btn-primary" @click="responding = true">Reply</button>
         <transition name="slide">
             <div class="row mt-3" v-if="responding">
-                <comment-form class="col-12" :can-cancel="true" :parent-comment="comment" @cancel="responding = false"/>
+                <comment-form 
+                    :user="user"
+                    :post="post"    
+                    class="col-12" 
+                    :can-cancel="true" 
+                    :parent-comment="comment" 
+                    @cancel="responding = false"
+                    @update="responding = false; $emit('update')"
+                />
             </div>
         </transition>
         <hr />
@@ -16,7 +24,14 @@
             </div>
             <div class="col-11">
                 <ul>
-                    <comment-display v-for="(child, i) in comment.children" :key="i" :comment="child" />
+                    <comment-display
+                        :user="user"
+                        :post="post"        
+                        v-for="(child, i) in comment.children" 
+                        :key="i" 
+                        :comment="child"
+                        @update="$emit('update')"
+                    />
                 </ul>
             </div>
             <hr />
@@ -29,6 +44,8 @@
 import {Vue, Component, Prop} from "vue-property-decorator";
 import Comments from "@/components/Comments.vue";
 import CommentForm from "@/components/CommentForm.vue";
+import { CommentPost } from "./CommentForm.vue";
+import { User } from "../services/auth.service";
 
 @Component({
     components: {
@@ -39,6 +56,12 @@ import CommentForm from "@/components/CommentForm.vue";
 export default class CommentDisplay extends Vue {
     @Prop()
     public comment!: Comment;
+
+    @Prop()
+    public post!: CommentPost;
+
+    @Prop()
+    public user!: User;
 
     private responding: boolean = false;
 }
@@ -57,7 +80,7 @@ export default class CommentDisplay extends Vue {
         height: calc(100% - 40px);
         width: 2px;
         background-color:$primaryColor;
-        margin-top: 20px;
+        margin: auto;
     }
 
     ul {
@@ -66,7 +89,7 @@ export default class CommentDisplay extends Vue {
         list-style-type: none;
         
         margin-top: 15px;
-        
+        padding-left: 0;
 
         li {
             // padding-left: 0

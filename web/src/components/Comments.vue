@@ -1,12 +1,21 @@
 <template>
     <ul class='comments'>
-        <comment-display v-for="(comment, i) in comments" :key="i" :comment="comment" />
+        <comment-display 
+            :user="user"
+            :post="post"    
+            v-for="(comment, i) in comments" 
+            :key="i" 
+            :comment="comment" 
+            @update="$emit('update')"
+        />
     </ul>
 </template>
 
 <script lang="ts">
 import {Vue, Component, Prop} from "vue-property-decorator";
 import CommentDisplay from "@/components/CommentDisplay.vue";
+import { CommentPost } from "./CommentForm.vue";
+import { User } from "../services/auth.service";
 
 @Component({
     components: {
@@ -16,6 +25,12 @@ import CommentDisplay from "@/components/CommentDisplay.vue";
 export default class Comments extends Vue {
     @Prop()
     public comments!: Comment[];
+
+    @Prop()
+    public post!: CommentPost;
+
+    @Prop()
+    public user!: User;
 }
 </script>
 

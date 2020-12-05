@@ -73,13 +73,15 @@
                     </ul>
                 </div>
             </div>
-            <div class="article mt-5 row" v-if="initialized">
-                <div class="col-12">
-                    <h1 class="primary-font ">
-                        <!--<a href="#comments" class="link-black"><font-awesome-icon icon="link" class="fa 1x" /></a> -->
-                        Comments</h1>
-                    <comments class="article" :comments="comments" />
-                    <comment-form class="article" :loading="postingComment" :errors="commentErrors" v-model="commentRequest" @submit="submitComment"/>
+            <div class="article mt-5" v-if="initialized">
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="primary-font ">
+                            <!--<a href="#comments" class="link-black"><font-awesome-icon icon="link" class="fa 1x" /></a> -->
+                            Comments</h1>
+                        <comments :comments="comments" :user="user" :post="submitComment" @update="loadComments" />
+                        <comment-form :user="user" :post="submitComment" @update="loadComments" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -143,9 +145,6 @@
         private selectedCategory: ICategory | null = null;
 
         private comments: Comment[] = [];
-        private commentRequest!: CommentRequest;
-        private commentErrors: HashMap<string> = {};
-        private postingComment: boolean = false;
 
         private canEdit() {
             if (!this.user) return false;
@@ -246,27 +245,9 @@
             }
         }
 
-        private async resetCommentReq() {
-            this.commentRequest = {
-                body: "",
-                authorName: "",
-                authorEmail: "",
-            }
-        }
-
-        private async submitComment(request: CommentRequest) {
-            this.commentErrors = {};
-            this.postingComment = true;
-            const res = await this.service.createComment(this.post.slug, request);
-            this.postingComment = false;
-            if (res.success) {
-                this.resetCommentReq();
-                this.loadComments();
-                this.$forceUpdate();
-                this.notifySuccess("Comment added successfully");
-            } else {
-                this.commentErrors = res.error;
-                this.notifyError("Failed to leave a comment");
+        private get submitComment() {
+            return (req: CommentRequest) => {
+                return this.service.createComment(this.post.slug, req);
             }
         }
 
@@ -275,15 +256,17 @@
             // @ts-ignore
             this.editing = this.$route.query.mode && this.$route.query.mode === 'edit';
             const res = await this.service.getOne(this.$route.params.id);
+
+            this.user = await this.getSelf();
+
             if (res.success) {
                 this.post = res.result as BlogPostReadOnly | BlogPostFull;
                 this.loadComments();
-                this.resetCommentReq();
 
                 if (this.editing) {
                     this.errors = {};
                     // @ts-ignore
-                    this.user = await this.getSelf();
+                    
                     if (!this.canEdit()) {
                         this.$router.replace({name: 'Unauthorized'});
                     }
