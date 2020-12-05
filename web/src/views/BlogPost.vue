@@ -227,6 +227,7 @@
                 const roots = [];
 
                 for (let i = 0; i < raw.length; i++) {
+                    // @ts-ignore
                     map[raw[i].id] = i;
                     raw[i]['children'] = [];
                 }
@@ -234,6 +235,7 @@
                 for (let i = 0; i < raw.length; i++) {
                     const node = raw[i];
                     if (node.parentComment) {
+                        // @ts-ignore
                         raw[map[node.parentComment.id]].children.push(node);
                     } else {
                         roots.push(node);
