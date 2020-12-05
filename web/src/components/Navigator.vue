@@ -20,18 +20,19 @@
                         @mouseleave="cleanup"
                         :class="{'active': item.active}"
                     >{{item.label}}</a>
-
-                    <div class="dropdown-content" :class="{visible: item.toggled}" @mouseleave="cleanup">
-                        <span v-for="(child, j) in item.children" :key="i + '-' + j">
-                            <a
-                                class="dropdown-link" 
-                                
-                                :class="{'bordered-link': j != 0, 'selected': child.active}" 
-                                v-if="canShow(child)"
-                                :href="child.link"
-                                @click.prevent="goto(child)"
-                            >{{child.label}}</a>
-                        </span>
+                    <div class="dropdown-content-container" :class="{visible: item.toggled}" @mouseleave="cleanup">
+                        <div class="dropdown-content">
+                            <span v-for="(child, j) in item.children" :key="i + '-' + j">
+                                <a
+                                    class="dropdown-link" 
+                                    
+                                    :class="{'bordered-link': j != 0, 'selected': child.active}" 
+                                    v-if="canShow(child)"
+                                    :href="child.link"
+                                    @click.prevent="goto(child)"
+                                >{{child.label}}</a>
+                            </span>
+                        </div>
                     </div>
                 </span>
             </span>
@@ -224,7 +225,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
 
     .navigator-item {
         min-width: 200px;
-        font-size: 22px;
+        font-size: 24px;
         margin: $nav-padding / 2;
     }
 
@@ -245,17 +246,22 @@ export default class Navigator extends Mixins(ConfigMixin) {
         display: block !important;
     }
 
-    .dropdown-content {
+    .dropdown-content-container {
         display: none;
         position: absolute;
-        background-color: white;
-        min-width: 300px;
+        
         
         // box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
         z-index: 1000;
         text-align: left;
-        border: 2px solid black;
         border-radius: 2px;
+    }
+    
+    .dropdown-content {
+        background-color: white;
+        min-width: 300px;
+        box-shadow: 0 0 10px 5px $primaryColor;
+        margin-top: 10px;
     }
 
     .dropdown-content a {
@@ -263,6 +269,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
         overflow: none;
         padding: 12px 16px;
         text-decoration: none;
+        font-size: 20px;
         display: block;
         z-index: 1000;
     }

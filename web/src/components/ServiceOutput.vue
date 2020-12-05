@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <h2 class='primary-font text-center col-12'>Services Offered</h2>
+        <h1 class='primary-font text-center col-12'>Services Offered</h1>
         <div class="col-md-6" v-for="(service, i) in list" :key="i">
             <div class="card mt-3" @click="$router.push({name: 'Service', params: {id: service.slug}})">
                 <div class="card-body">

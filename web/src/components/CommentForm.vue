@@ -2,12 +2,12 @@
     <div class='comment-form'>
         <h4 v-if="parentComment">Replying to {{parentComment.authorName}}</h4>
         <h4 v-else>Leave a comment</h4>
-        <form @submit.prevent="$emit('submit', request)" class="mt-3">
+        <form @submit.prevent="submit" class="mt-3">
             <div class="row">
-                <form-group class="col-md-6" label="Your name" field="authorName" :errors="errors">
+                <form-group class="col-md-6" label="Your name" field="authorName" :errors="errors" v-if="!user">
                     <input class="form-control" v-model="request.authorName" @change="$emit('input', request)"/>
                 </form-group>
-                <form-group class="col-md-6" label="Your email" field="authorEmail" :errors="errors">
+                <form-group class="col-md-6" label="Your email" field="authorEmail" :errors="errors" v-if="!user">
                     <input class="form-control" v-model="request.authorEmail" @change="$emit('input', request)" />
                 </form-group>
                 <form-group class="col-md-12" label="Comment" field="body" :errors="errors">
@@ -16,7 +16,7 @@
                 <div class="col-12">
                     <div class="form-group btn-group w-100">
                         <button class="form-control btn btn-primary">Submit</button>
-                        <button class="form-control btn btn-warning" @click="$emit('cancel')">Cancel</button>
+                        <button class="form-control btn btn-warning" @click.prevent="$emit('cancel')">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -26,40 +26,48 @@
 </template>
 
 <script lang="ts">
-import {Vue, Component, Prop, Watch} from "vue-property-decorator";
+import {Vue, Component, Prop, Watch, Mixins} from "vue-property-decorator";
 import FormGroup from "@/components/ui/forms/FormGroup.vue";
 import { CommentRequest, Comment } from "../services/blog.service";
-import { HashMap } from "../services/base.service";
+import { ApiResponse, HashMap } from "../services/base.service";
+import { User } from "../services/auth.service";
+import NotificationMixin from "../mixins/NotificationMixin";
+
+export type CommentPost = (req: CommentRequest) => Promise<ApiResponse<any, HashMap<string>>>;
 
 @Component({
     components: {
         FormGroup,
     }
 })
-export default class CommentDisplay extends Vue {
+export default class CommentDisplay extends Mixins(NotificationMixin) {
     @Prop()
     public parentComment!: Comment;
-
-    @Prop()
-    public errors!: HashMap<string>;
-
-    @Prop()
-    public value!: CommentRequest;
-
-    @Prop()
-    public loading!: boolean;
 
     @Prop({type: Boolean, default: false})
     public canCancel!: boolean;
 
+    @Prop()
+    public post!: CommentPost;
+
+    @Prop()
+    public user!: User;
+
+    private errors: HashMap<string> = {};
     private request!: CommentRequest;
+    private loading: boolean = false;
 
     private reset() {
         this.errors = {};
-        this.request = this.value ? this.value : {
+        this.request = {
             body: "",
-            authorName: "",
-            authorEmail: "",
+        }
+
+        if (this.user) {
+            this.request.authorId = this.user.id;
+        } else {
+            this.request.authorName = "";
+            this.request.authorEmail = "";
         }
 
         if (this.parentComment) {
@@ -67,22 +75,24 @@ export default class CommentDisplay extends Vue {
         }
     }
 
+    private async submit() {
+        this.loading = true;
+        const res = await this.post(this.request);
+        this.loading = false;
+
+        if (res.success === true) {
+            this.reset();
+            this.notifySuccess("Comment added successfully");
+            this.$emit('update');
+        } else {
+            this.errors = res.error;
+            this.notifyError("Failed to leave comment");
+        }
+    }
+
     private created() {
         this.reset();
     }
-
-    @Watch('loading')
-    public loadingChange() {
-        console.log("this.loading");
-        this.$forceUpdate();
-    }
-
-    @Watch('value', {deep: true})
-    public valueChange() {
-        this.reset();
-        this.$forceUpdate();
-    }
-
 }
 </script>
 

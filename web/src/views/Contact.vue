@@ -2,7 +2,7 @@
     <div class="container">
         <form @submit.prevent="submit" class="article">
             <div class="header">
-                <h3 class="primary-font text-center">Contact Me</h3>
+                <h1 class="primary-font text-center">Contact Me</h1>
                 <div class="header-body secondary-font" v-if="!submitted">
                     <p class="text-lg-center">Please reach out to me if you're interested in commissioning my work or would like to retain my services.</p>
                     <p class="text-lg-center">I look forward to being in touch!</p>

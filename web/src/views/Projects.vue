@@ -1,7 +1,7 @@
 <template>
     <div class="container" ref="container">
         <div class="header">
-            <h3 class="primary-font text-center">Projects</h3>
+            <h1 class="primary-font text-center">Projects</h1>
         </div>
         <div class="body" v-if="initialized">
             <div class="card mb-3" v-for="project in projects">

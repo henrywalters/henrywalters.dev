@@ -1,6 +1,6 @@
 <template>
     <div class='testimonial-container mt-4'>
-        <h2 class='primary-font text-center'>Client Testimonials</h2>
+        <h1 class='primary-font text-center'>Client Testimonials</h1>
         <div class="testimonials d-inline-flex w-100 row">
             <div class="testimonial" v-for="(item, i) in list" :key="i" :class="{bordered: i !== 0 && i !== list.length - 1}">
                 <div v-if="item.anonymous">
