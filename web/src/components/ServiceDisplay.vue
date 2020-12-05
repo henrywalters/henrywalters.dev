@@ -1,10 +1,10 @@
 <template>
     <div>
         <div class="header">
-            <h3 class="primary-font text-center mb-4">
+            <h1 class="primary-font text-center mb-4">
                 <font-awesome-icon class="icon" :icon="service.icon" />
                 {{service.name}}
-            </h3>
+            </h1>
             <markdown-viewer v-model="service.longDescription"/>
         </div>
     </div>

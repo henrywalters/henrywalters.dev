@@ -4,7 +4,7 @@
       <notifications position="bottom right" />
       <div class="header text-center p-3">
         <span @click="goHome" class="clickable">
-          <h1 class="primary-font mb-0">{{nameStart}} <span class="accent">{{nameEnd}}</span></h1>
+          <h1 class="brand-font mb-0">{{nameStart}} <span class="accent">{{nameEnd}}</span></h1>
           <p class="primary-font text-center mt-0 mb-0"><em>{{ getConfig('SLOGAN') }}</em></p>
         </span>
         <div class="text-center mt-0 mb-2 text-black" style="font-size: 14px" v-if="initialized && user !== null">

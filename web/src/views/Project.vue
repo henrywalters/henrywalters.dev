@@ -1,12 +1,12 @@
 <template>
     <div class="container" v-if="initialized">
         <div class="header">
-            <h3 class="primary-font text-center" v-if="viewing">
+            <h2 class="primary-font text-center" v-if="viewing">
                 {{project.title}}
                 &nbsp;
                 <a v-if="project.sourceControlUrl" :href="project.sourceControlUrl"><font-awesome-icon :icon="['fab', 'github']" /></a>
 
-            </h3>
+            </h2>
         </div>
         <div class="view-body" v-if="viewing">
             <p class="text-center">

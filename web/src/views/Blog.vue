@@ -1,6 +1,6 @@
 <template> 
   <div :class="{'container': !canCreate, 'container-fluid': canCreate}">
-    <h3 class="primary-font text-center">Blog</h3>
+    <h1 class="primary-font text-center">Blog</h1>
     <div :class="{'article': !canCreate}">
         <div class="row" >
             <div class="col-md-4" v-if="canCreate">

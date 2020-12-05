@@ -2,7 +2,7 @@
 
 $primaryColor: #007bff;
 $primaryHoverColor: #0063cc;
-$secondaryColor: #d1d1d1;
+$secondaryColor: #e6e6e6;
 
 $hoverDarken: 0.15;
 
@@ -16,8 +16,12 @@ $hoverDarken: 0.15;
   src: url("~@/assets/fonts/unispace it.ttf") format("truetype");
 }
 
-.primary-font {
+.brand-font {
   font-family: "Enixe";
+}
+
+.primary-font {
+  font-family: "Arial";
 }
 
 .secondary-font {
