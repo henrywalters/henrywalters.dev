@@ -51,6 +51,22 @@ export interface UpdateBlogPostRequest {
     categoryIds: string[];
 }
 
+export interface CommentRequest {
+    parentCommentId?: string;
+    body: string;
+    authorId?: string;
+    authorName?: string;
+    authorEmail?: string;
+}
+
+export interface Comment {
+    id: string;
+    parent?: Comment;
+    children: Comment[];
+    body: string;
+    authorName: string;
+}
+
 export class BlogService extends BaseService<CreateBlogPostRequest | UpdateBlogPostRequest, BlogPostReadOnly | BlogPostFull | BlogPostListing, HashMap<string>> {
     constructor() {
         super("Blog Service", "blog");
@@ -67,6 +83,22 @@ export class BlogService extends BaseService<CreateBlogPostRequest | UpdateBlogP
     public async togglePublished(id: string | number) {
         try {
             return (await this.http.post(this.controllerPath + '/' + id + '/toggle-published')).data;
+        } catch (e) {
+            throw new Error(e.message);
+        }
+    }
+
+    public async getComments(postId: string) {
+        try {
+            return (await this.http.get(this.controllerPath + '/' + postId + '/comment')).data;
+        } catch (e) {
+            throw new Error(e.message);
+        }
+    }
+
+    public async createComment(postId: string, req: CommentRequest) {
+        try {
+            return (await this.http.post(this.controllerPath + '/' + postId + '/comment', req)).data
         } catch (e) {
             throw new Error(e.message);
         }

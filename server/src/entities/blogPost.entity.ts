@@ -1,9 +1,10 @@
 import { Res } from "@nestjs/common";
 import { CreateBlogPostDto, UpdateBlogPostDto } from "src/dtos/blogPost.dto";
 import { ResponseDto } from "src/dtos/response.dto";
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { runInThisContext } from "vm";
 import { Category } from "./category.entity";
+import { Comment } from "./comment.entity";
 import { CleanedUser, User } from "./user.entity";
 import { UserFile } from "./userFile.entity";
 
@@ -112,6 +113,9 @@ export class BlogPost extends BaseEntity {
         name: "blog_post_categories"
     })
     public categories: Category[];
+
+    @OneToMany(() => Comment, comment => comment.blogPost)
+    public comments: Comment[];
 
     @Column()
     public title: string;

@@ -1,8 +1,10 @@
 import { Body, Controller, Delete, Get, Headers, Param, Post, Put, Res, UseGuards } from "@nestjs/common";
 import { Privileges } from "src/constants/privileges.constants";
 import { CreateBlogPostDto, UpdateBlogPostDto } from "src/dtos/blogPost.dto";
+import { CommentDto } from "src/dtos/comment.dto";
 import { ResponseDto } from "src/dtos/response.dto";
 import { BlogPost } from "src/entities/blogPost.entity";
+import { Comment } from "src/entities/comment.entity";
 import { CleanedUser, User } from "src/entities/user.entity";
 import { AuthenticateFor } from "src/guards/authenticateFor.guard";
 
@@ -105,5 +107,61 @@ export class BlogController {
         }
     }
 
+    @Get(":id/comment")
+    public async getBlogPostComments(@Param("id") id: string) {
+        try {
+            const blogPost = await BlogPost.findByIdOrSlug(id);
+            return ResponseDto.Success((await Comment.find({
+                where: {
+                    blogPost,
+                },
+                relations: ['parentComment'],
+                order: {
+                    createdAt: 'DESC'
+                }
+            })).map(x => x.cleaned()));
+        } catch (e) {
+            return ResponseDto.Error(e.message);            
+        }
+    }
 
+    @Post(":id/comment")
+    public async createBlogPostComment(@Param("id") id: string, @Headers("user") user: CleanedUser, @Body() req: CommentDto) {
+        try {
+            const blogPost = await BlogPost.findByIdOrSlug(id);
+            console.log(req);
+            const parentComment = req.parentCommentId ? await Comment.findOne(req.parentCommentId) : void 0;
+            let comment: Comment;
+            console.log(parentComment);
+            const errors = {};
+            if (req.body.trim().length === 0) {
+                errors['body'] = "Comment must not be empty"
+            }
+            if (user) {
+                if (Object.keys(errors).length > 0) {
+                    return ResponseDto.Error(errors);
+                }
+                const fullUser = await User.findOne(user.id);
+                comment = await Comment.createUserComment(blogPost, fullUser, req.body, parentComment);
+            } else {
+                
+                if (!req.authorName) {
+                    errors['authorName'] = "Please provide your name";
+                }
+                if (!req.authorEmail) {
+                    errors['authorEmail'] = "Please provide your email";
+                }
+
+                if (Object.keys(errors).length > 0) {
+                    return ResponseDto.Error(errors);
+                }
+
+                comment = await Comment.createGuestComment(blogPost, req.authorName, req.authorEmail, req.body, parentComment);
+            }
+            return ResponseDto.Success(comment.cleaned());
+        } catch (e) {
+            console.log(e);
+            return ResponseDto.Error(e.message);
+        }
+    }
 }

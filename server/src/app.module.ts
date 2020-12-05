@@ -11,7 +11,6 @@ import {TokenService} from "./services/token.service";
 import {AuthController} from "./controllers/auth.controller";
 import {AuthMiddleware} from "./middleware/auth.middleware";
 import {CategoryController} from "./controllers/category.controller";
-import {ForumController} from "./controllers/forum.controller";
 import {ProjectController} from "./controllers/project.controller";
 import {UserFileService} from "./services/file.service";
 import {UserFileController} from "./controllers/userFile.controller";
@@ -42,7 +41,6 @@ import { TrackedLinkController } from './controllers/trackedLink.controller';
       TrackingController, 
       AuthController, 
       CategoryController, 
-      ForumController, 
       ProjectController, 
       UserFileController,
       ServiceController,

@@ -7,11 +7,8 @@
           <h1 class="primary-font mb-0">{{nameStart}} <span class="accent">{{nameEnd}}</span></h1>
           <p class="primary-font text-center mt-0 mb-0"><em>{{ getConfig('SLOGAN') }}</em></p>
         </span>
-        <div class="text-center mt-0 mb-2 text-black" style="font-size: 14px" v-if="initialized">
-          <span v-if="user === null">
-            Signed Out - <a href="/login" @click.prevent="$router.push({name: 'Login'})">Login</a> | <a href="/register" @click.prevent="$router.push({name: 'Register'})">Register</a>
-          </span>
-          <span v-else>
+        <div class="text-center mt-0 mb-2 text-black" style="font-size: 14px" v-if="initialized && user !== null">
+          <span v-if="">
             Signed in as {{user.firstName}} {{user.lastName}} - <router-link :to="{name: 'ChangePassword'}">Change Password</router-link> | <a href="/logout" @click.prevent="logout">Logout</a>
           </span>
         </div>

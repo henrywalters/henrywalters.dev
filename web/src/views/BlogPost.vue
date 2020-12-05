@@ -73,6 +73,15 @@
                     </ul>
                 </div>
             </div>
+            <div class="article mt-5 row" v-if="initialized">
+                <div class="col-12">
+                    <h1 class="primary-font ">
+                        <!--<a href="#comments" class="link-black"><font-awesome-icon icon="link" class="fa 1x" /></a> -->
+                        Comments</h1>
+                    <comments class="article" :comments="comments" />
+                    <comment-form class="article" :loading="postingComment" :errors="commentErrors" v-model="commentRequest" @submit="submitComment"/>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -80,7 +89,7 @@
 <script lang="ts">
     import {Component, Vue, Mixins} from "vue-property-decorator";
     import AuthMixin from "./../mixins/AuthMixin";
-    import { BlogPostFull, BlogPostListing, BlogPostReadOnly, BlogService, UpdateBlogPostRequest } from "./../services/blog.service";
+    import { BlogPostFull, BlogPostListing, BlogPostReadOnly, BlogService, CommentRequest, UpdateBlogPostRequest } from "./../services/blog.service";
     import BlogList from "@/components/blog/List.vue";
     import { AuthService, User } from "../services/auth.service";
     import MarkdownViewer from "@/components/ui/MarkdownViewer.vue";
@@ -92,6 +101,8 @@
     import NotificationMixin from "../mixins/NotificationMixin";
     import {UserService, MinimalUser} from "../services/user.service";
     import Set from "../structures/set.structure";
+    import Comments from "@/components/Comments.vue";
+    import CommentForm from "@/components/CommentForm.vue";
 
     interface BlogPostRequest {
     title: string;
@@ -107,6 +118,8 @@
             BlogList,
             MarkdownViewer,
             MarkdownEditor,
+            Comments,
+            CommentForm,
         }
     })
     export default class BlogPost extends Mixins(AuthMixin, NotificationMixin) {
@@ -128,6 +141,11 @@
 
         private selectedUser: MinimalUser | null = null;
         private selectedCategory: ICategory | null = null;
+
+        private comments: Comment[] = [];
+        private commentRequest!: CommentRequest;
+        private commentErrors: HashMap<string> = {};
+        private postingComment: boolean = false;
 
         private canEdit() {
             if (!this.user) return false;
@@ -202,6 +220,56 @@
             console.log(this.request);
         }
 
+        private async loadComments() {
+            const res = await this.service.getComments(this.post.slug);
+            if (res.success) {
+                const raw = res.result;
+                const map = {}
+                const roots = [];
+
+                for (let i = 0; i < raw.length; i++) {
+                    map[raw[i].id] = i;
+                    raw[i]['children'] = [];
+                }
+
+                for (let i = 0; i < raw.length; i++) {
+                    const node = raw[i];
+                    if (node.parentComment) {
+                        raw[map[node.parentComment.id]].children.push(node);
+                    } else {
+                        roots.push(node);
+                    }
+                }
+
+                this.comments = roots;
+                console.log(this.comments);
+            }
+        }
+
+        private async resetCommentReq() {
+            this.commentRequest = {
+                body: "",
+                authorName: "",
+                authorEmail: "",
+            }
+        }
+
+        private async submitComment(request: CommentRequest) {
+            this.commentErrors = {};
+            this.postingComment = true;
+            const res = await this.service.createComment(this.post.slug, request);
+            this.postingComment = false;
+            if (res.success) {
+                this.resetCommentReq();
+                this.loadComments();
+                this.$forceUpdate();
+                this.notifySuccess("Comment added successfully");
+            } else {
+                this.commentErrors = res.error;
+                this.notifyError("Failed to leave a comment");
+            }
+        }
+
         private async created() {
             this.service = new BlogService();
             // @ts-ignore
@@ -209,6 +277,8 @@
             const res = await this.service.getOne(this.$route.params.id);
             if (res.success) {
                 this.post = res.result as BlogPostReadOnly | BlogPostFull;
+                this.loadComments();
+                this.resetCommentReq();
 
                 if (this.editing) {
                     this.errors = {};
@@ -227,6 +297,14 @@
             }
             console.log(this.post);
             this.initialized = true;
+        }
+
+        private mounted() {
+            if (this.$route.hash) {
+                const el = document.querySelector(this.$route.hash);
+                el && el.scrollIntoView();
+            }
+            this.$forceUpdate();
         }
         
         private async save() {
