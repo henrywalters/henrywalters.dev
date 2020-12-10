@@ -48,6 +48,7 @@ import { CommentPost } from "./CommentForm.vue";
 import { User } from "../services/auth.service";
 
 @Component({
+    name: "CommentDisplay",
     components: {
         Comments,
         CommentForm,
