@@ -1,23 +1,50 @@
 <template>
-    <editor :initialValue="internal" initialEditType="wysiwyg" ref="editor" @change="update" height="500px"/>
+    <editor :initialValue="internal" :options="mdConfig" initialEditType="wysiwyg" ref="editor" @change="update" height="500px"/>
 </template>
 
 <script lang="ts">
-import {Vue, Component, Prop} from "vue-property-decorator";
+import {Vue, Component, Prop, Mixins} from "vue-property-decorator";
 import {Editor} from "@toast-ui/vue-editor";
 import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
+import { UserFileService } from "../../services/userFile.service";
+import NotificationMixin from "../../mixins/NotificationMixin";
 
 @Component({
     components: {
         Editor,
     }
 })
-export default class MarkdownEditor extends Vue {
+export default class MarkdownEditor extends Mixins(NotificationMixin) {
     @Prop()
     public value!: string;
 
     private internal!: string;
+
+    private mdConfig = {
+        hooks: {
+            addImageBlobHook: async (blob: File, callback: (url: string, alt: string) => void) => {
+                console.log(blob);
+                // @ts-ignore
+                const alt = document.querySelector('.te-link-text-input').value;
+
+                const data = new FormData();
+                data.append('alt', alt);
+                data.append('name', blob.name);
+                data.append('file', blob);
+                
+                const res = await (new UserFileService()).postFormData(data);
+
+                if (res.success) {
+                    callback(res.result.cdn, alt);
+                } else {
+                    this.notifyError("Failed to save image");
+                }
+
+                return false;
+            }
+        }
+    }
 
     private created() {
         this.internal = this.value ? this.value : "";

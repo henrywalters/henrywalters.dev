@@ -34,7 +34,10 @@ export default class BaseService<T, R, E> {
         try {
             return (await this.http.get(this.controllerPath)).data;
         } catch (e) {
-            throw new Error(e.message);
+            return {
+                success: false,
+                error: e.message,
+            }
         }
     }
 
@@ -42,7 +45,10 @@ export default class BaseService<T, R, E> {
         try {
             return (await this.http.get(this.controllerPath + '/' + id)).data;
         } catch (e) {
-            throw new Error(e.message);
+            return {
+                success: false,
+                error: e.message,
+            }
         }
     }
 
@@ -50,7 +56,10 @@ export default class BaseService<T, R, E> {
         try {
             return (await this.http.post(this.controllerPath, data)).data;
         } catch (e) {
-            throw new Error(e.message);
+            return {
+                success: false,
+                error: e.message,
+            }
         }
     }
 
@@ -65,7 +74,10 @@ export default class BaseService<T, R, E> {
                 }
             })).data;
         } catch (e) {
-            throw new Error(e.message);
+            return {
+                success: false,
+                error: e.message,
+            }
         }
     }
 
@@ -73,7 +85,10 @@ export default class BaseService<T, R, E> {
         try {
             return (await this.http.put(this.controllerPath + '/' + id, data)).data;
         } catch (e) {
-            throw new Error(e.message);
+            return {
+                success: false,
+                error: e.message,
+            }
         }
     }
 
@@ -88,7 +103,10 @@ export default class BaseService<T, R, E> {
                 }
             })).data;
         } catch (e) {
-            throw new Error(e.message);
+            return {
+                success: false,
+                error: e.message,
+            }
         }
     }
 
@@ -96,7 +114,10 @@ export default class BaseService<T, R, E> {
         try {
             return (await this.http.delete(this.controllerPath + '/' + id)).data;
         } catch (e) {
-            throw new Error(e.message);
+            return {
+                success: false,
+                error: e.message,
+            }
         }
     }
 }
