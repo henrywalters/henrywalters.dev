@@ -8,22 +8,22 @@ import { BlogPost } from "src/entities/blogPost.entity";
 import { Comment } from "src/entities/comment.entity";
 import { CleanedUser, User } from "src/entities/user.entity";
 import { AuthenticateFor } from "src/guards/authenticateFor.guard";
+import { EmailSenders, EmailService } from "src/services/email.service";
 
 @Controller('v1/blog')
 export class BlogController {
 
-    constructor(private readonly email: MailerService) {}
+    constructor(private readonly email: EmailService) {}
 
     private async sendCommentNotification(post: BlogPost, comment: Comment) {
-        await this.email.sendMail({
-            to: post.author.email,
+        await this.email.send({
+            to: {
+                label: post.author.fullName,
+                email: post.author.email,
+            },
+            priority: 'high',
             subject: 'New Blog Post Comment',
             template: 'blog-post-comment-notification',
-            attachments: [{
-                cid: 'business_logo.PNG',
-                path: process.cwd() + '/assets/business_logo.PNG',
-                filename: 'business_logo.PNG'
-            }],
             context: {
                 name: comment.author ? comment.author.fullName : comment.authorName,
                 body: comment.body,
@@ -33,15 +33,14 @@ export class BlogController {
     }
 
     private async sendReplyNotification(post: BlogPost, comment: Comment) {
-        await this.email.sendMail({
-            to: post.author.email,
+        await this.email.send({
+            to: {
+                label: post.author.fullName,
+                email: post.author.email,
+            },
+            priority: 'high',
             subject: 'New Blog Post Comment',
             template: 'blog-post-reply-notification',
-            attachments: [{
-                cid: 'business_logo.PNG',
-                path: process.cwd() + '/assets/business_logo.PNG',
-                filename: 'business_logo.PNG'
-            }],
             context: {
                 name: comment.author ? comment.author.fullName : comment.authorName,
                 body: comment.body,

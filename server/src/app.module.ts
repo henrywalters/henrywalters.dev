@@ -20,6 +20,7 @@ import { ServiceController } from './controllers/service.controller';
 import { BlogController } from './controllers/blog.controller';
 import { UserController } from './controllers/user.controller';
 import { TrackedLinkController } from './controllers/trackedLink.controller';
+import { EmailService } from './services/email.service';
 
 @Module({
   imports: [
@@ -31,14 +32,14 @@ import { TrackedLinkController } from './controllers/trackedLink.controller';
           transport: {
               host: process.env.EMAIL_HOST,
               port: process.env.EMAIL_PORT,
-              secure: false,
+              secure: true,
               auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
               }
           },
           defaults: {
-              from: '"noreply@hadev.io" <noreply@hadev.io>'
+              from: `"${process.env.DEFAULT_EMAIL_LABEL} <${process.env.DEFAULT_EMAIL}>`,
           },
           template: {
               dir: process.cwd() + '/email-templates/',
@@ -64,7 +65,7 @@ import { TrackedLinkController } from './controllers/trackedLink.controller';
       UserController,
       TrackedLinkController,
     ],
-  providers: [AppService, TokenService, UserFileService],
+  providers: [AppService, TokenService, UserFileService, EmailService],
 })
 export class AppModule {
     async configure(consumer: MiddlewareConsumer) {
