@@ -1,9 +1,12 @@
 <template>
-    <li class='comment pt-3 pb-3'>
-        <h5>{{comment.authorName}}</h5>
+    <li class='comment pt-3 pb-3' :id="comment.id">
+        <h5>
+            {{comment.authorName}}
+        </h5>
         <p class="text-muted">{{comment.createdAt | luxon}}</p>
-        <p class="mt-3">{{comment.body}}</p>
-        <button class="mt-3 btn btn-sm btn-primary" @click="responding = true">Reply</button>
+        <markdown-viewer class="mt-3" v-model="comment.body"/>
+        <button class="mt-3 btn btn-sm btn-primary" @click="responding = true" v-if="!responding">Reply</button>
+        <button class="mt-3 btn btn-sm btn-warning" @click="responding = false" v-else>Cancel</button>
         <transition name="slide">
             <div class="row mt-3" v-if="responding">
                 <comment-form 
@@ -46,12 +49,14 @@ import Comments from "@/components/Comments.vue";
 import CommentForm from "@/components/CommentForm.vue";
 import { CommentPost } from "./CommentForm.vue";
 import { User } from "../services/auth.service";
+import MarkdownViewer from "@/components/ui/MarkdownViewer.vue";
 
 @Component({
     name: "CommentDisplay",
     components: {
         Comments,
         CommentForm,
+        MarkdownViewer,
     }
 })
 export default class CommentDisplay extends Vue {
@@ -72,8 +77,11 @@ export default class CommentDisplay extends Vue {
 
     @import "@/assets/theme.scss";
 
-    .comment {
-        // border: 1px solid black;
+
+    .focused {
+        box-shadow: 0 0 10px 2px $secondaryColor;
+        border: 2px solid $primaryGray;
+        padding: 15px;
     }
 
     .thread-marker {

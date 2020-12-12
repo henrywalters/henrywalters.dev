@@ -262,6 +262,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
         min-width: 300px;
         box-shadow: 0 0 10px 5px $primaryColor;
         margin-top: 10px;
+        border: 2px solid $primaryGray;
     }
 
     .dropdown-content a {

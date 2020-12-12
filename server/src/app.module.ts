@@ -7,6 +7,7 @@ import {getConnection} from "typeorm";
 import {ContactFormController} from "./controllers/contactForm.controller";
 import {TrackingController} from "./controllers/tracking.controller";
 import {MailerModule} from "@nestjs-modules/mailer";
+import { HandlebarsAdapter } from "@nestjs-modules/mailer/dist/adapters/handlebars.adapter";
 import {TokenService} from "./services/token.service";
 import {AuthController} from "./controllers/auth.controller";
 import {AuthMiddleware} from "./middleware/auth.middleware";
@@ -27,9 +28,24 @@ import { TrackedLinkController } from './controllers/trackedLink.controller';
           isGlobal: true,
       }),
       MailerModule.forRoot({
-          transport: `smtps://${process.env.EMAIL_USER}:${process.env.EMAIL_PASS}@${process.env.EMAIL_HOST}`,
+          transport: {
+              host: process.env.EMAIL_HOST,
+              port: process.env.EMAIL_PORT,
+              secure: false,
+              auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+              }
+          },
           defaults: {
               from: '"noreply@hadev.io" <noreply@hadev.io>'
+          },
+          template: {
+              dir: process.cwd() + '/email-templates/',
+              adapter: new HandlebarsAdapter(),
+              options: {
+                  strict: true,
+              }
           }
       }),
       TypeOrmModule.forRoot(),

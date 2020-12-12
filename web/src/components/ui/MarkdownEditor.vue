@@ -1,5 +1,5 @@
 <template>
-    <editor :initialValue="internal" :options="mdConfig" initialEditType="wysiwyg" ref="editor" @change="update" height="500px"/>
+    <editor :initialValue="internal" :height="height + 'px'" :options="mdConfig" initialEditType="wysiwyg" ref="editor" @change="update" />
 </template>
 
 <script lang="ts">
@@ -19,31 +19,36 @@ export default class MarkdownEditor extends Mixins(NotificationMixin) {
     @Prop()
     public value!: string;
 
+    @Prop({type: Number, default: 300})
+    public height!: number;
+
     private internal!: string;
 
-    private mdConfig = {
-        hooks: {
-            addImageBlobHook: async (blob: File, callback: (url: string, alt: string) => void) => {
-                console.log(blob);
-                // @ts-ignore
-                const alt = document.querySelector('.te-link-text-input').value;
+    private get mdConfig() {
+        return {
+            hooks: {
+                addImageBlobHook: async (blob: File, callback: (url: string, alt: string) => void) => {
+                    console.log(blob);
+                    // @ts-ignore
+                    const alt = document.querySelector('.te-link-text-input').value;
 
-                const data = new FormData();
-                data.append('alt', alt);
-                data.append('name', blob.name);
-                data.append('file', blob);
-                
-                const res = await (new UserFileService()).postFormData(data);
+                    const data = new FormData();
+                    data.append('alt', alt);
+                    data.append('name', blob.name);
+                    data.append('file', blob);
+                    
+                    const res = await (new UserFileService()).postFormData(data);
 
-                if (res.success) {
-                    callback(res.result.cdn, alt);
-                } else {
-                    this.notifyError("Failed to save image");
+                    if (res.success) {
+                        callback(res.result.cdn, alt);
+                    } else {
+                        this.notifyError("Failed to save image");
+                    }
+
+                    return false;
                 }
-
-                return false;
             }
-        }
+        };
     }
 
     private created() {

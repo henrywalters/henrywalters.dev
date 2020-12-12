@@ -31,6 +31,8 @@ export default class Comments extends Vue {
 
     @Prop()
     public user!: User;
+
+
 }
 </script>
 

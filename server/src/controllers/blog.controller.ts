@@ -1,3 +1,4 @@
+import { MailerService } from "@nestjs-modules/mailer";
 import { Body, Controller, Delete, Get, Headers, Param, Post, Put, Res, UseGuards } from "@nestjs/common";
 import { Privileges } from "src/constants/privileges.constants";
 import { CreateBlogPostDto, UpdateBlogPostDto } from "src/dtos/blogPost.dto";
@@ -10,6 +11,45 @@ import { AuthenticateFor } from "src/guards/authenticateFor.guard";
 
 @Controller('v1/blog')
 export class BlogController {
+
+    constructor(private readonly email: MailerService) {}
+
+    private async sendCommentNotification(post: BlogPost, comment: Comment) {
+        await this.email.sendMail({
+            to: post.author.email,
+            subject: 'New Blog Post Comment',
+            template: 'blog-post-comment-notification',
+            attachments: [{
+                cid: 'business_logo.PNG',
+                path: process.cwd() + '/assets/business_logo.PNG',
+                filename: 'business_logo.PNG'
+            }],
+            context: {
+                name: comment.author ? comment.author.fullName : comment.authorName,
+                body: comment.body,
+                comment_url: process.env.APP_URL + 'blog/' + post.slug + '?reply-to=' + comment.id,
+            }
+        })
+    }
+
+    private async sendReplyNotification(post: BlogPost, comment: Comment) {
+        await this.email.sendMail({
+            to: post.author.email,
+            subject: 'New Blog Post Comment',
+            template: 'blog-post-reply-notification',
+            attachments: [{
+                cid: 'business_logo.PNG',
+                path: process.cwd() + '/assets/business_logo.PNG',
+                filename: 'business_logo.PNG'
+            }],
+            context: {
+                name: comment.author ? comment.author.fullName : comment.authorName,
+                body: comment.body,
+                comment_url: process.env.APP_URL + 'blog/' + post.slug + '?reply-to=' + comment.id,
+            }
+        })
+    }
+
     @Get()
     public async getBlogPosts() {
         return ResponseDto.Success((await BlogPost.find({
@@ -158,6 +198,13 @@ export class BlogController {
 
                 comment = await Comment.createGuestComment(blogPost, req.authorName, req.authorEmail, req.body, parentComment);
             }
+
+            if (!parentComment) {
+                await this.sendCommentNotification(blogPost, comment);
+            } else {
+                await this.sendReplyNotification(blogPost, comment);
+            }
+
             return ResponseDto.Success(comment.cleaned());
         } catch (e) {
             console.log(e);

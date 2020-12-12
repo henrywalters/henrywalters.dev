@@ -11,12 +11,13 @@
                     <input class="form-control" v-model="request.authorEmail" @change="$emit('input', request)" />
                 </form-group>
                 <form-group class="col-md-12" label="Comment" field="body" :errors="errors">
-                    <textarea rows="4" class="form-control" v-model="request.body" @change="$emit('input', request)" />
+                    <markdown-editor rows="4" v-model="request.body" @change="$emit('input', request)" v-if="user" />
+                    <textarea rows="4" class="form-control" v-model="request.body" @change="$emit('input', request)" v-else />
                 </form-group>
                 <div class="col-12">
                     <div class="form-group btn-group w-100">
                         <button class="form-control btn btn-primary">Submit</button>
-                        <button class="form-control btn btn-warning" @click.prevent="$emit('cancel')">Cancel</button>
+                        <button class="form-control btn btn-warning" @click.prevent="$emit('cancel')" v-if="canCancel">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -32,12 +33,14 @@ import { CommentRequest, Comment } from "../services/blog.service";
 import { ApiResponse, HashMap } from "../services/base.service";
 import { User } from "../services/auth.service";
 import NotificationMixin from "../mixins/NotificationMixin";
+import MarkdownEditor from "@/components/ui/MarkdownEditor.vue";
 
 export type CommentPost = (req: CommentRequest) => Promise<ApiResponse<any, HashMap<string>>>;
 
 @Component({
     components: {
         FormGroup,
+        MarkdownEditor,
     }
 })
 export default class CommentDisplay extends Mixins(NotificationMixin) {
@@ -82,6 +85,7 @@ export default class CommentDisplay extends Mixins(NotificationMixin) {
 
         if (res.success === true) {
             this.reset();
+            this.$forceUpdate();
             this.notifySuccess("Comment added successfully");
             this.$emit('update');
         } else {

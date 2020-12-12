@@ -4,7 +4,9 @@
             <loader v-if="!initialized" />
             <div class="blog-post article" v-else-if="initialized && !editing">
                 <div class="blog-post-title mt-3">
-                    <h1 class="primary-font"><a href="#" class="link-black"><font-awesome-icon icon="link" class="fa 1x" /></a> {{post.title}}</h1>
+                    <h1 class="primary-font">
+                        {{post.title}}
+                    </h1>
                     <p>{{post.authorName ? post.authorName : post.author.firstName + ' ' + post.author.lastName}}</p>
                     <p class="text-muted">{{ post.publishedAt | luxon }}</p>
                     <p class="text-muted" v-if="post.updatedAt !== post.publishedAt">updated on {{post.updatedAt | luxon}}</p>
@@ -21,7 +23,7 @@
                             <b>URL Preview: </b><i>/blog/{{request.slug}}</i>
                         </div>
                         <form-group label="Post Content" field="content" :errors="errors">
-                            <markdown-editor v-model="request.content" />
+                            <markdown-editor v-model="request.content" :height="800" />
                         </form-group>
                         <div class="form-group">
                             <button class="form-control btn btn-primary">Submit</button>
@@ -73,7 +75,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="article mt-5" v-if="initialized">
+            <div class="article mt-5" v-if="initialized && !editing">
                 <div class="row">
                     <div class="col-12">
                         <h1 class="primary-font ">

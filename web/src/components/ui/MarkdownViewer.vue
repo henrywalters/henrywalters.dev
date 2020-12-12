@@ -71,14 +71,10 @@ export default class MarkdownViewer extends Mixins(ClipboardMixin) {
                 })
             }
 
-            console.log(this.headers);
-
             if (this.$route.hash) {
                 const el = document.querySelector(this.$route.hash);
                 el && el.scrollIntoView();
             }
-
-            this.$forceUpdate();
         }
     }
 }
