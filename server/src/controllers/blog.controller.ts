@@ -32,11 +32,11 @@ export class BlogController {
         })
     }
 
-    private async sendReplyNotification(post: BlogPost, comment: Comment) {
+    private async sendReplyNotification(post: BlogPost, comment: Comment, parentComment: Comment) {
         await this.email.send({
             to: {
-                label: post.author.fullName,
-                email: post.author.email,
+                label: parentComment.authorName,
+                email: parentComment.authorEmail,
             },
             priority: 'high',
             subject: 'New Blog Post Comment',
@@ -201,7 +201,7 @@ export class BlogController {
             if (!parentComment) {
                 await this.sendCommentNotification(blogPost, comment);
             } else {
-                await this.sendReplyNotification(blogPost, comment);
+                await this.sendReplyNotification(blogPost, comment, parentComment);
             }
 
             return ResponseDto.Success(comment.cleaned());
