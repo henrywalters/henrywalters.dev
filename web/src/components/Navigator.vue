@@ -74,7 +74,6 @@ export default class Navigator extends Mixins(ConfigMixin) {
 
     private menuItems: IMenuItem[] = [
         { label: "Home", link: "/", active: false },
-        { label: "Projects", link: "/projects", active: false },
         { label: "Services", link: "/service", active: false, children: async () => {
             const services = new ServiceService();
             const res = await services.get();
@@ -90,6 +89,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
                 return [];
             }
         }},
+        { label: "Projects", link: "/projects", active: false },
         { label: "Blog", link: "/blog", active: false },
         { label: "About", link: "/about", active: false },
         { label: "Contact", link: "/contact", active: false },
