@@ -21,7 +21,7 @@
                         :class="{'active': item.active}"
                     >{{item.label}}</a>
                     <div class="dropdown-content-container" :class="{visible: item.toggled}" @mouseleave="cleanup">
-                        <div class="dropdown-content">
+                        <div class="dropdown-content" :class="{'draw-left': i % 2 == 1}">
                             <span v-for="(child, j) in item.children" :key="i + '-' + j">
                                 <a
                                     class="dropdown-link" 
@@ -231,6 +231,10 @@ export default class Navigator extends Mixins(ConfigMixin) {
 
     a {
         color: black !important;
+    }
+
+    .draw-left {
+        margin-left: -130px;
     }
 
     .active {
