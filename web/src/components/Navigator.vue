@@ -15,7 +15,7 @@
                     <a 
                         class="navigator-item dropdown-trigger dropdown-toggle" 
                         href="#"
-                        @mouseover="toggleItem(item)"
+                        @mouseover="hoverItem(item)"
                         @click.prevent="toggleItem(item)"
                         @mouseleave="cleanup"
                         :class="{'active': item.active}"
@@ -26,7 +26,13 @@
                                 <a
                                     class="dropdown-link" 
                                     
-                                    :class="{'bordered-link': j != 0, 'selected': child.active}" 
+                                    :class="{
+                                        'bordered-link': j != 0, 
+                                        'selected': child.active,
+                                        'alt': j % 2 == 0,
+                                        'first': j == 0,
+                                        'last': j == item.children.length - 1,
+                                    }" 
                                     v-if="canShow(child)"
                                     :href="child.link"
                                     @click.prevent="goto(child)"
@@ -99,7 +105,6 @@ export default class Navigator extends Mixins(ConfigMixin) {
     private cleanup(e: any) {
         if (this.toggledItem) {
             if (e.toElement.classList.value.indexOf('dropdown') === -1) {
-                console.log("Clean up");
                 this.toggledItem.toggled = false;
                 this.toggledItem = void 0;
                 this.$forceUpdate();
@@ -172,8 +177,14 @@ export default class Navigator extends Mixins(ConfigMixin) {
     }
 
     private toggleItem(item: IMenuItem) {
-        this.toggledItem = item;
+        item.toggled = !item.toggled;
+        this.toggledItem = item.toggled ? item : null;
+        this.$forceUpdate();
+    }
+
+    private hoverItem(item: IMenuItem) {
         item.toggled = true;
+        this.toggledItem = item;
         this.$forceUpdate();
     }
 
@@ -217,6 +228,8 @@ export default class Navigator extends Mixins(ConfigMixin) {
 
     $nav-padding: 15px;
 
+    $dd-radius: 3px;
+
     .navigator {
         display: inline-flex;
         justify-content: space-between;
@@ -234,9 +247,9 @@ export default class Navigator extends Mixins(ConfigMixin) {
         color: black !important;
     }
 
-    @media screen and (max-width: 450px) {
+    @media screen and (max-width: 455px) {
         .draw-left {
-            margin-left: -130px;
+            margin-left: -160px;
         }
     }
 
@@ -266,10 +279,10 @@ export default class Navigator extends Mixins(ConfigMixin) {
     
     .dropdown-content {
         background-color: white;
-        min-width: 300px;
-        box-shadow: 0 0 10px 5px $primaryColor;
+        min-width: 315px;
+        box-shadow: 3px 3px 10px 5px darken($primaryColor, 10%);
         margin-top: 10px;
-        border: 2px solid $primaryGray;
+        border-radius: $dd-radius;
     }
 
     .dropdown-content a {
@@ -282,9 +295,27 @@ export default class Navigator extends Mixins(ConfigMixin) {
         z-index: 1000;
     }
 
+    .alt {
+        // background-color: rgb(201, 201, 201);
+    }
+
+    .first {
+        border-radius: $dd-radius $dd-radius 0 0;
+    }
+
+    .last {
+        border-radius: 0 0 $dd-radius $dd-radius;
+    }
+
+    .dropdown-link {
+        font-size: 24px;
+    }
+
     .dropdown-link:hover {
-        background-color: $secondaryColor;
-        color: black !important;
+        background-color: $primaryColor;
+        color: white !important;
+        
+        
     }
 
     .selected {
@@ -293,7 +324,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
     }
 
     .bordered-link {
-        border-top: 1px solid black;
+        //border-top: 1px solid black;
     }
 
 </style>
