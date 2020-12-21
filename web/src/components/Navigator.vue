@@ -225,7 +225,8 @@ export default class Navigator extends Mixins(ConfigMixin) {
 
     .navigator-item {
         min-width: 200px;
-        font-size: 24px;
+        font-size: 28px;
+        font-weight: bold;
         margin: $nav-padding / 2;
     }
 
@@ -233,8 +234,10 @@ export default class Navigator extends Mixins(ConfigMixin) {
         color: black !important;
     }
 
-    .draw-left {
-        margin-left: -130px;
+    @media screen and (max-width: 450px) {
+        .draw-left {
+            margin-left: -130px;
+        }
     }
 
     .active {
