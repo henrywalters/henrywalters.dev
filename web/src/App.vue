@@ -42,6 +42,7 @@
   import {AuthService, User} from "@/services/auth.service";
   import {AuthEventBus, AuthEvents} from "@/events";
   import ConfigMixin from "@/mixins/ConfigMixin";
+  import {HelloWorld} from "hauth-lib";
 
 @Component({
   name: 'App',
@@ -62,6 +63,9 @@ export default class App extends Mixins(ConfigMixin) {
   }
 
   private async mounted() {
+
+    HelloWorld();
+
     this.auth = new AuthService();
     await this.getSelf();
     this.initialized = true;

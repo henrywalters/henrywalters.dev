@@ -178,7 +178,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
 
     private toggleItem(item: IMenuItem) {
         item.toggled = !item.toggled;
-        this.toggledItem = item.toggled ? item : null;
+        this.toggledItem = item.toggled ? item : void 0;
         this.$forceUpdate();
     }
 
