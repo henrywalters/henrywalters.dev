@@ -20,6 +20,7 @@
     "dotenv": "^8.2.0",
     "hagame": "^1.0.3",
     "hauth-lib": "^1.0.0",
+    "hcore": "^1.0.6",
     "highcharts": "^8.2.2",
     "highcharts-vue": "^1.3.5",
     "highlight.js": "^10.4.0",
