@@ -25,7 +25,6 @@
 
 <script lang="ts">
     import {Component, Vue, Mixins, Prop} from "vue-property-decorator";
-    import { User } from "../../services/auth.service";
     import { BlogPostListing } from "../../services/blog.service";
     import Indicator from "@/components/ui/Indicator.vue";
 

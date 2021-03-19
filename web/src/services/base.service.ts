@@ -1,6 +1,6 @@
-import {AxiosInstance} from "axios";
-const axios = require("axios").default;
+import { OAuth2Client } from "hauth-lib/dist/oauth2client";
 import Cookies from "js-cookie";
+import { HAuth } from "./hauth.service";
 
 export type HashMap<V> = { [key: string]: V};
 
@@ -10,20 +10,14 @@ export type ApiResponse<S, E> = Success<S> | Error<E>;
 
 // Service that excepts dto T and returns reply R with possible error E.
 export default class BaseService<T, R, E> {
-    protected http: AxiosInstance;
+    protected client: OAuth2Client;
     protected name: string;
     protected controllerPath: string;
 
     constructor(name: string, controllerPath: string = "") {
         this.name = name;
         this.controllerPath = controllerPath;
-        this.http = axios.create({
-            baseURL: process.env.VUE_APP_API_ROOT,
-        });
-
-        if (Cookies.get("jwt")) {
-            this.http.defaults.headers.common["jwt"] = "Bearer " + Cookies.get("jwt");
-        }
+        this.client = HAuth.client.newOAuth2Client(process.env.VUE_APP_API_ROOT as string);
     }
 
     private undefinedErrorMessage(method: string): string {
@@ -32,7 +26,7 @@ export default class BaseService<T, R, E> {
 
     public async get(): Promise<ApiResponse<R[], E>> {
         try {
-            return (await this.http.get(this.controllerPath)).data;
+            return (await this.client.get(this.controllerPath));
         } catch (e) {
             return {
                 success: false,
@@ -43,7 +37,7 @@ export default class BaseService<T, R, E> {
 
     public async getOne(id: string | number): Promise<ApiResponse<R, E>> {
         try {
-            return (await this.http.get(this.controllerPath + '/' + id)).data;
+            return (await this.client.get(this.controllerPath + '/' + id));
         } catch (e) {
             return {
                 success: false,
@@ -54,7 +48,7 @@ export default class BaseService<T, R, E> {
 
     public async post(data: T): Promise<ApiResponse<R, E>> {
         try {
-            return (await this.http.post(this.controllerPath, data)).data;
+            return (await this.client.post(this.controllerPath, data));
         } catch (e) {
             return {
                 success: false,
@@ -65,7 +59,7 @@ export default class BaseService<T, R, E> {
 
     public async postFormData(data: FormData): Promise<ApiResponse<R, E>> {
         try {
-            return (await this.http({
+            return (await this.client.api.http({
                 url: this.controllerPath,
                 method: 'POST',
                 data,
@@ -83,7 +77,7 @@ export default class BaseService<T, R, E> {
 
     public async put(id: string | number, data: T): Promise<ApiResponse<R, E>> {
         try {
-            return (await this.http.put(this.controllerPath + '/' + id, data)).data;
+            return (await this.client.put(this.controllerPath + '/' + id, data));
         } catch (e) {
             return {
                 success: false,
@@ -94,7 +88,7 @@ export default class BaseService<T, R, E> {
 
     public async putFormData(id: string | number, data: FormData): Promise<ApiResponse<R, E>> {
         try {
-            return (await this.http({
+            return (await this.client.api.http({
                 url: this.controllerPath + '/' + id,
                 method: 'PUT',
                 data,
@@ -112,7 +106,8 @@ export default class BaseService<T, R, E> {
 
     public async delete(id: string | number): Promise<ApiResponse<void, E>> {
         try {
-            return (await this.http.delete(this.controllerPath + '/' + id)).data;
+            await this.client.delete(this.controllerPath + '/' + id);
+            return { success: true, result: void 0}; 
         } catch (e) {
             return {
                 success: false,

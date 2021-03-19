@@ -31,9 +31,9 @@ export class TestimonialService extends BaseService<ITestimonialLinkDTO, ITestim
         super("Testimonial", "testimonial");
     }
 
-    async getSubmitted() {
+    async getSubmitted(): Promise<ApiResponse<ITestimonial[], string>> {
         try {
-            return (await this.http.get(this.controllerPath + "/submitted")).data;
+            return (await this.client.get(this.controllerPath + "/submitted"));
         } catch (e) {
             throw new Error(e.message);
         }
@@ -41,7 +41,7 @@ export class TestimonialService extends BaseService<ITestimonialLinkDTO, ITestim
 
     async submit(id: string, data: ITestimonialDTO): Promise<ApiResponse<void, HashMap<string>>> {
         try {
-            return (await this.http.post(this.controllerPath + "/" + id, data)).data;
+            return (await this.client.post(this.controllerPath + "/" + id, data));
         } catch (e) {
             throw new Error(e.message);
         }

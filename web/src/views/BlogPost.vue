@@ -93,9 +93,8 @@
 <script lang="ts">
     import {Component, Vue, Mixins} from "vue-property-decorator";
     import AuthMixin from "./../mixins/AuthMixin";
-    import { BlogPostFull, BlogPostListing, BlogPostReadOnly, BlogService, CommentRequest, UpdateBlogPostRequest } from "./../services/blog.service";
+    import { BlogPostFull, BlogPostReadOnly, BlogService, CommentRequest, Comment} from "./../services/blog.service";
     import BlogList from "@/components/blog/List.vue";
-    import { AuthService, User } from "../services/auth.service";
     import MarkdownViewer from "@/components/ui/MarkdownViewer.vue";
     import MarkdownEditor from "@/components/ui/MarkdownEditor.vue";
     import FormGroup from "@/components/ui/forms/FormGroup.vue";
@@ -107,6 +106,7 @@
     import Set from "../structures/set.structure";
     import Comments from "@/components/Comments.vue";
     import CommentForm from "@/components/CommentForm.vue";
+    import { IUser } from "hauth-lib/dist/interfaces/user";
 
     interface BlogPostRequest {
     title: string;
@@ -130,7 +130,7 @@
         private initialized = false;
         private canCreate: boolean = false;
         private service!: BlogService;
-        private user!: User;
+        private user!: IUser;
         private post!: BlogPostReadOnly | BlogPostFull;
 
         private editing: boolean = false;
@@ -151,8 +151,8 @@
         private canEdit() {
             if (!this.user) return false;
             if (!("author" in this.post)) return false;
-            if (this.post.author.id === this.user.id) return true;
-            if (this.post.allowedToEdit.filter(x => x.id === this.user.id).length > 0) return true;
+            //if (this.post.author.id === this.user.id) return true;
+            //if (this.post.allowedToEdit.filter(x => x.id === this.user.id).length > 0) return true;
             return false;
         }
 
@@ -164,7 +164,7 @@
         private async loadUsers() {
             const userService = new UserService();
             const res = await userService.get();
-            if (res.success) this.users = res.result;
+            //if (res.success) this.users = res.result;
             console.log(this.users);
         }
 
@@ -236,9 +236,9 @@
 
                 for (let i = 0; i < raw.length; i++) {
                     const node = raw[i];
-                    if (node.parentComment) {
+                    if (node.parent) {
                         // @ts-ignore
-                        raw[map[node.parentComment.id]].children.push(node);
+                        raw[map[node.parent.id]].children.push(node);
                     } else {
                         roots.push(node);
                     }

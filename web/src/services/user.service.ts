@@ -1,4 +1,4 @@
-import { User } from './auth.service';
+import { IUser } from 'hauth-lib/dist/interfaces/user';
 import BaseService, { HashMap } from './base.service';
 
 export interface MinimalUser {
@@ -12,7 +12,7 @@ export interface UpdateUserRequest {
     privileges: string[];
 }
 
-export class UserService extends BaseService<UpdateUserRequest, MinimalUser | User, HashMap<string>> {
+export class UserService extends BaseService<UpdateUserRequest, MinimalUser | IUser, HashMap<string>> {
     constructor() {
         super("User Service", "user");
     }

@@ -1,5 +1,4 @@
-import { User } from './auth.service';
-import BaseService, { HashMap } from './base.service';
+import BaseService, { ApiResponse, HashMap } from './base.service';
 import { ICategory } from './category.service';
 import { MinimalUser } from './user.service';
 
@@ -31,7 +30,7 @@ export interface BlogPostFull {
     slug: string;
     title: string;
     content: string;
-    author: User;
+    //author: User;
     publishedAt: Date;
     lastUpdate: Date;
     categories: ICategory[];
@@ -72,9 +71,9 @@ export class BlogService extends BaseService<CreateBlogPostRequest | UpdateBlogP
         super("Blog Service", "blog");
     }
 
-    public async getMine() {
+    public async getMine(): Promise<ApiResponse<BlogPostListing[], string>> {
         try {
-            return (await this.http.get(this.controllerPath + "/mine")).data;
+            return (await this.client.get(this.controllerPath + "/mine"));
         } catch (e) {
             throw new Error(e.message);
         }
@@ -82,15 +81,15 @@ export class BlogService extends BaseService<CreateBlogPostRequest | UpdateBlogP
 
     public async togglePublished(id: string | number) {
         try {
-            return (await this.http.post(this.controllerPath + '/' + id + '/toggle-published')).data;
+            return (await this.client.post(this.controllerPath + '/' + id + '/toggle-published', {}));
         } catch (e) {
             throw new Error(e.message);
         }
     }
 
-    public async getComments(postId: string) {
+    public async getComments(postId: string): Promise<ApiResponse<Comment[], string>> {
         try {
-            return (await this.http.get(this.controllerPath + '/' + postId + '/comment')).data;
+            return (await this.client.get(this.controllerPath + '/' + postId + '/comment'));
         } catch (e) {
             throw new Error(e.message);
         }
@@ -98,7 +97,7 @@ export class BlogService extends BaseService<CreateBlogPostRequest | UpdateBlogP
 
     public async createComment(postId: string, req: CommentRequest) {
         try {
-            return (await this.http.post(this.controllerPath + '/' + postId + '/comment', req)).data
+            return (await this.client.post(this.controllerPath + '/' + postId + '/comment', req));
         } catch (e) {
             throw new Error(e.message);
         }

@@ -1,9 +1,10 @@
-import { AuthService } from '@/services/auth.service';
 import {Vue, Component} from "vue-property-decorator";
-import {User} from "@/services/auth.service";
+import {HAuth} from "./../services/hauth.service";
 
 @Component
 export default class AuthMixin extends Vue {
+
+    private static PrivilegeCache: {[privilege: string]: boolean} = {};
 
     public authorized: boolean = false;
 
@@ -21,36 +22,30 @@ export default class AuthMixin extends Vue {
     }
 
     public async getSelf() {
-        const service = new AuthService();
-        const res = await service.self();
-        if (res.success) {
-            return res.result;
+        try {
+            return HAuth.client.getSelf();
+        } catch (e) {
+            return void 0;
         }
-        return void 0;
     }
 
     public async hasPrivilege(privilege: string) {
-        const service = new AuthService();
-        const res = await service.self();
-        if (!res.success) {
-            return false;
+        if (AuthMixin.PrivilegeCache.hasOwnProperty(privilege)) {
+            return AuthMixin.PrivilegeCache[privilege];
         }
 
-        return res.result.privileges.indexOf(privilege) !== -1;
+        const authorized = await HAuth.client.authorizeForApp([privilege]);
+
+        AuthMixin.PrivilegeCache[privilege] = authorized.failed.length === 0;
+
+        return AuthMixin.PrivilegeCache[privilege];
     }
 
     public async authorizeFor(privilege: string) {
-        const service = new AuthService();
-        const res = await service.self();
-        if (!res.success) {
-            this.unauthorized();
+        if (await this.hasPrivilege(privilege)) {
+            this.authorized = true;
         } else {
-            const user = res.result;
-            if (user.privileges.indexOf(privilege) === -1) {
-                this.unauthorized();
-            } else {
-                this.authorized = true;
-            }
+            this.unauthorized();
         }
     }
 }

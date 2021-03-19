@@ -55,6 +55,7 @@ import {User} from "@/services/hauth.service";
 import ServiceService from "../services/service.service";
 import ConfigMixin from "../mixins/ConfigMixin";
 import HCore from 'hcore';
+import AuthMixin from "../mixins/AuthMixin";
 
 interface IMenuItem {
     label: string;
@@ -69,7 +70,7 @@ interface IMenuItem {
 @Component({
     name: "Navigator"
 })
-export default class Navigator extends Mixins(ConfigMixin) {
+export default class Navigator extends Mixins(ConfigMixin, AuthMixin) {
 
     @Prop()
     public user!: User;
@@ -210,13 +211,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
 
     private canShow(item: IMenuItem) {
         if (item.privilege) {
-            if (!this.user) return false;
-            for (const privilege of this.user.privileges) {
-                if (privilege === item.privilege) {
-                    return true;
-                }
-            }
-            return false;
+            return this.hasPrivilege(item.privilege);
         }
         return true;
     }

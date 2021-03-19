@@ -29,7 +29,7 @@
     import BlogList from "@/components/blog/List.vue";
     import BlogTable from "@/components/blog/Table.vue";
     import BlogCreate from "@/components/blog/Create.vue";
-    import { AuthService, User } from "../services/auth.service";
+    import { IUser } from "hauth-lib/dist/interfaces/user";
 
     @Component({
         components: {
@@ -42,7 +42,7 @@
         private initialized = false;
         private canCreate: boolean = false;
         private service!: BlogService;
-        private user!: User;
+        private user!: IUser;
 
         private recentPosts: BlogPostListing[] = [];
         private myPosts: BlogPostListing[] = [];
@@ -89,7 +89,7 @@
             this.getRecentPosts();
             // @ts-ignore
             this.user = await this.getSelf();
-            this.canCreate = AuthService.HasPrivilege(this.user, this.PRIVILEGES.BLOG_WRITE);
+            // this.canCreate = AuthService.HasPrivilege(this.user, this.PRIVILEGES.BLOG_WRITE);
             this.getMyPosts();
             this.initialized = true;
         }

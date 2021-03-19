@@ -1,10 +1,8 @@
-import {User} from "@/services/auth.service";
 import BaseService from "@/services/base.service";
 
 
 export interface UserFile {
     id: string;
-    user: User;
     name: string;
     alt: string;
     cdn: string;

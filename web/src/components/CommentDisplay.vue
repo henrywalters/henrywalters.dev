@@ -48,8 +48,8 @@ import {Vue, Component, Prop} from "vue-property-decorator";
 import Comments from "@/components/Comments.vue";
 import CommentForm from "@/components/CommentForm.vue";
 import { CommentPost } from "./CommentForm.vue";
-import { User } from "../services/auth.service";
 import MarkdownViewer from "@/components/ui/MarkdownViewer.vue";
+import { IUser } from "hauth-lib/dist/interfaces/user";
 
 @Component({
     name: "CommentDisplay",
@@ -67,7 +67,7 @@ export default class CommentDisplay extends Vue {
     public post!: CommentPost;
 
     @Prop()
-    public user!: User;
+    public user!: IUser;
 
     private responding: boolean = false;
 }

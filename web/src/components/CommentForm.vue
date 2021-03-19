@@ -31,9 +31,9 @@ import {Vue, Component, Prop, Watch, Mixins} from "vue-property-decorator";
 import FormGroup from "@/components/ui/forms/FormGroup.vue";
 import { CommentRequest, Comment } from "../services/blog.service";
 import { ApiResponse, HashMap } from "../services/base.service";
-import { User } from "../services/auth.service";
 import NotificationMixin from "../mixins/NotificationMixin";
 import MarkdownEditor from "@/components/ui/MarkdownEditor.vue";
+import { IUser } from "hauth-lib/dist/interfaces/user";
 
 export type CommentPost = (req: CommentRequest) => Promise<ApiResponse<any, HashMap<string>>>;
 
@@ -54,7 +54,7 @@ export default class CommentDisplay extends Mixins(NotificationMixin) {
     public post!: CommentPost;
 
     @Prop()
-    public user!: User;
+    public user!: IUser;
 
     private errors: HashMap<string> = {};
     private request!: CommentRequest;

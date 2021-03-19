@@ -23,7 +23,7 @@ export class TrackingService extends BaseService<void, void, void> {
 
     public async trackPageVisit(page: string, link: string, source?: string): Promise<void> {
         try {
-            await this.http.post("tracking/page-visit", {
+            await this.client.post("tracking/page-visit", {
                 page,
                 source,
                 link,
@@ -36,7 +36,7 @@ export class TrackingService extends BaseService<void, void, void> {
 
     public async getPageVisitReport(): Promise<ApiResponse<PageVisitSumary, void>> {
         try {
-            return (await this.http.get('tracking/page-visit/report')).data;
+            return (await this.client.get('tracking/page-visit/report'));
         } catch (e) {
             throw new Error("Failed to get page visit report");
         }

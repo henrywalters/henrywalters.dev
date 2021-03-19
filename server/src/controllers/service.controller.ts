@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { HAuthorize } from "hauth-lib/dist/nest/hauthenticate.guard";
 import { Privileges } from "src/constants/privileges.constants";
 import { ResponseDto } from "src/dtos/response.dto";
 import { ServiceDTO } from "src/dtos/service.dto";
@@ -23,7 +24,7 @@ export class ServiceController {
     }
 
     @Post()
-    @UseGuards(new AuthenticateFor(Privileges.ADMIN))
+    @UseGuards(new HAuthorize(Privileges.ADMIN))
     public async createService(@Body() body: ServiceDTO) {
         try {
             const service = new Service();
@@ -34,7 +35,7 @@ export class ServiceController {
     }
 
     @Put(":id")
-    @UseGuards(new AuthenticateFor(Privileges.ADMIN))
+    @UseGuards(new HAuthorize(Privileges.ADMIN))
     public async updateService(@Param("id") id: string, @Body() body: ServiceDTO) {
         try {
             const service = await Service.findByIdOrSlug(id);
@@ -45,7 +46,7 @@ export class ServiceController {
     }
 
     @Delete(":id")
-    @UseGuards(new AuthenticateFor(Privileges.ADMIN))
+    @UseGuards(new HAuthorize(Privileges.ADMIN))
     public async deleteService(@Param("id") id: string) {
         try {
             const service = await Service.findByIdOrSlug(id);

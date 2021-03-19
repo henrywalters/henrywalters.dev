@@ -41,7 +41,8 @@
   import Navigator from "@/components/Navigator.vue";
   import {AuthEventBus, AuthEvents} from "@/events";
   import ConfigMixin from "@/mixins/ConfigMixin";
-  import {HAuth, User} from "@/services/hauth.service";
+  import {HAuth} from "@/services/hauth.service";
+  import {IUser} from "hauth-lib/dist/interfaces/user";
 
 @Component({
   name: 'App',
@@ -52,7 +53,7 @@
 export default class App extends Mixins(ConfigMixin) {
 
   private initialized = false;
-  private user: User | null = null;
+  private user: IUser | null = null;
 
   private async getSelf() {
     try {

@@ -15,7 +15,7 @@
 import {Vue, Component, Prop} from "vue-property-decorator";
 import CommentDisplay from "@/components/CommentDisplay.vue";
 import { CommentPost } from "./CommentForm.vue";
-import { User } from "../services/auth.service";
+import { IUser } from "hauth-lib/dist/interfaces/user";
 
 @Component({
     components: {
@@ -30,7 +30,7 @@ export default class Comments extends Vue {
     public post!: CommentPost;
 
     @Prop()
-    public user!: User;
+    public user!: IUser;
 
 
 }
