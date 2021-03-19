@@ -51,7 +51,7 @@
 import {Component, Mixins, Prop, Vue, Watch} from "vue-property-decorator";
 import {Route} from "vue-router";
 import {TrackingService} from "@/services/tracking.service";
-import {User} from "@/services/auth.service";
+import {User} from "@/services/hauth.service";
 import ServiceService from "../services/service.service";
 import ConfigMixin from "../mixins/ConfigMixin";
 import HCore from 'hcore';

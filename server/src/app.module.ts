@@ -21,6 +21,7 @@ import { BlogController } from './controllers/blog.controller';
 import { UserController } from './controllers/user.controller';
 import { TrackedLinkController } from './controllers/trackedLink.controller';
 import { EmailService } from './services/email.service';
+import { HAuthMiddleware, HAuthModule } from "hauth-lib";
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { EmailService } from './services/email.service';
           }
       }),
       TypeOrmModule.forRoot(),
+      HAuthModule,
   ],
   controllers: [
       AppController, 
@@ -71,5 +73,8 @@ export class AppModule {
     async configure(consumer: MiddlewareConsumer) {
         consumer.apply(AuthMiddleware)
             .forRoutes({path: "*", method: RequestMethod.ALL});
+
+        consumer.apply(HAuthMiddleware)
+            .forRoutes({path: '*', method: RequestMethod.ALL})
     }
 }

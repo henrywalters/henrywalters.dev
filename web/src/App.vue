@@ -9,7 +9,7 @@
         </span>
         <div class="text-center mt-0 mb-2 text-black" style="font-size: 14px" v-if="initialized && user !== null">
           <span v-if="">
-            Signed in as {{user.firstName}} {{user.lastName}} - <router-link :to="{name: 'ChangePassword'}">Change Password</router-link> | <a href="/logout" @click.prevent="logout">Logout</a>
+            Signed in as {{user.name}} - <router-link :to="{name: 'ChangePassword'}">Change Password</router-link> | <a href="/logout" @click.prevent="logout">Logout</a>
           </span>
         </div>
 
@@ -39,10 +39,9 @@
 
   import {Component, Vue, Mixins} from "vue-property-decorator";
   import Navigator from "@/components/Navigator.vue";
-  import {AuthService, User} from "@/services/auth.service";
   import {AuthEventBus, AuthEvents} from "@/events";
   import ConfigMixin from "@/mixins/ConfigMixin";
-  import {HelloWorld} from "hauth-lib";
+  import {HAuth, User} from "@/services/hauth.service";
 
 @Component({
   name: 'App',
@@ -52,21 +51,19 @@
 })
 export default class App extends Mixins(ConfigMixin) {
 
-  private auth!: AuthService;
-
   private initialized = false;
   private user: User | null = null;
 
   private async getSelf() {
-    const res = await this.auth.self();
-    if (res.success) this.user = res.result;
+    try {
+      this.user = await HAuth.client.getSelf();
+    } catch (e) {
+      console.warn("Failed to get self");
+    }
   }
 
   private async mounted() {
-
-    HelloWorld();
-
-    this.auth = new AuthService();
+    await HAuth.client.refresh();
     await this.getSelf();
     this.initialized = true;
 
@@ -102,7 +99,7 @@ export default class App extends Mixins(ConfigMixin) {
   }
 
   private async logout() {
-    await this.auth.logout();
+    HAuth.client.logout();
     window.location.reload();
   }
 }

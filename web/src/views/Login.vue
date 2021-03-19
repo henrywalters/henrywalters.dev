@@ -31,6 +31,7 @@
     import {Component, Vue} from "vue-property-decorator";
     import {AuthService, ILoginRequest} from "../services/auth.service";
     import {HashMap} from "../services/base.service";
+    import {HAuth} from "../services/hauth.service";
 
     @Component({
         name: "Login"
@@ -52,13 +53,21 @@
         }
 
         private async created() {
-            this.clear();
+
+            /*this.clear();
             this.auth = new AuthService();
             const res = await this.auth.self();
             if (res.success) {
                 this.$router.back();
             }
             this.initialized = true;
+            */
+           try {
+            const res = await HAuth.client.login();
+            console.log(res);
+           } catch (e) {
+               console.log(e);
+           }
         }
 
         private async submit() {
