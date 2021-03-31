@@ -3,41 +3,45 @@
         <div class="navigator primary-font w-100 row" @mouseleave="cleanup">
             <span v-for="(item, i) in menuItems" :key="i" v-if="canShow(item)">
                 <a 
-                    class="navigator-item" 
+                    class="navigator-item hover-trigger" 
                     v-if="canShow(item) && !item.children" 
                     v-bind:href="item.link" 
                     @click.prevent="goto(item)"
                     @mouseenter="cleanup"
-                    :class="{'active': item.active}"
+                    @mouseleave="cleanup"
+                    @mouseover="setHover(item)"
+                    :class="{'active': item.active, 'hovered': isHovered(item)}"
                     
                 >{{item.label}}</a>
                 <span v-if="canShow(item) && item.children" class="dropdown">
                     <a 
-                        class="navigator-item dropdown-trigger dropdown-toggle" 
+                        class="navigator-item dropdown-trigger dropdown-toggle hover-trigger" 
                         href="#"
-                        @mouseover="hoverItem(item)"
+                        @mouseover="hoverItem(item); setHover(item)"
                         @click.prevent="toggleItem(item)"
                         @mouseleave="cleanup"
-                        :class="{'active': item.active}"
+                        :class="{'active': item.active, 'hovered': isHovered(item)}"
                     >{{item.label}}</a>
-                    <div class="dropdown-content-container" :class="{visible: item.toggled}" @mouseleave="cleanup">
+                    <div class="dropdown-content-container hover-trigger" :class="{visible: item.toggled}" @mouseleave="cleanup">
                         <div class="dropdown-content" :class="{'draw-left': i % 2 == 1}">
-                            <span v-for="(child, j) in item.children" :key="i + '-' + j">
-                                <a
-                                    class="dropdown-link" 
-                                    
-                                    :class="{
-                                        'bordered-link': j != 0, 
-                                        'selected': child.active,
-                                        'alt': j % 2 == 0,
-                                        'first': j == 0,
-                                        'last': j == item.children.length - 1,
-                                    }" 
-                                    v-if="canShow(child)"
-                                    :href="child.link"
-                                    @click.prevent="goto(child)"
-                                >{{child.label}}</a>
-                            </span>
+                            <div class='dropdown-inner-content'>
+                                <div class='dropdown-link-container' v-for="(child, j) in item.children" :key="i + '-' + j">
+                                    <a
+                                        class="dropdown-link hover-trigger" 
+                                        
+                                        :class="{
+                                            'bordered-link': j != 0, 
+                                            'selected': child.active,
+                                            'alt': j % 2 == 0,
+                                            'first': j == 0,
+                                            'last': j == item.children.length - 1,
+                                        }" 
+                                        v-if="canShow(child)"
+                                        :href="child.link"
+                                        @click.prevent="goto(child)"
+                                    ><font-awesome-icon v-if='child.icon' :icon='child.icon' /> {{child.label}}</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </span>
@@ -59,6 +63,7 @@ interface IMenuItem {
     label: string;
     link: string;
     active: boolean;
+    icon?: string;
     privilege?: string;
     toggled?: boolean;
     parent?: IMenuItem;
@@ -76,19 +81,22 @@ export default class Navigator extends Mixins(ConfigMixin) {
     private currentItem: IMenuItem | undefined;
     private tracking!: TrackingService;
 
+    private hoveredItem: IMenuItem | undefined;
     private toggledItem: IMenuItem | undefined;
 
     private menuItems: IMenuItem[] = [
         { label: "Home", link: "/", active: false },
-        { label: "Services", link: "/service", active: false, children: async () => {
+        { label: "Services", link: "/service", toggled: true, active: false, children: async () => {
             const services = new ServiceService();
             const res = await services.get();
             if (res.success) {
                 return res.result.map(service => {
+                    console.log(service);
                     return {
                         label: service.name,
                         link: '/service/' + service.slug,
                         active: false,
+                        icon: service.icon,
                     }
                 }) 
             } else {
@@ -105,8 +113,16 @@ export default class Navigator extends Mixins(ConfigMixin) {
     private cleanup(e: any) {
         if (this.toggledItem) {
             if (e.toElement.classList.value.indexOf('dropdown') === -1) {
+                console.log("Removed toggled item")
                 this.toggledItem.toggled = false;
                 this.toggledItem = void 0;
+                this.$forceUpdate();
+            }
+        }
+
+        if (this.hoveredItem) {
+            if (e.toElement.classList.value.indexOf('hover-trigger') === -1) {
+                this.hoveredItem = void 0;
                 this.$forceUpdate();
             }
         }
@@ -177,14 +193,25 @@ export default class Navigator extends Mixins(ConfigMixin) {
     }
 
     private toggleItem(item: IMenuItem) {
+        console.log(item.toggled);
         item.toggled = !item.toggled;
         this.toggledItem = item.toggled ? item : null;
         this.$forceUpdate();
+        console.log(this.toggledItem);
+    }
+
+    private isHovered(item: IMenuItem) {
+        return this.hoveredItem && this.hoveredItem.link === item.link;
     }
 
     private hoverItem(item: IMenuItem) {
         item.toggled = true;
         this.toggledItem = item;
+        this.$forceUpdate();
+    }
+
+    private setHover(item: IMenuItem) {
+        this.hoveredItem = item;
         this.$forceUpdate();
     }
 
@@ -245,6 +272,11 @@ export default class Navigator extends Mixins(ConfigMixin) {
 
     a {
         color: black !important;
+        text-decoration: none !important;
+    }
+
+    .hovered {
+        border-bottom: 5px solid $primaryColor !important;
     }
 
     @media screen and (max-width: 455px) {
@@ -255,6 +287,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
 
     .active {
         color: $primaryColor !important;
+        border-bottom: 5px solid $primaryColor !important;
     }
 
     .dropdown {
@@ -270,29 +303,38 @@ export default class Navigator extends Mixins(ConfigMixin) {
         display: none;
         position: absolute;
         
-        
         // box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
         z-index: 1000;
         text-align: left;
-        border-radius: 2px;
+
+    }
+
+    .dropdown-content {
+        margin-top: 10px;
     }
     
-    .dropdown-content {
+    .dropdown-inner-content {
+
+        opacity: 1;
+        border: 3px solid $primaryGray;
         background-color: white;
         min-width: 315px;
-        box-shadow: 3px 3px 10px 5px darken($primaryColor, 10%);
-        margin-top: 10px;
-        border-radius: $dd-radius;
+        // box-shadow: 3px 3px 10px 5px darken(rgb(44, 44, 44), 10%);
+        color: white;
+        border-radius: 0;
+        margin-bottom: -10px;
+        // border-radius: $dd-radius;
     }
 
     .dropdown-content a {
         color: black;
         overflow: none;
-        padding: 12px 16px;
+        margin: 12px 16px;
         text-decoration: none;
         font-size: 20px;
         display: block;
         z-index: 1000;
+        
     }
 
     .alt {
@@ -300,11 +342,11 @@ export default class Navigator extends Mixins(ConfigMixin) {
     }
 
     .first {
-        border-radius: $dd-radius $dd-radius 0 0;
+        //border-radius: $dd-radius $dd-radius 0 0;
     }
 
     .last {
-        border-radius: 0 0 $dd-radius $dd-radius;
+        //border-radius: 0 0 $dd-radius $dd-radius;
     }
 
     .dropdown-link {
@@ -312,15 +354,16 @@ export default class Navigator extends Mixins(ConfigMixin) {
     }
 
     .dropdown-link:hover {
-        background-color: $primaryColor;
-        color: white !important;
+        //background-color: $primaryColor;
+        color: $primaryColor !important;
         
         
     }
 
     .selected {
-        background-color: $primaryColor;
-        color: white !important;
+        color: $primaryColor !important;
+        text-decoration: underline !important;
+        text-underline-offset: 5px;
     }
 
     .bordered-link {
