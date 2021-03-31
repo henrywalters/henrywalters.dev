@@ -52,12 +52,13 @@
 
 <script lang="ts">
 
-    import {Component, Mixins, Prop, Vue, Watch} from "vue-property-decorator";
-    import {Route} from "vue-router";
-    import {TrackingService} from "@/services/tracking.service";
-    import {User} from "@/services/auth.service";
+import {Component, Mixins, Prop, Vue, Watch} from "vue-property-decorator";
+import {Route} from "vue-router";
+import {TrackingService} from "@/services/tracking.service";
+import {User} from "@/services/auth.service";
 import ServiceService from "../services/service.service";
 import ConfigMixin from "../mixins/ConfigMixin";
+import HCore from 'hcore';
 
 interface IMenuItem {
     label: string;
@@ -195,7 +196,8 @@ export default class Navigator extends Mixins(ConfigMixin) {
     private toggleItem(item: IMenuItem) {
         console.log(item.toggled);
         item.toggled = !item.toggled;
-        this.toggledItem = item.toggled ? item : null;
+        this.toggledItem = item.toggled ? item : void 0;
+        console.log(this.toggledItem, item.toggled);
         this.$forceUpdate();
         console.log(this.toggledItem);
     }
@@ -205,9 +207,12 @@ export default class Navigator extends Mixins(ConfigMixin) {
     }
 
     private hoverItem(item: IMenuItem) {
-        item.toggled = true;
-        this.toggledItem = item;
-        this.$forceUpdate();
+        if (!HCore.WebUtils.isMobile()) {
+            console.log(item);
+            item.toggled = true;
+            this.toggledItem = item;
+            this.$forceUpdate();
+        }
     }
 
     private setHover(item: IMenuItem) {
