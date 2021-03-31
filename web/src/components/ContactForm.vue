@@ -1,8 +1,5 @@
 <template>
-    <form @submit.prevent="submit" class="article">
-        <div class="header">
-            <h1 class="primary-font">Let's get in touch</h1>
-        </div>
+    <form @submit.prevent="submit">
         <div class="row" v-if="initialized && !submitted">
             <div class="form-group col-md-12">
                 <label class="primary-font">Name</label>
@@ -35,7 +32,7 @@
         </div>
         <div class="row" v-if="submitted">
             <div class="col-12">
-                <p class="text-lg-center secondary-font">Submission Received. I will reach out shortly.</p>
+                <p class="text-lg-center secondary-font">Submission Received. We will reach out to you within 24 hours.</p>
             </div>
 
         </div>

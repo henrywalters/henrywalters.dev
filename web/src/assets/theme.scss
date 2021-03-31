@@ -7,6 +7,10 @@ $primaryGray: #635f5f;
 
 $hoverDarken: 0.15;
 
+.btn {
+  border-radius: .15rem !important;
+}
+
 @font-face {
   font-family: "Enixe";
   src: url("~@/assets/fonts/enixe/Enixe.ttf") format("truetype");

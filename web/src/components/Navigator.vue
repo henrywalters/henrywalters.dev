@@ -52,13 +52,13 @@
 
 <script lang="ts">
 
-import {Component, Mixins, Prop, Vue, Watch} from "vue-property-decorator";
-import {Route} from "vue-router";
-import {TrackingService} from "@/services/tracking.service";
-import {User} from "@/services/auth.service";
-import ServiceService from "../services/service.service";
-import ConfigMixin from "../mixins/ConfigMixin";
-import HCore from 'hcore';
+    import {Component, Mixins, Prop, Vue, Watch} from "vue-property-decorator";
+    import {Route} from "vue-router";
+    import {TrackingService} from "@/services/tracking.service";
+    import {User} from "@/services/auth.service";
+    import ServiceService from "../services/service.service";
+    import ConfigMixin from "../mixins/ConfigMixin";
+    import HCore from 'hcore';
 
 interface IMenuItem {
     label: string;
@@ -92,7 +92,6 @@ export default class Navigator extends Mixins(ConfigMixin) {
             const res = await services.get();
             if (res.success) {
                 return res.result.map(service => {
-                    console.log(service);
                     return {
                         label: service.name,
                         link: '/service/' + service.slug,
@@ -106,7 +105,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
         }},
         { label: "Projects", link: "/projects", active: false },
         { label: "Blog", link: "/blog", active: false },
-        { label: "About", link: "/about", active: false },
+        // { label: "About", link: "/about", active: false },
         { label: "Contact", link: "/contact", active: false },
         { label: "Admin", link: "/admin", active: false, privilege: "ADMIN" },
     ]
@@ -114,7 +113,6 @@ export default class Navigator extends Mixins(ConfigMixin) {
     private cleanup(e: any) {
         if (this.toggledItem) {
             if (e.toElement.classList.value.indexOf('dropdown') === -1) {
-                console.log("Removed toggled item")
                 this.toggledItem.toggled = false;
                 this.toggledItem = void 0;
                 this.$forceUpdate();
@@ -194,12 +192,9 @@ export default class Navigator extends Mixins(ConfigMixin) {
     }
 
     private toggleItem(item: IMenuItem) {
-        console.log(item.toggled);
         item.toggled = !item.toggled;
         this.toggledItem = item.toggled ? item : void 0;
-        console.log(this.toggledItem, item.toggled);
         this.$forceUpdate();
-        console.log(this.toggledItem);
     }
 
     private isHovered(item: IMenuItem) {
@@ -208,11 +203,11 @@ export default class Navigator extends Mixins(ConfigMixin) {
 
     private hoverItem(item: IMenuItem) {
         if (!HCore.WebUtils.isMobile()) {
-            console.log(item);
             item.toggled = true;
             this.toggledItem = item;
             this.$forceUpdate();
         }
+        
     }
 
     private setHover(item: IMenuItem) {
@@ -339,7 +334,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
         font-size: 20px;
         display: block;
         z-index: 1000;
-        
+        font-weight: 550;
     }
 
     .alt {

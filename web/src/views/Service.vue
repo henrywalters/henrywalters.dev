@@ -4,6 +4,13 @@
         <div v-if="initialized">
             <service-form v-if="state === States.CREATING || state === States.EDITING" :service="item" />
             <service-display :service="item" class="article" v-else />
+            <div class='card mt-5 article'>
+                <div class='card-body'>
+                    <h1 class='primary-font'>Reach Out To Us</h1>
+                    <p>Send us a message briefly explaining your project and we'll reach out within 24 hours!</p>
+                    <contact-form />
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -14,6 +21,7 @@ import ServiceService, {IService} from "./../services/service.service";
 import ServiceDisplay from "@/components/ServiceDisplay.vue";
 import ServiceForm from "@/components/ServiceForm.vue";
 import AuthMixin from "../mixins/AuthMixin";
+import ContactForm from "@/components/ContactForm.vue";
 
 enum State {
     CREATING,
@@ -25,6 +33,7 @@ enum State {
     components: {
         ServiceDisplay,
         ServiceForm,
+        ContactForm
     }
 })
 export default class Service extends Mixins(AuthMixin) {

@@ -26,7 +26,13 @@ export class ContactFormController {
                 from: '"Henry Walters" <me@henrywalters.dev>',
                 subject: "Thanks For Reaching Out",
                 html: `
-                    <p>Hello ${submission.name}, thanks for reaching out to me! I will respond back as quickly as possible</p>
+                    <p>Hey ${submission.name}, <p>
+                    <p>thanks for reaching out! We will reach back out to you within 24 hours to discuss your project. If you want to get started today, give us a call!</p>
+                    <br />
+                    <p>Henry Walters</p>
+                    <p><i>Coding - Math - Innovation<i><p>
+                    <p><b>P:</b> +1 (734) 408-1548</p>
+                    <p><b>W:</b> https://henrywalters.dev</p>
                 `
             })
             return ResponseDto.Success(submission);
