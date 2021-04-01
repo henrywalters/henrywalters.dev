@@ -32,12 +32,9 @@
                     </button>
                 </a>
 
-                <h2 class='primary-font text-center mt-3'>Location</h2>
+                <h2 class='primary-font text-center mt-4'>Location</h2>
 
-                <h5><u>Ann Arbor</u></h5>
-                <p class='m-0'>3167 Wolverine Dr</p>
-                <p class='m-0'>Ann Arbor, MI, 48108</p>
-                <p>United States of America</p>
+                <h5 class='text-center'>Located in Ann Arbor, MI, the City of Trees.</h5>
             </div>
         </div>
         

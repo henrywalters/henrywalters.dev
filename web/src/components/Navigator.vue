@@ -39,7 +39,7 @@
                                         v-if="canShow(child)"
                                         :href="child.link"
                                         @click.prevent="goto(child)"
-                                    ><font-awesome-icon v-if='child.icon' :icon='child.icon' /> {{child.label}}</a>
+                                    ><font-awesome-icon v-if='child.icon' :icon='child.icon' style='width: 25px' /> {{child.label}}</a>
                                 </div>
                             </div>
                         </div>
@@ -253,7 +253,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
 
     @import "@/assets/theme.scss";
 
-    $nav-padding: 15px;
+    $nav-padding: 5px;
 
     $dd-radius: 3px;
 
@@ -265,7 +265,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
 
     .navigator-item {
         min-width: 200px;
-        font-size: 28px;
+        font-size: 24px;
         font-weight: bold;
         margin: $nav-padding / 2;
     }
@@ -276,7 +276,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
     }
 
     .hovered {
-        border-bottom: 5px solid $primaryColor !important;
+        color: $primaryColor !important;
     }
 
     @media screen and (max-width: 455px) {
@@ -286,8 +286,8 @@ export default class Navigator extends Mixins(ConfigMixin) {
     }
 
     .active {
-        color: $primaryColor !important;
-        border-bottom: 5px solid $primaryColor !important;
+        //color: $primaryColor !important;
+        border-bottom: 4px solid $primaryColor !important;
     }
 
     .dropdown {
@@ -334,7 +334,6 @@ export default class Navigator extends Mixins(ConfigMixin) {
         font-size: 20px;
         display: block;
         z-index: 1000;
-        font-weight: 550;
     }
 
     .alt {
