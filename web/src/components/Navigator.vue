@@ -253,7 +253,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
 
     @import "@/assets/theme.scss";
 
-    $nav-padding: 5px;
+    $nav-padding: 15px;
 
     $dd-radius: 3px;
 
