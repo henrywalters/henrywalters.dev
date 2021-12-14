@@ -37,7 +37,7 @@ export default class LogHoursForm extends Vue {
     @Prop()
     public task!: ClientProjectTask;
 
-    api: ClientProjectTaskService;
+    api!: ClientProjectTaskService;
 
     request: ClientProjectTaskWork = {
         notes: '',
