@@ -7,5 +7,5 @@ module.exports = {
             }
         }
     },
-    publicPath: process.env.NODE_ENV === 'production' ? 'https://cdn.henrywalters.dev/web/' : '/',
+    publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
 }
