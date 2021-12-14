@@ -58,7 +58,7 @@
     import {User} from "@/services/auth.service";
     import ServiceService from "../services/service.service";
     import ConfigMixin from "../mixins/ConfigMixin";
-    import HCore from 'hcore';
+    import WebUtils from "hcore/dist/webUtils"
 
 interface IMenuItem {
     label: string;
@@ -202,7 +202,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
     }
 
     private hoverItem(item: IMenuItem) {
-        if (!HCore.WebUtils.isMobile()) {
+        if (!WebUtils.isMobile()) {
             item.toggled = true;
             this.toggledItem = item;
             this.$forceUpdate();

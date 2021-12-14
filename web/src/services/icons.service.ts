@@ -19,6 +19,15 @@ import {
     faArrowUp,
     faArrowDown,
     faLink,
+    faProjectDiagram,
+    faFileInvoiceDollar,
+    faEnvelope,
+    faPhone,
+    faPencilAlt,
+    faMap,
+    faTruck,
+    faHome,
+    faMoneyBillWave,
 } from "@fortawesome/free-solid-svg-icons";
 import {faStar} from "@fortawesome/free-regular-svg-icons/faStar";
 
@@ -45,6 +54,15 @@ function initializeLibrary() {
         faArrowUp,
         faArrowDown,
         faLink,
+        faProjectDiagram,
+        faFileInvoiceDollar,
+        faEnvelope,
+        faPhone,
+        faPencilAlt,
+        faMap,
+        faTruck,
+        faHome,
+        faMoneyBillWave,
     )
 }
 

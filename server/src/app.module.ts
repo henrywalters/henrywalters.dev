@@ -21,6 +21,7 @@ import { BlogController } from './controllers/blog.controller';
 import { UserController } from './controllers/user.controller';
 import { TrackedLinkController } from './controllers/trackedLink.controller';
 import { EmailService } from './services/email.service';
+import { AccountingController } from './controllers/accounting.controller';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { EmailService } from './services/email.service';
       BlogController,
       UserController,
       TrackedLinkController,
+      AccountingController,
     ],
   providers: [AppService, TokenService, UserFileService, EmailService],
 })

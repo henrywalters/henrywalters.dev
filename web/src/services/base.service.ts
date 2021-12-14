@@ -32,7 +32,7 @@ export default class BaseService<T, R, E> {
 
     public async get(): Promise<ApiResponse<R[], E>> {
         try {
-            return (await this.http.get(this.controllerPath)).data;
+            return (await this.http.get(this.controllerPath + '/')).data;
         } catch (e) {
             return {
                 success: false,
@@ -43,7 +43,7 @@ export default class BaseService<T, R, E> {
 
     public async getOne(id: string | number): Promise<ApiResponse<R, E>> {
         try {
-            return (await this.http.get(this.controllerPath + '/' + id)).data;
+            return (await this.http.get(this.controllerPath + '/' + id + '/')).data;
         } catch (e) {
             return {
                 success: false,
@@ -54,7 +54,7 @@ export default class BaseService<T, R, E> {
 
     public async post(data: T): Promise<ApiResponse<R, E>> {
         try {
-            return (await this.http.post(this.controllerPath, data)).data;
+            return (await this.http.post(this.controllerPath + '/', data)).data;
         } catch (e) {
             return {
                 success: false,
@@ -66,7 +66,7 @@ export default class BaseService<T, R, E> {
     public async postFormData(data: FormData): Promise<ApiResponse<R, E>> {
         try {
             return (await this.http({
-                url: this.controllerPath,
+                url: this.controllerPath + '/',
                 method: 'POST',
                 data,
                 headers: {
@@ -83,7 +83,7 @@ export default class BaseService<T, R, E> {
 
     public async put(id: string | number, data: T): Promise<ApiResponse<R, E>> {
         try {
-            return (await this.http.put(this.controllerPath + '/' + id, data)).data;
+            return (await this.http.put(this.controllerPath + '/' + id + '/', data)).data;
         } catch (e) {
             return {
                 success: false,
@@ -95,7 +95,7 @@ export default class BaseService<T, R, E> {
     public async putFormData(id: string | number, data: FormData): Promise<ApiResponse<R, E>> {
         try {
             return (await this.http({
-                url: this.controllerPath + '/' + id,
+                url: this.controllerPath + '/' + id + '/',
                 method: 'PUT',
                 data,
                 headers: {
@@ -112,7 +112,7 @@ export default class BaseService<T, R, E> {
 
     public async delete(id: string | number): Promise<ApiResponse<void, E>> {
         try {
-            return (await this.http.delete(this.controllerPath + '/' + id)).data;
+            return (await this.http.delete(this.controllerPath + '/' + id + '/')).data;
         } catch (e) {
             return {
                 success: false,
