@@ -86,9 +86,16 @@ export enum ClientProjectStatus {
     VOID = "Void",
 }
 
+export const CLIENT_PROJECT_STATUS_NAMES = [
+    ClientProjectStatus.LEAD,
+    ClientProjectStatus.QUOTED,
+    ClientProjectStatus.IN_PROGRESS,
+    ClientProjectStatus.COMPLETE,
+    ClientProjectStatus.VOID,
+];
+
 export interface ClientProjectCreate {
     title: string;
-    createdOn: string;
     status: ClientProjectStatus;
     clientId: string;
 }
@@ -113,6 +120,16 @@ export interface ClientProjectTask extends ClientProjectTaskCreate {
     id: string;
     actualHours: number;
     billedHours: number;
+}
+
+export interface ClientProjectTaskWork {
+    hours: number;
+    notes: string;
+}
+
+export interface LoggedHours extends ClientProjectTaskWork {
+    id: string;
+    timestamp: string;
 }
 
 export class ClientService extends BaseService<ClientCreate, Client, HashMap<string>> {
@@ -149,9 +166,9 @@ export class ClientProjectTaskService extends BaseService<ClientProjectTaskCreat
         super("Client Project Service", `accounting/projects/${projectId}/tasks`);
     }
 
-    public async workOn(task: ClientProjectTask, hours: number): Promise<ApiResponse<ClientProject, HashMap<string>>> {
+    public async workOn(task: ClientProjectTask, dto: ClientProjectTaskWork): Promise<ApiResponse<ClientProject, HashMap<string>>> {
         try {
-            return (await this.http.post(this.controllerPath + '/', {hours})).data;
+            return (await this.http.post(`${this.controllerPath}/${task.id}/work`, dto)).data;
         } catch (e) {
             return {
                 success: false,

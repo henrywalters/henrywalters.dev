@@ -4,14 +4,16 @@
             <thead>
                 <th>Client</th>
                 <th>Title</th>
+                <th>Status</th>
                 <th>Est. Hours</th>
                 <th>Act. Hours</th>
                 <th></th>
             </thead>
             <tbody>
                 <tr v-for='(project, idx) in projects' :key='idx'>
-                    <td>{{project.client.name}}</td>
+                    <td><b>{{project.client.name}}</b></td>
                     <td>{{project.title}}</td>
+                    <td>{{project.status}}</td>
                     <td>{{estHours(project)}}</td>
                     <td>{{actHours(project)}}</td>
                     <td>

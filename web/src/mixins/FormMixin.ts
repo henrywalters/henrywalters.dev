@@ -20,18 +20,12 @@ export class FormMixin<Dto, Obj> extends Vue {
 
     @Watch('object', {deep: true})
     public objectChange() {
-        console.log(this.object);
         if (this.object) {
             this.request = this.objToDto(this.object);
             this.editing = true;
         } else {
             this.reset();
         }
-    }
-
-    @Watch('request', {deep: true})
-    public requestChange(orig: Dto, after: Dto) {
-        console.log(orig, after);
     }
 
     created() {
@@ -44,7 +38,7 @@ export class FormMixin<Dto, Obj> extends Vue {
     }
 
     reset() {
-        this.request = this.empty;
+        this.request = {...this.empty};
         this.editing = false;
         this.errors = {};
     }
@@ -60,7 +54,8 @@ export class FormMixin<Dto, Obj> extends Vue {
         }
         if (res.success === true) {
             this.$emit('success', res.result);
-            this.request = this.empty;
+            this.request = {...this.empty};
+            console.log(this.empty);
         } else {
             this.errors = res.error;
         }

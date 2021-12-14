@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import {Vue, Component, Prop, Mixins} from "vue-property-decorator";
+import {Vue, Component, Prop, Mixins, Watch} from "vue-property-decorator";
 import {Editor} from "@toast-ui/vue-editor";
 import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
@@ -58,6 +58,17 @@ export default class MarkdownEditor extends Mixins(NotificationMixin) {
     private update() {
         // @ts-ignore
         this.$emit('input', this.$refs.editor.invoke('getMarkdown'));
+    }
+
+    @Watch('value')
+    public valueChange() {
+        console.log(this.value);
+        if (this.value !== this.internal) {
+            this.internal = this.value;
+            this.$forceUpdate();
+            // @ts-ignore
+            this.$refs.editor.invoke('setMarkdown', this.internal);
+        }
     }
 }
 </script>

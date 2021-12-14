@@ -1,7 +1,7 @@
 <template>
     <div class='container-fluid' v-if='api'>
 
-        <div class='row'>
+        <div class='row' v-if='initialized'>
             <div class='col-md-6'>
                 <h5>
                     <font-awesome-icon icon='money-bill-wave' class='mr-2' />
@@ -107,6 +107,9 @@ export default class ClientAddressesForm extends Vue {
     private shippingAddressSame: boolean = false;
     private shippingAddressId?: string;
 
+    private initialized = false;
+
+
     private editing: {[key: string]: AddressCreate} = {};
 
     async created() {
@@ -129,7 +132,7 @@ export default class ClientAddressesForm extends Vue {
                     this.shippingAddressId = this.client.shippingAddress.id;
                 }
             }
-
+            this.initialized = true;
             await this.refresh();
         } else {
             this.addresses = [];
