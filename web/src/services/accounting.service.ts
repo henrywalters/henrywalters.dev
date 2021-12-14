@@ -78,6 +78,43 @@ export interface Invoice {
     payments: Payment[];
 }
 
+export enum ClientProjectStatus {
+    LEAD = "Lead",
+    QUOTED = "Quoted",
+    IN_PROGRESS = "In Progress",
+    COMPLETE = "Complete",
+    VOID = "Void",
+}
+
+export interface ClientProjectCreate {
+    title: string;
+    createdOn: string;
+    status: ClientProjectStatus;
+    clientId: string;
+}
+
+export interface ClientProject {
+    id: string;
+    client: Client;
+    title: string;
+    createdOn: string;
+    status: ClientProjectStatus;
+    tasks: ClientProjectTask[];
+}
+
+export interface ClientProjectTaskCreate {
+    title: string;
+    description?: string;
+    complete: boolean;
+    estimatedHours: number;
+}
+
+export interface ClientProjectTask extends ClientProjectTaskCreate {
+    id: string;
+    actualHours: number;
+    billedHours: number;
+}
+
 export class ClientService extends BaseService<ClientCreate, Client, HashMap<string>> {
     constructor() {
         super("Client Service", "accounting/clients");
@@ -100,6 +137,30 @@ export class ClientAddressService extends BaseService<AddressCreate, Address, Ha
         super("Client Address Service", `accounting/clients/${clientId}/addresses`);
     }
 }
+
+export class ClientProjectService extends BaseService<ClientProjectCreate, ClientProject, HashMap<string>> {
+    constructor() {
+        super("Client Project Service", 'accounting/projects');
+    }
+}
+
+export class ClientProjectTaskService extends BaseService<ClientProjectTaskCreate, ClientProjectTask, HashMap<string>> {
+    constructor(projectId: string) {
+        super("Client Project Service", `accounting/projects/${projectId}/tasks`);
+    }
+
+    public async workOn(task: ClientProjectTask, hours: number): Promise<ApiResponse<ClientProject, HashMap<string>>> {
+        try {
+            return (await this.http.post(this.controllerPath + '/', {hours})).data;
+        } catch (e) {
+            return {
+                success: false,
+                error: e.message,
+            }
+        }
+    }
+}
+
 
 export class InvoiceService extends BaseService<void, Invoice, void> {
     constructor() {

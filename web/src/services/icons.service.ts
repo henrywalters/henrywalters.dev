@@ -28,6 +28,7 @@ import {
     faTruck,
     faHome,
     faMoneyBillWave,
+    faTasks,
 } from "@fortawesome/free-solid-svg-icons";
 import {faStar} from "@fortawesome/free-regular-svg-icons/faStar";
 
@@ -63,6 +64,7 @@ function initializeLibrary() {
         faTruck,
         faHome,
         faMoneyBillWave,
+        faTasks,
     )
 }
 

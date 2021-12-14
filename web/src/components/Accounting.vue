@@ -15,6 +15,7 @@
 
             <div class='col-9'>
                 <clients-index v-show='activePage == "Clients"' />
+                <client-projects-index v-show='activePage == "Projects"' />
             </div>
         </div>
     </div>
@@ -24,6 +25,7 @@
 
 import {Component, Vue} from "vue-property-decorator"
 import ClientsIndex from './clients/Index.vue'
+import ClientProjectsIndex from './clients/projects/Index.vue'
 
 interface Page {
     key: string;
@@ -33,6 +35,7 @@ interface Page {
 @Component({
     components: {
         ClientsIndex,
+        ClientProjectsIndex
     }
 })
 export default class Accounting extends Vue {
