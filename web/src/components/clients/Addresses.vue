@@ -103,9 +103,9 @@ export default class ClientAddressesForm extends Vue {
 
     private loading: boolean = false;
 
-    private billingAddressId: string | null = null;
+    private billingAddressId?: string;
     private shippingAddressSame: boolean = false;
-    private shippingAddressId: string | null = null;
+    private shippingAddressId?: string;
 
     private editing: {[key: string]: AddressCreate} = {};
 

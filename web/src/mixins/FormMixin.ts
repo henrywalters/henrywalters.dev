@@ -11,7 +11,7 @@ export class FormMixin<Dto, Obj> extends Vue {
 
     public empty!: Dto;
     public objToDto!: (obj: Obj) => Dto;
-    public idFn!: (dto: Dto) => string;
+    public idFn!: (obj: Obj) => string;
 
     public loading: boolean = false;
     public editing: boolean = false;
@@ -54,7 +54,7 @@ export class FormMixin<Dto, Obj> extends Vue {
         this.errors = {};
         let res: ApiResponse<Obj, HashMap<string>>;
         if (this.editing) {
-            res = await this.api.put(this.idFn(this.request), this.request);
+            res = await this.api.put(this.idFn(this.object), this.request);
         } else {
             res = await this.api.post(this.request);
         }
