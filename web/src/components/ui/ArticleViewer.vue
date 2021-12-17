@@ -1,5 +1,13 @@
 <template>
     <div class='markdown-viewer'>
+        <div v-if='tableOfContents' class='table-of-contents mb-5'>
+            <h3>Table of Contents</h3>
+            <ol>
+                <li v-for="(header, i) in headers" :key="i">
+                    <a :href="'#' + header.hash" class="link-black">{{header.title}}</a>
+                </li>
+            </ol>
+        </div>
         <viewer ref="viewer" :initial-value="value" class="markdown" v-code-highlight v-if="value" />
     </div>
 </template>
@@ -7,6 +15,7 @@
 <script lang="ts">
 import {Vue, Component, Prop, Watch, Mixins} from "vue-property-decorator";
 import { Viewer } from '@toast-ui/vue-editor';
+import { dom } from '@fortawesome/fontawesome-svg-core'
 import ClipboardMixin from "../../mixins/ClipboardMixin";
 
 
@@ -24,6 +33,14 @@ export default class MarkdownViewer extends Mixins(ClipboardMixin) {
     @Prop()
     public value!: string;
 
+    @Prop({type: Boolean, default: false})
+    public tableOfContents!: boolean;
+
+    @Prop({type: Boolean, default: false})
+    public bookmarks!: boolean;
+
+    private headers: Bookmark[] = [];
+
     @Watch('value', {deep: true})
     public valueChange() {
         console.log(this.value);
@@ -31,6 +48,37 @@ export default class MarkdownViewer extends Mixins(ClipboardMixin) {
         this.$refs.viewer.invoke('setMarkdown', this.value);
     }
 
+    private hashHeader(header: string) {
+        // @ts-ignore
+        return header.toLowerCase().replaceAll(" ", "_").replace(/[^\w\s]/gi, '');
+    }
+
+    private mounted() {
+
+        if (this.bookmarks) {
+
+            dom.watch();
+
+            const headers = document.querySelectorAll('.markdown h1');
+            // @ts-ignore
+            for (const header of headers) {
+                const html = header.innerHTML;
+                const hash = this.hashHeader(html)
+                header.innerHTML = `<a href='#${hash}' @click.prevent="copy('${hash}')"><i class="link-black fa fa-link fa-1x"></i></a> ` + header.innerHTML;
+                header.id = hash;
+
+                this.headers.push({
+                    hash: hash,
+                    title: html,
+                })
+            }
+
+            if (this.$route.hash) {
+                const el = document.querySelector(this.$route.hash);
+                el && el.scrollIntoView();
+            }
+        }
+    }
 }
 </script>
 

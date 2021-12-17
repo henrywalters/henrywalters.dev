@@ -7,16 +7,24 @@
             <client-project-tasks :project='editing' @update='refresh' />
         </modal>
         <h2>Projects <button class='btn btn-primary btn-sm float-right' @click='create'><font-awesome-icon icon='plus' /> Create</button></h2>
-        <client-projects-list :projects='projects' @edit='edit' @remove='remove' @edit-tasks='editTasks' />
+        <client-projects-list 
+            :projects='projects' 
+            @edit='edit' 
+            @remove='remove' 
+            @edit-tasks='editTasks' 
+            @invoice='invoice'
+            @quote='quote'
+        />
     </div>
 </template>
 
 <script lang="ts">
 import {Component, Vue, Mixins} from "vue-property-decorator";
-import { ClientProject, ClientProjectService } from "../../../services/accounting.service";
+import { ClientProject, ClientProjectService, Invoice } from "../../../services/accounting.service";
 import ClientProjectsList from "./List.vue"
 import ClientProjectsForm from "./Form.vue"
 import ClientProjectTasks from "./tasks/Index.vue"
+import { ApiResponse, HashMap } from "../../../services/base.service";
 
 @Component({
     components: {
@@ -84,6 +92,21 @@ export default class ClientProjectsIndex extends Vue {
         this.formOpen = false;
         this.editing = null;
         await this.refresh();
+    }
+
+    async invoice(project: ClientProject) {
+        const res = await this.api.invoice(project);
+        console.log(res);
+        if (res.success === false) {
+            alert("Nothing to be invoiced for this project");
+        }
+    }
+
+    async quote(project: ClientProject) {
+        const res = await this.api.quote(project);
+        if (res.success === false) {
+            alert("Nothing to be quoted for this project");
+        }
     }
 }
 </script>

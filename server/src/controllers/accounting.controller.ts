@@ -102,12 +102,39 @@ export class AccountingController {
         return await this.deleteProxy(req);
     }
 
+    // Quotes API
+
+    @Get('quotes')
+    @UseGuards(new AuthenticateFor(Privileges.ADMIN))
+    public async getQuotes(@Req() req: Request) {
+        return await this.getProxy(req);
+    }
+
+    @Post('quotes')
+    @UseGuards(new AuthenticateFor(Privileges.ADMIN))
+    public async createQuote(@Req() req: Request, @Body() body) {
+        return await this.postProxy(req, body);
+    }
+
+    // Note that anyone can get a single invoice
+    @Get('quotes/:id')
+    public async getQuote(@Req() req: Request) {
+        return await this.getProxy(req);
+    }
+
+
     // Invoices API
 
     @Get('invoices')
     @UseGuards(new AuthenticateFor(Privileges.ADMIN))
     public async getInvoices(@Req() req: Request) {
         return await this.getProxy(req);
+    }
+
+    @Post('invoices')
+    @UseGuards(new AuthenticateFor(Privileges.ADMIN))
+    public async createInvoice(@Req() req: Request, @Body() body) {
+        return await this.postProxy(req, body);
     }
 
     // Note that anyone can get a single invoice

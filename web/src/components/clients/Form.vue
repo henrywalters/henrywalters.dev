@@ -5,12 +5,15 @@
         </form-group>
 
         <div class='row'>
-            <div class='col-md-8'>
+            <div class='col-md-12'>
                 <form-group label="Phone number" field='phone' :errors='errors'>
                     <vue-tel-input v-model='request.phone' :autoFormat='false' styleClasses='form-control' />
                 </form-group>
             </div>
-            <div class='col-md-4'>
+        </div>
+
+        <div class='row'>
+            <div class='col-md-6'>
                 <form-group label="Rate" field='rate' :errors='errors'>
                     <div class='input-group'>
                         <div class="input-group-prepend">
@@ -18,6 +21,11 @@
                         </div>
                         <input type='number' min='0' step='0.01' v-model.number='request.rate' class='form-control'/>
                     </div>
+                </form-group>
+            </div>
+            <div class='col-md-6'>
+                <form-group label="Invoice Prefix" field='invoicePrefix' :errors='errors'>
+                    <input type='text' v-model='request.invoicePrefix' class='form-control'/>
                 </form-group>
             </div>
         </div>

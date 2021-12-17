@@ -25,7 +25,7 @@
                         </td>
                         <td v-if='!isEditing(task)'>
                             <p class='m-0'><b>{{task.title}}</b></p>
-                            <p class='m-0' v-if='task.description'><viewer :initial-value='task.description' /></p>
+                            <p class='m-0' v-if='task.description'><markdown-viewer ref='desc' :value='task.description' /></p>
                         </td>
                         <td v-if='isLogging(task)' colspan='1'>
                             <log-hours-form :project='project' :task='logging[task.id]' @cancel='cancelLog(task)' @success='logSuccess(task)' />
@@ -74,14 +74,12 @@ import {Component, Vue, Mixins, Prop, Watch} from "vue-property-decorator";
 import { ClientProject, ClientProjectService, ClientProjectTask, ClientProjectTaskService } from "../../../../services/accounting.service";
 import ClientProjectTaskList from "./List.vue"
 import ClientProjectTaskForm from "./Form.vue"
-import { Viewer } from '@toast-ui/vue-editor';
 import LogHoursForm from './LogHoursForm.vue'
 
 @Component({
     components: {
         ClientProjectTaskList,
         ClientProjectTaskForm,
-        Viewer,
         LogHoursForm,
     }
 })

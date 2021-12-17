@@ -11,7 +11,7 @@
                     <p class="text-muted">{{ post.publishedAt | luxon }}</p>
                     <p class="text-muted" v-if="post.updatedAt !== post.publishedAt">updated on {{post.updatedAt | luxon}}</p>
                 </div>
-                <markdown-viewer :value="post.content" :table-of-contents="true" :bookmarks="true" class="mt-5" />
+                <article-viewer :value="post.content" :table-of-contents="true" :bookmarks="true" class="mt-5" />
             </div>
             <div class="row" v-else>
                 <div class="col-md-8">
@@ -96,7 +96,7 @@
     import { BlogPostFull, BlogPostListing, BlogPostReadOnly, BlogService, CommentRequest, UpdateBlogPostRequest } from "./../services/blog.service";
     import BlogList from "@/components/blog/List.vue";
     import { AuthService, User } from "../services/auth.service";
-    import MarkdownViewer from "@/components/ui/MarkdownViewer.vue";
+    import ArticleViewer from "@/components/ui/ArticleViewer.vue";
     import MarkdownEditor from "@/components/ui/MarkdownEditor.vue";
     import FormGroup from "@/components/ui/forms/FormGroup.vue";
     import {slugify} from "../services/slug.service";
@@ -120,10 +120,10 @@
         components: {
             FormGroup,
             BlogList,
-            MarkdownViewer,
             MarkdownEditor,
             Comments,
             CommentForm,
+            ArticleViewer,
         }
     })
     export default class BlogPost extends Mixins(AuthMixin, NotificationMixin) {

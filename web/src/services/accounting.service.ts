@@ -78,6 +78,34 @@ export interface Invoice {
     payments: Payment[];
 }
 
+
+export enum QuoteStatus {
+    PENDING = "Pending",
+    INVOICED = "Invoiced",
+    LOST = "Lost",
+    VOID = "Void",
+}
+
+export interface QuoteItem {
+    id: string;
+    quoteItemId: string;
+    title: string;
+    description?: string;
+    rate: number;
+    quantity: number;
+}
+
+export interface Quote {
+    id: string;
+    quoteId: string;
+    date: string;
+    client: Client;
+    amountPaid: number;
+    status: InvoiceStatus;
+    items: InvoiceItem[];
+    payments: Payment[];
+}
+
 export enum ClientProjectStatus {
     LEAD = "Lead",
     QUOTED = "Quoted",
@@ -159,6 +187,14 @@ export class ClientProjectService extends BaseService<ClientProjectCreate, Clien
     constructor() {
         super("Client Project Service", 'accounting/projects');
     }
+
+    public async quote(project: ClientProject): Promise<ApiResponse<Quote, string>> {
+        return (await this.http.post(`${this.controllerPath}/${project.id}/quote`, {})).data;
+    }
+
+    public async invoice(project: ClientProject): Promise<ApiResponse<Invoice, string>> {
+        return (await this.http.post(`${this.controllerPath}/${project.id}/invoice`, {})).data;
+    }
 }
 
 export class ClientProjectTaskService extends BaseService<ClientProjectTaskCreate, ClientProjectTask, HashMap<string>> {
@@ -178,6 +214,11 @@ export class ClientProjectTaskService extends BaseService<ClientProjectTaskCreat
     }
 }
 
+export class QuoteService extends BaseService<void, Quote, void> {
+    constructor() {
+        super("Quote Service", "accounting/quotes");
+    } 
+}
 
 export class InvoiceService extends BaseService<void, Invoice, void> {
     constructor() {
