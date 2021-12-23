@@ -8,6 +8,7 @@
                 <th>Est. Hours</th>
                 <th>Act. Hours</th>
                 <th>Billed</th>
+                <th>Billable Amt</th>
                 <th>Manage</th>
                 <th>Accounting</th>
             </thead>
@@ -19,6 +20,7 @@
                     <td>{{estHours(project)}}</td>
                     <td>{{actHours(project)}}</td>
                     <td>{{billedHours(project)}}</td>
+                    <td>${{(actHours(project) - billedHours(project)) * project.client.rate}}</td>
                     <td>
                         <div class='btn-group'>
                             <button class='btn btn-sm btn-primary' data-toggle='tooltip' title='Work on tasks' @click='$emit("edit-tasks", project)'>

@@ -91,6 +91,11 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "invoice" */ '../views/Invoice.vue')
   },
   {
+    path: '/quote/:id',
+    name: 'Quote',
+    component: () => import(/* webpackChunkName: "quote" */ '../views/Quote.vue')
+  },
+  {
     path: 'unauthorized',
     name: 'Unauthorized',
     component: () => import(/* webpackChunkName: "unauthorized" */ '../views/Unauthorized.vue')

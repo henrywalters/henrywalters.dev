@@ -3,7 +3,7 @@
         <modal title="QuickQuote" :isOpen='formOpen' @close='cancelEdit'>
         </modal>
         <h2>Quotes <button class='btn btn-primary btn-sm float-right' @click='create'><font-awesome-icon icon='plus' /> Create QuickQuote</button></h2>
-        <quote-list :quotes='quotes' />
+        <quote-list :quotes='quotes' @remove='remove' @invoice='invoice' @view='view' />
     </div>
 </template>
 
@@ -46,6 +46,18 @@ export default class QuotesIndex extends Vue {
 
     async create() {
         
+    }
+
+    async remove(quote: Quote) {
+
+    }
+
+    async invoice(quote: Quote) {
+
+    }
+
+    view(quote: Quote) {
+        this.$router.push({name: 'Quote', params: {id: quote.id}});
     }
 }
 

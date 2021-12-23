@@ -81,11 +81,11 @@ export default class MarkdownViewer extends Mixins(ClipboardMixin) {
         }
 
         ol, ul {
-            font-size: 20px;
+            font-size: 16px !important;
         }
 
         p, li, th, td, a {
-            font-size: 20px;
+            font-size: 16px !important;
             font-family: Helvetica, Arial, sans-serif;
         }
 

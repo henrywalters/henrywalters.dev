@@ -32,6 +32,7 @@ import {
     faCheck,
     faClock,
     faQuoteRight,
+    faEye,
 } from "@fortawesome/free-solid-svg-icons";
 import {faStar} from "@fortawesome/free-regular-svg-icons/faStar";
 
@@ -71,6 +72,7 @@ function initializeLibrary() {
         faCheck,
         faClock,
         faQuoteRight,
+        faEye,
     )
 }
 

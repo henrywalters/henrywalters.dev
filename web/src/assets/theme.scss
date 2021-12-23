@@ -121,3 +121,22 @@ p, ol, ul {
     margin: auto;
   }
 }
+
+@media print {
+  .navigator {
+    display: none !important;
+  }
+
+  .footer {
+    display: none !important;
+  }
+
+  .title {
+    text-align: left !important;
+    margin-left: 2rem !important;
+  }
+
+  .sub-title {
+    display: none !important;
+  }
+}

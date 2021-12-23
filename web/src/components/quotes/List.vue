@@ -16,7 +16,10 @@
                     <td>${{getValue(quote)}}</td>
                     <td>
                         <div class='btn-group'>
-                            <button class='btn btn-sm btn-primary' data-toggle='tooltip' title='Convert to invoice' @click='$emit("invoice", quote)'>
+                            <button class='btn btn-sm btn-primary' data-toggle='tooltip' title='View quote' @click='$emit("view", quote)'>
+                                <font-awesome-icon icon='eye' />
+                            </button>
+                            <button class='btn btn-sm btn-success' data-toggle='tooltip' title='Convert to invoice' @click='$emit("invoice", quote)'>
                                 <font-awesome-icon icon='money-bill-wave' />
                             </button>
                             <button class='btn btn-sm btn-danger' data-toggle='tooltip' title='Remove quote' @click='$emit("remove", quote)'>
