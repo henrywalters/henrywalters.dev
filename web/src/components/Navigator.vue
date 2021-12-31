@@ -112,7 +112,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
 
     private cleanup(e: any) {
         if (this.toggledItem) {
-            if (e.toElement.classList.value.indexOf('dropdown') === -1) {
+            if (e.target.classList.value.indexOf('dropdown') === -1) {
                 this.toggledItem.toggled = false;
                 this.toggledItem = void 0;
                 this.$forceUpdate();
@@ -120,7 +120,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
         }
 
         if (this.hoveredItem) {
-            if (e.toElement.classList.value.indexOf('hover-trigger') === -1) {
+            if (e.target.classList.value.indexOf('hover-trigger') === -1) {
                 this.hoveredItem = void 0;
                 this.$forceUpdate();
             }
