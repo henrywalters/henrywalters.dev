@@ -86,7 +86,7 @@ export default class HeaderMobile extends Mixins(ConfigMixin) {
   }
 
   .accent {
-      color: #b9b9b9 !important;
+      color: $lightGray !important;
   }
 
   .btn {

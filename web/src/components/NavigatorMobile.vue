@@ -265,12 +265,12 @@ export default class Navigator extends Mixins(ConfigMixin) {
     }
 
     a {
-        color: #b9b9b9;
+        color: $lightGray;
         text-decoration: none !important;
     }
 
     a:hover {
-        color: #b9b9b9;
+        color: $lightGray;
     }
 
     @media screen and (max-width: 455px) {
