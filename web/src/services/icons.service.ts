@@ -33,6 +33,14 @@ import {
     faClock,
     faQuoteRight,
     faEye,
+    faBars,
+    faCaretUp,
+    faCaretDown,
+    faRss,
+    faUserCog,
+    faCode,
+    faUserShield,
+    faAddressBook,
 } from "@fortawesome/free-solid-svg-icons";
 import {faStar} from "@fortawesome/free-regular-svg-icons/faStar";
 
@@ -73,6 +81,15 @@ function initializeLibrary() {
         faClock,
         faQuoteRight,
         faEye,
+        faBars,
+        faCaretUp,
+        faCaretDown,
+        faHome,
+        faRss,
+        faUserCog,
+        faCode,
+        faUserShield,
+        faAddressBook,
     )
 }
 

@@ -11,15 +11,25 @@
                 <slot></slot>
             </div>
         </div>
+        <collapsible :isOpen='opened' ref='body'>
+            <div class="card-body">
+                <slot></slot>
+            </div>
+        </collapsible>
     </div>
 </template>
 
 <script lang="ts">
+import Collapsible from './Collapsible.vue';
 import {Vue, Component, Prop, Watch} from "vue-property-decorator";
 import $ from "jquery";
 
 
-@Component
+@Component({
+    components: {
+        Collapsible,
+    }
+})
 export default class Card extends Vue {
     @Prop()
     public title!: string;
@@ -28,27 +38,14 @@ export default class Card extends Vue {
     public openOnInit!: boolean;
 
     private opened: boolean = false;
-    
-    public open() {
-        // @ts-ignore
-        $(this.$refs.body).collapse('show');
-    }
-
-    public close() {
-        // @ts-ignore
-        $(this.$refs.body).collapse('hide');
-    }
-
-    public toggle() {
-        // @ts-ignore
-        $(this.$refs.body).collapse('toggle');
-        this.opened = !this.opened;
-        if (this.opened) this.open();
-        else this.close();
-    }
 
     private created() {
         this.opened = this.openOnInit;
+    }
+
+    toggle() {
+        // @ts-ignore
+        this.$refs.body.toggle();
     }
 }
 </script>

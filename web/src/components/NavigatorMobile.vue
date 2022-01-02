@@ -1,64 +1,59 @@
 <template>
-    <div class="container-lg">
-        <div class="navigator primary-font w-100 row mb-3" @mouseleave="cleanup">
-            <span v-for="(item, i) in menuItems" :key="i" v-if="canShow(item)">
+    <div class="mb-3">
+        <ul class='navigator-mobile'>
+            <li v-for="(item, i) in menuItems" :key="i" v-if="canShow(item)">
                 <a 
                     class="navigator-item hover-trigger" 
                     v-if="canShow(item) && !item.children" 
                     v-bind:href="item.link" 
                     @click.prevent="goto(item)"
-                    @mouseenter="cleanup"
-                    @mouseleave="cleanup"
-                    @mouseover="setHover(item)"
-                    :class="{'active': item.active, 'hovered': isHovered(item)}"
+                    :class="{'active': item.active}"
                     
-                >{{item.label}}</a>
-                <span v-if="canShow(item) && item.children" class="dropdown">
-                    <a 
-                        class="navigator-item dropdown-trigger dropdown-toggle hover-trigger" 
-                        href="#"
-                        @mouseover="hoverItem(item); setHover(item)"
-                        @click.prevent="toggleItem(item)"
-                        @mouseleave="cleanup"
-                        :class="{'active': item.active, 'hovered': isHovered(item)}"
-                    >{{item.label}}</a>
-                    <div class="dropdown-content-container hover-trigger" :class="{visible: item.toggled}" @mouseleave="cleanup">
-                        <div class="dropdown-content" :class="{'draw-left': i % 2 == 1}">
-                            <div class='dropdown-inner-content'>
-                                <div class='dropdown-link-container' v-for="(child, j) in item.children" :key="i + '-' + j">
-                                    <a
-                                        class="dropdown-link hover-trigger" 
-                                        
-                                        :class="{
-                                            'bordered-link': j != 0, 
-                                            'selected': child.active,
-                                            'alt': j % 2 == 0,
-                                            'first': j == 0,
-                                            'last': j == item.children.length - 1,
-                                        }" 
-                                        v-if="canShow(child)"
-                                        :href="child.link"
-                                        @click.prevent="goto(child)"
-                                    ><font-awesome-icon v-if='child.icon' :icon='child.icon' style='width: 25px' /> {{child.label}}</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </span>
-            </span>
-        </div>
+                ><font-awesome-icon v-if='item.icon' :icon='item.icon' /> {{item.label}}</a>
+
+                <a 
+                    class="navigator-item hover-trigger" 
+                    v-if="canShow(item) && item.children" 
+                    v-bind:href="item.link"
+                    @click.prevent='toggleItem(item)'
+                >
+                    <font-awesome-icon v-if='item.icon' :icon='item.icon' />
+                    {{item.label}}
+                    <font-awesome-icon :icon='item.toggled ? "caret-up" : "caret-down"' />
+                </a>
+
+                <collapsible :isOpen='item.toggled'>
+                    <ul class='navigator-mobile'>
+                        <li v-for='child in item.children'>
+                            <a
+                                class='navigator-item child-item'
+                                v-if='canShow(child)'
+                                v-bind:href='child.link'
+                                :class="{'active': child.active}"
+                                @click.prevent="goto(child)"
+                            >
+                                <font-awesome-icon v-if='child.icon' :icon='child.icon' />
+                                {{child.label}}
+                            </a>
+                        </li>
+                    </ul>
+                </collapsible>
+
+                
+            </li>
+        </ul>
     </div>
 </template>
 
 <script lang="ts">
 
-    import {Component, Mixins, Prop, Vue, Watch} from "vue-property-decorator";
-    import {Route} from "vue-router";
-    import {TrackingService} from "@/services/tracking.service";
-    import {User} from "@/services/auth.service";
-    import ServiceService from "../services/service.service";
-    import ConfigMixin from "../mixins/ConfigMixin";
-    import WebUtils from "hcore/dist/webUtils"
+import {Component, Mixins, Prop, Vue, Watch} from "vue-property-decorator";
+import {Route} from "vue-router";
+import {TrackingService} from "@/services/tracking.service";
+import {User} from "@/services/auth.service";
+import ServiceService from "../services/service.service";
+import ConfigMixin from "../mixins/ConfigMixin";
+import WebUtils from "hcore/dist/webUtils"
 
 interface IMenuItem {
     label: string;
@@ -86,8 +81,8 @@ export default class Navigator extends Mixins(ConfigMixin) {
     private toggledItem: IMenuItem | undefined;
 
     private menuItems: IMenuItem[] = [
-        { label: "Home", link: "/", active: false },
-        { label: "Services", link: "/service", toggled: true, active: false, children: async () => {
+        { label: "Home", icon: 'home', link: "/", active: false },
+        { label: "Services", icon: 'code', link: "/service", toggled: true, active: false, children: async () => {
             const services = new ServiceService();
             const res = await services.get();
             if (res.success) {
@@ -103,11 +98,11 @@ export default class Navigator extends Mixins(ConfigMixin) {
                 return [];
             }
         }},
-        { label: "Projects", link: "/projects", active: false },
-        { label: "Blog", link: "/blog", active: false },
+        { label: "Projects", icon: 'project-diagram', link: "/projects", active: false },
+        { label: "Blog", icon: 'rss', link: "/blog", active: false },
         // { label: "About", link: "/about", active: false },
-        { label: "Contact", link: "/contact", active: false },
-        { label: "Admin", link: "/admin", active: false, privilege: "ADMIN" },
+        { label: "Contact", icon: 'address-book', link: "/contact", active: false },
+        { label: "Admin", icon: 'user-shield', link: "/admin", active: false, privilege: "ADMIN" },
     ]
 
     private cleanup(e: any) {
@@ -217,15 +212,10 @@ export default class Navigator extends Mixins(ConfigMixin) {
 
     private goto(item: IMenuItem) {
 
-        if (item.parent) {
-            item.parent.toggled = false;
-            this.$forceUpdate();
-        }
-        
         if (!this.currentItem || item.link !== this.currentItem.link) {
             this.$router.push({path: item.link});
+            this.$emit('nav-close');
         }
-
         
     }
 
@@ -265,18 +255,22 @@ export default class Navigator extends Mixins(ConfigMixin) {
 
     .navigator-item {
         min-width: 200px;
-        font-size: 24px;
-        font-weight: bold;
+        font-size: 20px;
         margin: $nav-padding / 2;
     }
 
+    .child-item {
+        margin-left: 2rem;
+        font-size: 16px;
+    }
+
     a {
-        color: black !important;
+        color: #b9b9b9;
         text-decoration: none !important;
     }
 
-    .hovered {
-        color: $primaryColor !important;
+    a:hover {
+        color: #b9b9b9;
     }
 
     @media screen and (max-width: 455px) {
@@ -286,8 +280,7 @@ export default class Navigator extends Mixins(ConfigMixin) {
     }
 
     .active {
-        //color: $primaryColor !important;
-        border-bottom: 4px solid $primaryColor !important;
+        color: white !important;
     }
 
     .dropdown {
@@ -352,21 +345,18 @@ export default class Navigator extends Mixins(ConfigMixin) {
         font-size: 24px;
     }
 
-    .dropdown-link:hover {
-        //background-color: $primaryColor;
-        color: $primaryColor !important;
-        
-        
-    }
-
-    .selected {
-        color: $primaryColor !important;
-        text-decoration: underline !important;
-        text-underline-offset: 5px;
-    }
-
     .bordered-link {
         //border-top: 1px solid black;
+    }
+
+    .navigator-mobile {
+        list-style-type: none;
+        font-size: 12px;
+        padding: 0;
+
+        li {
+            font-size: 8px;
+        }
     }
 
 </style>

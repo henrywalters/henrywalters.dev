@@ -1,6 +1,6 @@
 <template> 
     <div>
-        <div class="banner-container">
+        <div class="banner-container d-none d-md-table">
             <div class="banner text-center">
                 Call us at <a :href="'tel:' + getConfig('PHONE')">{{getConfig('PHONE')}}</a> or send an email to <a :href="'mailto:' + getConfig('EMAIL')">{{getConfig('EMAIL')}}</a>
             </div>
@@ -46,11 +46,14 @@
 
 <style scoped lang="scss">
 
+ @import "@/assets/theme.scss";
+
+
 .banner-container {
     display: table;
     width: 100%;
     height: 40px;
-    background-color: #007bff;
+    background-color: $brandColor;
 }
 
 .banner {

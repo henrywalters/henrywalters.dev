@@ -11,6 +11,7 @@ import Modal from '@/components/ui/Modal.vue';
 import FormGroup from "@/components/ui/forms/FormGroup.vue";
 import MarkdownEditor from "@/components/ui/MarkdownEditor.vue";
 import MarkdownViewer from "@/components/ui/MarkdownViewer.vue";
+import Collapsible from '@/components/ui/Collapsible.vue';
 import Icons from "./services/icons.service";
 import CodeHighlight from "./directives/codeHighlight.directive";
 import VueTelInput from 'vue-tel-input'
@@ -26,6 +27,7 @@ Vue.component('modal', Modal);
 Vue.component('form-group', FormGroup);
 Vue.component('markdown-editor', MarkdownEditor);
 Vue.component('markdown-viewer', MarkdownViewer);
+Vue.component('collapsible', Collapsible);
 
 dotenv.config();
 

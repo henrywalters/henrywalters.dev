@@ -2,19 +2,23 @@
   <div id="app">
     <div class="app-container">
       <notifications position="bottom right" />
-      <div class="header text-center p-3">
-        <span @click="goHome" class="clickable">
-          <h1 class="title brand-font mb-0">{{nameStart}} <span class="accent">{{nameEnd}}</span></h1>
-          <p class="sub-title primary-font text-center mt-0 mb-0"><em>{{ getConfig('SLOGAN') }}</em></p>
-        </span>
-        <div class="text-center mt-0 mb-2 text-black" style="font-size: 14px" v-if="initialized && user !== null">
-          <span v-if="user">
-            Signed in as {{user.firstName}} {{user.lastName}} - <router-link :to="{name: 'ChangePassword'}">Change Password</router-link> | <a href="/logout" @click.prevent="logout">Logout</a>
-          </span>
-        </div>
 
-        <navigator :user="user"/>
+      <header-desktop class='d-none d-md-block' :user='user' />
+      <header-mobile class='d-md-none' :user='user' @toggle-nav='toggleNavMobile' />
+
+      <div class='container-fluid'>
+      
+        <div class='row d-md-none nav-mobile mb-3' >
+          <div class='col-12'>
+            <collapsible ref='navMobile' >
+              <navigator-mobile @nav-close='closeNavMobile' @logout='logout' />
+            </collapsible>
+          </div>
+        </div>
       </div>
+
+      <navigator :user="user" class='d-none d-md-flex' @logout='logout' />
+
       <div class="content">
         <router-view/>
       </div>
@@ -39,6 +43,9 @@
 
   import {Component, Vue, Mixins} from "vue-property-decorator";
   import Navigator from "@/components/Navigator.vue";
+  import NavigatorMobile from "@/components/NavigatorMobile.vue";
+  import HeaderDesktop from "@/components/Header.vue";
+  import HeaderMobile from "@/components/HeaderMobile.vue"
   import {AuthService, User} from "@/services/auth.service";
   import {AuthEventBus, AuthEvents} from "@/events";
   import ConfigMixin from "@/mixins/ConfigMixin";
@@ -47,14 +54,18 @@
   name: 'App',
   components: {
     Navigator,
+    NavigatorMobile,
+    HeaderDesktop,
+    HeaderMobile,
   }
 })
 export default class App extends Mixins(ConfigMixin) {
-
   private auth!: AuthService;
 
   private initialized = false;
   private user: User | null = null;
+
+  private navMobileOpen = false;
 
   private async getSelf() {
     const res = await this.auth.self();
@@ -76,31 +87,14 @@ export default class App extends Mixins(ConfigMixin) {
     })
   }
 
-  private goHome() {
-    if (this.$route.name !== 'Home') {
-      this.$router.push({name: 'Home'});
-    }
+  private closeNavMobile() {
+    // @ts-ignore
+    this.$refs.navMobile.close();
   }
 
-  private getName(): string {
-    return this.getConfig('NAME');
-  }
-
-  private get nameStart(): string {
-    const raw = this.getName();
-    const parts = raw.split(' ');
-    return parts.slice(0, parts.length - 1).join(' ');
-  }
-
-  private get nameEnd(): string {
-    const raw = this.getName();
-    const parts = raw.split(' ');
-    return parts[parts.length - 1];
-  }
-
-  private async logout() {
-    await this.auth.logout();
-    window.location.reload();
+  private toggleNavMobile() {
+    // @ts-ignore
+    this.$refs.navMobile.toggle();
   }
 }
 
@@ -113,7 +107,7 @@ export default class App extends Mixins(ConfigMixin) {
   $footer-size: 60px;
 
   .accent {
-    color: $primaryColor;
+    color: $brandColor;
   }
   html, body {
     height: 100%;
@@ -139,7 +133,7 @@ export default class App extends Mixins(ConfigMixin) {
     }
 
     height: $footer-size;
-    background-color: $primaryColor;
+    background-color: $brandColor;
   }
 
   .push {
@@ -148,6 +142,10 @@ export default class App extends Mixins(ConfigMixin) {
 
   .clickable {
     cursor: pointer;
+  }
+
+  .nav-mobile {
+    background-color: $brandColor;
   }
 </style>
 
