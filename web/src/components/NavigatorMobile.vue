@@ -254,14 +254,14 @@ export default class Navigator extends Mixins(ConfigMixin) {
 
     .navigator-item {
         min-width: 200px;
-        font-size: 24px;
+        font-size: 20px;
         margin: $nav-padding / 2;
         margin-bottom: 10px;
     }
 
     .child-item {
         margin-left: 2rem;
-        font-size: 20px;
+        font-size: 18px;
     }
 
     a {
