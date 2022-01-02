@@ -21,25 +21,20 @@
                     {{item.label}}
                     <font-awesome-icon :icon='item.toggled ? "caret-up" : "caret-down"' />
                 </a>
-
-                <collapsible :isOpen='item.toggled'>
-                    <ul class='navigator-mobile'>
-                        <li v-for='child in item.children'>
-                            <a
-                                class='navigator-item child-item'
-                                v-if='canShow(child)'
-                                v-bind:href='child.link'
-                                :class="{'active': child.active}"
-                                @click.prevent="goto(child)"
-                            >
-                                <font-awesome-icon v-if='child.icon' :icon='child.icon' />
-                                {{child.label}}
-                            </a>
-                        </li>
-                    </ul>
-                </collapsible>
-
-                
+                <ul v-if='item.toggled' class='navigator-mobile mt-2 mb-2'>
+                    <li v-for='child in item.children'>
+                        <a
+                            class='navigator-item child-item'
+                            v-if='canShow(child)'
+                            v-bind:href='child.link'
+                            :class="{'active': child.active}"
+                            @click.prevent="goto(child)"
+                        >
+                            <font-awesome-icon v-if='child.icon' :icon='child.icon' />
+                            {{child.label}}
+                        </a>
+                    </li>
+                </ul>
             </li>
         </ul>
     </div>
@@ -253,15 +248,20 @@ export default class Navigator extends Mixins(ConfigMixin) {
         padding: $nav-padding / 2;
     }
 
+    li {
+        margin-bottom: 5px;
+    }
+
     .navigator-item {
         min-width: 200px;
-        font-size: 20px;
+        font-size: 24px;
         margin: $nav-padding / 2;
+        margin-bottom: 10px;
     }
 
     .child-item {
         margin-left: 2rem;
-        font-size: 16px;
+        font-size: 20px;
     }
 
     a {

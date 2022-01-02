@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div>
-        <div class='row' v-if="user">
+        <div class='row no-gutters header-mobile' v-if="user">
             <div class='col-12'>
                 <div class="text-center mt-0 mb-2 text-black" style="font-size: 14px">
                     <span v-if="user">
@@ -74,6 +74,7 @@ export default class HeaderMobile extends Mixins(ConfigMixin) {
 
   .header-mobile {
         background-color: $brandColor;
+        color: white;
   }
 
   .title  {
