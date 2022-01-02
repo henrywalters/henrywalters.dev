@@ -1,7 +1,7 @@
 <template>
     <div class='container-fluid'>
         <div class='row'>
-            <div class='col-3 m-0'>
+            <div class='col-12 col-lg-3 m-0'>
                 <ul class='sidebar'>
                     <li 
                         v-for='(page, idx) in pages' 
@@ -13,7 +13,7 @@
                 </ul>
             </div>
 
-            <div class='col-9'>
+            <div class='col-12 col-lg-9'>
                 <clients-index v-show='activePage == "Clients"' />
                 <client-projects-index v-show='activePage == "Projects"' />
                 <quotes-index v-show='activePage == "Quotes"' />

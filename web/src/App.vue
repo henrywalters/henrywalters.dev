@@ -11,7 +11,7 @@
         <div class='row d-md-none nav-mobile mb-3' >
           <div class='col-12'>
             <collapsible ref='navMobile' >
-              <navigator-mobile @nav-close='closeNavMobile' @logout='logout' />
+              <navigator-mobile @nav-close='closeNavMobile' @logout='logout' :user='user' />
             </collapsible>
           </div>
         </div>
@@ -95,6 +95,10 @@ export default class App extends Mixins(ConfigMixin) {
   private toggleNavMobile() {
     // @ts-ignore
     this.$refs.navMobile.toggle();
+  }
+
+  private logout() {
+    this.auth.logout();
   }
 }
 

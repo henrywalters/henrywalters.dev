@@ -66,7 +66,7 @@ interface IMenuItem {
 })
 export default class Navigator extends Mixins(ConfigMixin) {
 
-    @Prop()
+    @Prop({default: null})
     public user!: User;
 
     private currentItem: IMenuItem | undefined;
