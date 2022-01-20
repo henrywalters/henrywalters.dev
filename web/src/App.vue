@@ -26,7 +26,7 @@
     </div>
     <div class="footer row pl-3 pr-3 pt-md-3 pt-2">
       <div class="col-md-6 float-left">
-        <a href="/terms.html">Terms of Service</a> | <a href="/privacy.html">Privary Policy</a>
+        <a href="/terms.html">Terms of Service</a> | <a href="/privacy.html">Privacy Policy</a>
       </div>
       <div class="col-md-6 ">
         <span class="float-md-right">
