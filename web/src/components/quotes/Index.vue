@@ -36,6 +36,10 @@ export default class QuotesIndex extends Vue {
         this.initialized = true;
     }
 
+    async mounted() {
+        await this.refresh();
+    }
+
     async refresh() {
         this.loading = true;
         const res = await this.api.get();
@@ -49,11 +53,13 @@ export default class QuotesIndex extends Vue {
     }
 
     async remove(quote: Quote) {
-
+        await this.api.delete(quote.id);
+        await this.refresh();
     }
 
     async invoice(quote: Quote) {
-
+        await this.api.convert(quote);
+        await this.refresh();
     }
 
     view(quote: Quote) {

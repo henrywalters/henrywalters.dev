@@ -3,6 +3,7 @@
         <loader v-if='loading' />
         <h4 class='text-danger' v-if='error'>{{error}}</h4>
         <div v-if='!error'>
+            <h1 class='void-message' v-if='invoice.status == "Void"'>VOID</h1>
             <div class='row'>
                 <div class='col-md-8 mb-3'>
                     <h1 class='brand-font'>INVOICE</h1>
@@ -107,7 +108,8 @@
                             <td class='text-right'><h5>${{(this.totalAmount - invoice.amountPaid).toFixed(2)}}</h5></td>
                         </tr>
                     </table>
-                    <payment-portal 
+                    <payment-portal
+                        v-if='invoice.status != "Void"'
                         ref='portal' 
                         class='mt-3' 
                         :defaultValue="this.totalAmount - invoice.amountPaid" 
@@ -229,5 +231,15 @@ import PaymentPortal from "../components/PaymentPortal.vue"
             font-size: 12px !important;
         }
         
+    }
+
+    .void-message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-size: 200px;
+        color: red;
+        transform: translate(-50%, -50%) rotate(-22.5deg); 
+        z-index: 100;
     }
 </style>

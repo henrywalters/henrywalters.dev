@@ -217,7 +217,11 @@ export class ClientProjectTaskService extends BaseService<ClientProjectTaskCreat
 export class QuoteService extends BaseService<void, Quote, void> {
     constructor() {
         super("Quote Service", "accounting/quotes");
-    } 
+    }
+
+    public async convert(quote: Quote): Promise<ApiResponse<Invoice, string>> {
+        return (await this.http.post(`${this.controllerPath}/${quote.id}/convert`, {})).data;
+    }
 }
 
 export class InvoiceService extends BaseService<void, Invoice, void> {
