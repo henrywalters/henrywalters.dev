@@ -35,7 +35,8 @@
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.5.3",
     "vue-star-rating": "^2.1.0",
-    "vue-tel-input": "^5.9.0"
+    "vue-tel-input": "^5.9.0",
+    "xl2sql": "^1.0.5"
   },
   "devDependencies": {
     "@babel/runtime": "7.0.0-beta.42",

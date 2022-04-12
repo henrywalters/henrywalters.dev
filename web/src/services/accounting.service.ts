@@ -114,6 +114,14 @@ export enum ClientProjectStatus {
     VOID = "Void",
 }
 
+export interface Payment {
+    timestamp: string;
+    id: string;
+    amount: number;
+    client: Client;
+    invoice: Invoice;
+}
+
 export const CLIENT_PROJECT_STATUS_NAMES = [
     ClientProjectStatus.LEAD,
     ClientProjectStatus.QUOTED,
@@ -159,6 +167,19 @@ export interface LoggedHours extends ClientProjectTaskWork {
     id: string;
     timestamp: string;
 }
+
+export interface ClientPaymentRequest {
+    invoiceId: string;
+    amount: number;
+    cardId: string;
+}
+
+export interface GenericAccountingError {
+    statusCode: number;
+    message: string;
+    error: string;
+}
+
 
 export class ClientService extends BaseService<ClientCreate, Client, HashMap<string>> {
     constructor() {
@@ -227,5 +248,11 @@ export class QuoteService extends BaseService<void, Quote, void> {
 export class InvoiceService extends BaseService<void, Invoice, void> {
     constructor() {
         super("Invoice Service", "accounting/invoices");
+    }
+}
+
+export class PaymentService extends BaseService<ClientPaymentRequest, Payment, GenericAccountingError> {
+    constructor() {
+        super("Payment Service", "accounting/payments");
     }
 }

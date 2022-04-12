@@ -96,6 +96,16 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "quote" */ '../views/Quote.vue')
   },
   {
+    path: '/payment/:id',
+    name: 'Payment',
+    component: () => import(/* webpackChunkName: "payment" */ '../views/PaymentConfirmation.vue')
+  },
+  {
+    path: '/xl2sql',
+    name: 'Xl2Sql',
+    component: () => import(/* webpackChunkName: "Xl2Sql" */ '../views/Xl2sql.vue')
+  },
+  {
     path: 'unauthorized',
     name: 'Unauthorized',
     component: () => import(/* webpackChunkName: "unauthorized" */ '../views/Unauthorized.vue')

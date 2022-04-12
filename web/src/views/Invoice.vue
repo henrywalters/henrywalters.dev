@@ -2,7 +2,7 @@
     <div class="container mt-5">
         <loader v-if='loading' />
         <h4 class='text-danger' v-if='error'>{{error}}</h4>
-        <div v-if='!error'>
+        <div v-if='!error && invoice'>
             <h1 class='void-message' v-if='invoice.status == "Void"'>VOID</h1>
             <div class='row'>
                 <div class='col-md-8 mb-3'>
@@ -111,11 +111,14 @@
                     <payment-portal
                         v-if='invoice.status != "Void"'
                         ref='portal' 
-                        class='mt-3' 
+                        class='mt-3'
+                        :loading='processingPayment'
                         :defaultValue="this.totalAmount - invoice.amountPaid" 
                         :maxValue="this.totalAmount - invoice.amountPaid"
-                        @amount-change='paymentAmount = $e'
-                        @token-change='paymentCardId = $e'
+                        :error='paymentError'
+                        @clear='paymentError = null'
+                        @amount-change='setAmount'
+                        @token-change='setToken'
                         @submit='pay'
                     />
 
@@ -137,7 +140,7 @@
 <script lang="ts">
     import {Component, Vue, Mixins} from "vue-property-decorator";
 import ConfigMixin from "../mixins/ConfigMixin";
-import { Invoice, InvoiceService } from "../services/accounting.service";
+import { Invoice, InvoiceService, PaymentService } from "../services/accounting.service";
 import PaymentPortal from "../components/PaymentPortal.vue"
 
     @Component({
@@ -149,17 +152,23 @@ import PaymentPortal from "../components/PaymentPortal.vue"
 
         private invoice: Invoice | null = null;
         private error: string | null = null;
+        private paymentError: string | null = null;
         private loading: boolean = true;
+
+        private processingPayment: boolean = false;
 
         private paymentAmount: number = 0;
         private paymentCardId: string = "";
 
+        private api = new PaymentService();
+
         private async created() {
             const invoices = new InvoiceService();
             const res = await invoices.getOne(this.$route.params.id);
-            console.log(res);
+
             if (res.success) {
                 this.invoice = res.result;
+                this.paymentAmount = this.totalAmount - res.result.amountPaid;
             } else {
                 this.error = "Invoice does not exist";
             }
@@ -200,9 +209,32 @@ import PaymentPortal from "../components/PaymentPortal.vue"
             this.$refs.portal.focus();
         }
 
+        private setAmount(amount: number) {
+            this.paymentAmount = amount;
+        }
+
+        private setToken(token: string) {
+            this.paymentCardId = token;
+        }
+
         async pay() {
-            console.log(this.paymentAmount);
-            console.log(this.paymentCardId);
+            this.processingPayment = true;
+            try {
+                const payment = await this.api.post({
+                    cardId: this.paymentCardId,
+                    amount: this.paymentAmount,
+                    invoiceId: this.invoice.id
+                });
+                if (payment.success === true) {
+                    this.$router.push({name: 'Payment', params: {id: payment.result.id}})
+                } else {
+                    this.paymentError = payment.error.message;
+                }
+                this.processingPayment = false;
+            } catch (e) {
+                this.processingPayment = false;
+                this.paymentError = "An unknown error occurred. Please try again shortly."
+            }
         }
     }
 </script>

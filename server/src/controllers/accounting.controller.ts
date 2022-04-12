@@ -18,7 +18,7 @@ export class AccountingController {
             const url = this.buildUrl(req);
             return ResponseDto.Success((await axios.get(url)).data);
         } catch (e) {
-            return ResponseDto.Error(e.response.data);
+            return ResponseDto.Error(e.message);
         }
     }
 
@@ -160,5 +160,10 @@ export class AccountingController {
     @Post('payments')
     public async makePayment(@Req() req: Request, @Body() body) {
         return await this.postProxy(req, body);
+    }
+
+    @Get('payments/*')
+    public async getPayment(@Req() req: Request) {
+        return await this.getProxy(req);
     }
 }
