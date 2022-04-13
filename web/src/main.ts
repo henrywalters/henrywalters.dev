@@ -14,6 +14,7 @@ import MarkdownViewer from "@/components/ui/MarkdownViewer.vue";
 import Collapsible from '@/components/ui/Collapsible.vue';
 import Icons from "./services/icons.service";
 import CodeHighlight from "./directives/codeHighlight.directive";
+import CurrencyDisplay from "@/components/ui/CurrencyDisplay.vue";
 import VueTelInput from 'vue-tel-input'
 import 'vue-tel-input/dist/vue-tel-input.css';
 // @ts-ignore
@@ -28,6 +29,7 @@ Vue.component('form-group', FormGroup);
 Vue.component('markdown-editor', MarkdownEditor);
 Vue.component('markdown-viewer', MarkdownViewer);
 Vue.component('collapsible', Collapsible);
+Vue.component('currency', CurrencyDisplay);
 
 dotenv.config();
 

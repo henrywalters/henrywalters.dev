@@ -7,7 +7,7 @@
             <div class='row'>
                 <div class='col-md-8 mb-3'>
                     <h1 class='brand-font'>INVOICE</h1>
-                    <h4>Total Amount: ${{(this.totalAmount - invoice.amountPaid).toFixed(2)}}</h4>
+                    <h4>Total Amount: <currency :value='this.totalAmount - invoice.amountPaid' /></h4>
                     <button class='btn btn-large btn-success mt-3' @click='gotoPayment'>Pay Now!</button>
                 </div>
                 <div class='col-md-4 mb-1'>
@@ -71,8 +71,8 @@
                                     <p v-if='item.description'>{{item.description}}</p>
                                 </td>
                                 <td class='text-center'>{{item.quantity}}</td>
-                                <td class='text-center'>${{item.rate.toFixed(2)}}</td>
-                                <td class='text-right'>${{(item.quantity * item.rate).toFixed(2)}}</td>
+                                <td class='text-center'><currency :value='item.rate' /></td>
+                                <td class='text-right'><currency :value='item.quantity * item.rate' /></td>
                             </tr>
                         </tbody>
                     </table>
@@ -97,15 +97,15 @@
                     <table class='w-100'>
                         <tr>
                             <td class='text-right'><b>Invoice Total: </b></td>
-                            <td class='text-right'>${{this.totalAmount.toFixed(2)}}</td>
+                            <td class='text-right'><currency :value='this.totalAmount' /></td>
                         </tr>
                         <tr>
                             <td class='text-right'><b>Amount Paid: </b></td>
-                            <td class='text-right'>${{invoice.amountPaid.toFixed(2)}}</td>
+                            <td class='text-right'><currency :value='invoice.amountPaid' /></td>
                         </tr>
                         <tr>
                             <td class='text-right'><h5><b>Total Amount Owed: </b></h5></td>
-                            <td class='text-right'><h5>${{(this.totalAmount - invoice.amountPaid).toFixed(2)}}</h5></td>
+                            <td class='text-right'><h5><currency :value='this.totalAmount - invoice.amountPaid' /></h5></td>
                         </tr>
                     </table>
                     <payment-portal
@@ -127,7 +127,7 @@
                         <table class='w-100'>
                             <tr v-for='(payment, idx) in invoice.payments' :key='idx'>
                                 <td class='text-right'>{{payment.timestamp | luxon}}</td>
-                                <td class='text-right'>${{payment.amount.toFixed(2)}}</td>
+                                <td class='text-right'><currency :value='payment.amount' /></td>
                             </tr>
                         </table>
                     </div>
