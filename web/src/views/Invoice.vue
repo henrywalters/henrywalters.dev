@@ -218,6 +218,11 @@ import PaymentPortal from "../components/PaymentPortal.vue"
         }
 
         async pay() {
+
+            if (!this.invoice) {
+                return;
+            }
+
             this.processingPayment = true;
             try {
                 const payment = await this.api.post({

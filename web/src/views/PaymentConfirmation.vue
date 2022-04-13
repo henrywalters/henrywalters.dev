@@ -88,7 +88,7 @@ export default class PaymentConfirmation extends Vue {
             this.payment = res.result;
             console.log(this.payment);
         } else {
-            this.error = e.message;
+            this.error = res.error.message;
         }
         this.loading = false;
     }

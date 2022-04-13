@@ -68,6 +68,7 @@ export default class Xl2Sql extends Vue {
                 }
 
                 this.$nextTick(() => {
+                    // @ts-ignore
                     document.getElementById('datatable').appendChild(this.datatable.getHtml());
                 })
             } catch(e) {
